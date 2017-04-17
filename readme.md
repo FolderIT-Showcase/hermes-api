@@ -43,7 +43,8 @@ Pasos para instalar HermesWeb - API:
 </VirtualHost>
 ``` 
 7. Crear una entrada en el archivo `hosts` del SO para que la URL del API apunte al local: `127.0.0.1  hermes.api`
-8. Para comprobar que el API levantó correctamente abrir `http://hermes.api`, la página de inicio de Laravel debe desplegarse.
+8. Crear la key con `php artisan key:generate`
+9. Para comprobar que el API levantó correctamente abrir `http://hermes.api`, la página de inicio de Laravel debe desplegarse.
 
 
 ## Documentación
