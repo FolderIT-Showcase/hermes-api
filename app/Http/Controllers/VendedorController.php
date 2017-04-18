@@ -25,7 +25,7 @@ class VendedorController extends Controller
      */
     public function store(Request $request)
     {
-        $newVendedor = Vendedor::create($request->all());
+        $newVendedor = Vendedor::create($request->json()->all());
         return response()->json($newVendedor);
     }
 
@@ -49,7 +49,7 @@ class VendedorController extends Controller
      */
     public function update(Vendedor $vendedor, Request $request)
     {
-        $vendedor->fill($request->all())->save();
+        $vendedor->fill($request->json()->all())->save();
         return response()->json($vendedor);
     }
 
