@@ -25,4 +25,6 @@ class Cliente extends Model
     {
         return $this->hasMany('Domicilio');
     }
+
+    protected $fillable  = ['vendedor_id', 'zona_id', 'tipo_categoria_id', 'codigo', 'nombre', 'tipo_responsable', 'cuit', 'telefono', 'celular', 'email', 'activo', 'motivo'];
 }
