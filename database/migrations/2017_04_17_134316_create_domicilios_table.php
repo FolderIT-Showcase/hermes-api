@@ -25,7 +25,7 @@ class CreateDomiciliosTable extends Migration
             $table->foreign('localidad_id')
                 ->references('id')->on('localidades');
 				
-            //relacion con localidad            
+            //relacion con cliente
             $table->foreign('cliente_id')
                 ->references('id')->on('clientes')
                 ->onDelete('cascade');            
