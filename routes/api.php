@@ -20,3 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::resource('clientes', 'ClienteController',
     ['only' => ['index', 'store', 'show', 'update', 'destroy'],
         'parameters' => ['clientes' => 'cliente']]);
+
+Route::resource('vendedores', 'VendedorController',
+        ['only' => ['index', 'store', 'show', 'update', 'destroy'],
+        'parameters' => ['vendedores' => 'vendedor']]);
