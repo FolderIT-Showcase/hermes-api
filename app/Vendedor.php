@@ -18,4 +18,6 @@ class Vendedor extends Model
     {
         return $this->hasMany('Cliente');
     }
+
+    protected $fillable  = ['nombre', 'zona_id', 'comision'];
 }
