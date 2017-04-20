@@ -17,5 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::post("/login", 'Auth\LoginController@login');
 Route::post("/register", 'Auth\RegisterController@register');
+
+Route::resource('clientes', 'ClienteController',
+    ['only' => ['index', 'store', 'show', 'update', 'destroy'],
+        'parameters' => ['clientes' => 'cliente']]);
+
+Route::resource('vendedores', 'VendedorController',
+        ['only' => ['index', 'store', 'show', 'update', 'destroy'],
+        'parameters' => ['vendedores' => 'vendedor']]);
