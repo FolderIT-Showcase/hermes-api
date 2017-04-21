@@ -29,7 +29,7 @@ Pasos para instalar HermesWeb - API:
 3. Conectarse al motor de base de datos (via PHPMyAdmin o MySQLWorkbench) y crear una base de datos nueva con Collation `utf8 - default collation`.
 4. Copiar `.env.example` a `.env`
 5. Actualizar los datos en `.env` relacionados a la base de datos creada en el paso 3 (parametros DB_*).
-6. Desde línea de comandos, pararse en el raiz del proyecto y ejecutar: `php artisan migrate`.
+6. Desde línea de comandos, pararse en el raiz del proyecto y ejecutar: `php artisan migrate --seed`.
 7. Crear un Virtual Host en el Apache para levantar el API:
 ```
 <VirtualHost hermes.api:80>
