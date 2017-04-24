@@ -34,7 +34,7 @@ class RegisterController extends Controller
         $validator = $this->validator($request->json()->all());
 
         if($validator->fails()){
-            return response()->json(['error' => $validator->errors()]);
+            return response()->json(['error' => $validator->errors()], 401);
         }
 
         $newUser = $this->create($request->json()->all());
