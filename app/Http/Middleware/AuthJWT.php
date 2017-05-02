@@ -16,11 +16,11 @@ class authJWT
             JWTAuth::toUser($request->header('Authorization'));
         } catch (Exception $e) {
             if ($e instanceof TokenInvalidException){
-                return response()->json(['error'=>'El token es inválido']);
+                return response()->json(['error'=>'El token es inválido'], 401);
             }else if ($e instanceof TokenExpiredException){
-                return response()->json(['error'=>'El token ha expirado']);
+                return response()->json(['error'=>'El token ha expirado'], 401);
             }else{
-                return response()->json(['error'=>'Ha ocurrido un error']);
+                return response()->json(['error'=>'Ha ocurrido un error'], 500);
             }
         }
         return $next($request);
