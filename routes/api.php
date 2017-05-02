@@ -41,4 +41,11 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
     Route::resource('articulos', 'ArticuloController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+
+    Route::resource('provincias', 'ProvinciaController',
+        ['only' => ['index', 'show']]);
+
+    Route::resource('localidades', 'LocalidadController',
+        ['only' => ['index', 'show'],
+        'parameters' => ['localidades' => 'localidad']]);
 });
