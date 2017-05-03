@@ -86,4 +86,19 @@ class ClienteController extends Controller
         $cliente->delete();
         return response()->json('ok', 200);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param $cod
+     * @return \Illuminate\Http\Response
+     */
+    public function showByCode($cod)
+    {
+        $cliente = Cliente::where('codigo', $cod)->first();
+        if($cliente === null){
+            return response()->json('', 204);
+        }
+        else return response()->json($cliente);
+    }
 }
