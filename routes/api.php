@@ -48,4 +48,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('localidades', 'LocalidadController',
         ['only' => ['index', 'show'],
         'parameters' => ['localidades' => 'localidad']]);
+
+    Route::resource('zonas', 'ZonaController',
+        ['only' => ['index']]);
 });
