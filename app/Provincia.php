@@ -9,7 +9,7 @@ class Provincia extends Model
     //
     public function localidades()
     {
-        return $this->hasMany(Localidad::class);
+        return $this->hasMany(Localidad::class)->orderBy('nombre');
     }
 
     public function pais()
