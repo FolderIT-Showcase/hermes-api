@@ -61,6 +61,25 @@ class RubroController extends Controller
      */
     public function destroy(Rubro $rubro)
     {
+        if($rubro->subrubros()->count() !== 0){
+            return response()->json(['error' => 'No se ha podido eliminar el rubro ' . $rubro->codigo . ' porque existen subrubros asociados'], 200);
+        };
         $rubro->delete();
+        return response()->json('ok', 200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param $cod
+     * @return \Illuminate\Http\Response
+     */
+    public function showByCode($cod)
+    {
+        $rubro = Rubro::where('codigo', $cod)->first();
+        if($rubro === null){
+            return response()->json('', 204);
+        }
+        else return response()->json($rubro);
     }
 }

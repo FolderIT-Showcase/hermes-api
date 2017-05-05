@@ -11,12 +11,12 @@ class Vendedor extends Model
     //
     public function zona()
     {
-        return $this->belongsTo('Zona');
+        return $this->belongsTo(Zona::class);
     }
 
     public function clientes()
     {
-        return $this->hasMany('Cliente');
+        return $this->hasMany(Cliente::class);
     }
 
     protected $fillable  = ['nombre', 'zona_id', 'comision'];
