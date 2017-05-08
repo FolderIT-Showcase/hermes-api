@@ -61,6 +61,24 @@ class MarcaController extends Controller
      */
     public function destroy(Marca $marca)
     {
+        if($marca->articulos()->count() !== 0){
+            return response()->json(['error' => 'No se ha podido eliminar la marca ' . $marca->codigo . ' porque existen artículos asociados'], 200);
+        };
         $marca->delete();
+        return response()->json('ok', 200);    }
+    
+    /**
+     * Display the specified resource.
+     *
+     * @param $cod
+     * @return \Illuminate\Http\Response
+     */
+    public function showByCode($cod)
+    {
+        $marca = Marca::where('codigo', $cod)->first();
+        if($marca === null){
+            return response()->json('', 204);
+        }
+        else return response()->json($marca);
     }
 }

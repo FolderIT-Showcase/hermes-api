@@ -31,15 +31,19 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         ['only'       => ['index', 'store', 'show', 'update', 'destroy'],
          'parameters' => ['vendedores' => 'vendedor']]);
 
+    Route::get('rubros/codigo/{cod}', 'RubroController@showByCode');
     Route::resource('rubros', 'RubroController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
+    Route::get('subrubros/codigo/{cod}', 'SubrubroController@showByCode');
     Route::resource('subrubros', 'SubrubroController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
+    Route::get('marcas/codigo/{cod}', 'MarcaController@showByCode');
     Route::resource('marcas', 'MarcaController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
+    Route::get('articulos/codigo/{cod}', 'ArticuloController@showByCode');
     Route::resource('articulos', 'ArticuloController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
@@ -51,5 +55,5 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         'parameters' => ['localidades' => 'localidad']]);
 
     Route::resource('zonas', 'ZonaController',
-        ['only' => ['index']]);
+        ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 });

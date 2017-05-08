@@ -62,5 +62,21 @@ class ArticuloController extends Controller
     public function destroy(Articulo $articulo)
     {
         $articulo->delete();
+        return response()->json('ok', 200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param $cod
+     * @return \Illuminate\Http\Response
+     */
+    public function showByCode($cod)
+    {
+        $articulo = Articulo::where('codigo', $cod)->first();
+        if($articulo === null){
+            return response()->json('', 204);
+        }
+        else return response()->json($articulo);
     }
 }

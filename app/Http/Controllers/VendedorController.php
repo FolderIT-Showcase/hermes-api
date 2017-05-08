@@ -61,6 +61,10 @@ class VendedorController extends Controller
      */
     public function destroy(Vendedor $vendedor)
     {
+        if($vendedor->clientes()->count() !== 0){
+            return response()->json(['error' => 'No se ha podido eliminar al vendedor ' . $vendedor->nombre . ' porque existen clientes asociados'], 200);
+        };
         $vendedor->delete();
+        return response()->json('ok', 200);
     }
 }

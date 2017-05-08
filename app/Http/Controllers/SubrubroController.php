@@ -61,6 +61,25 @@ class SubrubroController extends Controller
      */
     public function destroy(Subrubro $subrubro)
     {
+        if($subrubro->articulos()->count() !== 0){
+            return response()->json(['error' => 'No se ha podido eliminar el subrubro ' . $subrubro->codigo . ' porque existen artículos asociados'], 200);
+        };
         $subrubro->delete();
+        return response()->json('ok', 200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param $cod
+     * @return \Illuminate\Http\Response
+     */
+    public function showByCode($cod)
+    {
+        $subrubro = Subrubro::where('codigo', $cod)->first();
+        if($subrubro === null){
+            return response()->json('', 204);
+        }
+        else return response()->json($subrubro);
     }
 }
