@@ -16,6 +16,11 @@ class Articulo extends Model
         return $this->belongsTo(Marca::class);
     }
 
+    public function compro_item()
+    {
+        return $this->hasMany(ComproItem::class);
+    }
+
     protected $fillable  = ['marca_id',
         'subrubro_id',
         'codigo',

@@ -56,4 +56,11 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
     Route::resource('zonas', 'ZonaController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+
+    Route::get('tipocomprobantes/tiporesponsable/{cod}', 'TipoComprobanteController@showByTipoResponsable');
+
+    Route::get('contadores/{punto_venta}/{tipo_comprobante_id}', 'ContadorController@showByPuntoVentaTipoComprobante');
+
+    Route::resource('comprobantes', 'ComprobanteController',
+        ['only' => ['store']]);
 });
