@@ -30,7 +30,6 @@ class ComprobanteController extends Controller
             $contador->save();
         });
 
-
         return response()->json($newComprobante->load('items'));
     }
 }

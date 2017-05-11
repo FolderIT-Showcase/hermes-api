@@ -101,4 +101,19 @@ class ClienteController extends Controller
         }
         else return response()->json($cliente);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param $name
+     * @return \Illuminate\Http\Response
+     */
+    public function showByName($name)
+    {
+        $clientes = Cliente::where('nombre', 'like', '%' . $name . '%')->get();
+        if($clientes === null){
+            return response()->json('', 204);
+        }
+        else return response()->json($clientes);
+    }
 }

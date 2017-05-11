@@ -24,6 +24,7 @@ Route::post("/register", 'Auth\RegisterController@register');
 Route::group(['middleware' => 'jwt.auth'], function () {
 
     Route::get('clientes/codigo/{cod}', 'ClienteController@showByCode');
+    Route::get('clientes/nombre/{nom}', 'ClienteController@showByName');
     Route::resource('clientes', 'ClienteController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
@@ -44,6 +45,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
     Route::get('articulos/codigo/{cod}', 'ArticuloController@showByCode');
+    Route::get('articulos/nombre/{nom}', 'ArticuloController@showByName');
     Route::resource('articulos', 'ArticuloController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
