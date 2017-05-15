@@ -129,8 +129,11 @@ class ClienteController extends Controller
             ->orWhere('codigo', 'like', '%' . $busqueda . '%')
             ->orWhere('cuit', 'like', '%' . $busqueda . '%')
             ->orwhereHas('domicilios', function ($q) use ($busqueda) {
-            $q->where('direccion', 'like', '%' . $busqueda . '%');
-        })->with('domicilios')->limit(10)->get();
+                $q->where('direccion', 'like', '%' . $busqueda . '%');
+            })
+            ->with('domicilios')
+            ->limit(10)
+            ->get();
         if($clientes === null){
             return response()->json('', 204);
         }

@@ -47,6 +47,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
     Route::get('articulos/codigo/{cod}', 'ArticuloController@showByCode');
     Route::get('articulos/nombre/{nom}', 'ArticuloController@showByName');
+    Route::get('articulos/buscar/{marca}/{rubro}/{subrubro}/{busqueda}', 'ArticuloController@showByAll');
     Route::resource('articulos', 'ArticuloController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
