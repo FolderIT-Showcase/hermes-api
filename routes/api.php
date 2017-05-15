@@ -25,6 +25,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
     Route::get('clientes/codigo/{cod}', 'ClienteController@showByCode');
     Route::get('clientes/nombre/{nom}', 'ClienteController@showByName');
+    Route::get('clientes/buscar/{busqueda}', 'ClienteController@showByAll');
     Route::resource('clientes', 'ClienteController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
