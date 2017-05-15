@@ -25,6 +25,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
     Route::get('clientes/codigo/{cod}', 'ClienteController@showByCode');
     Route::get('clientes/nombre/{nom}', 'ClienteController@showByName');
+    Route::get('clientes/buscar/{busqueda}', 'ClienteController@showByAll');
     Route::resource('clientes', 'ClienteController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
@@ -46,6 +47,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
     Route::get('articulos/codigo/{cod}', 'ArticuloController@showByCode');
     Route::get('articulos/nombre/{nom}', 'ArticuloController@showByName');
+    Route::get('articulos/buscar/{marca}/{rubro}/{subrubro}/{busqueda}', 'ArticuloController@showByAll');
     Route::resource('articulos', 'ArticuloController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 

@@ -94,4 +94,46 @@ class ArticuloController extends Controller
         }
         else return response()->json($clientes);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param $marca
+     * @param $rubro
+     * @param $subrubro
+     * @param $busqueda
+     * @return \Illuminate\Http\Response
+     */
+    public function showByAll($marca, $rubro, $subrubro, $busqueda)
+    {
+        $articulos = Articulo::orWhere( function($query) use ($busqueda) {
+                $query->orWhere('nombre', 'like', '%' . $busqueda . '%')
+                    ->orWhere('codigo', 'like', '%' . $busqueda . '%')
+                    ->orWhereHas('subrubro', function ($q) use ($busqueda) {
+                        $q->where('nombre', 'like', '%' . $busqueda . '%');
+                    })
+                    ->orWhereHas('subrubro.rubro', function ($q) use ($busqueda) {
+                        $q->where('nombre', 'like', '%' . $busqueda . '%');
+                    });
+            })->with('subrubro');
+
+        if ($marca !== "0"){
+            $articulos = $articulos->where('marca_id', '=', $marca);
+        }
+        if ($rubro !== "0"){
+            $articulos = $articulos->whereHas('subrubro.rubro', function ($q) use ($rubro) {
+                $q->where('id', $rubro);
+            });
+        }
+        if ($subrubro !== "0"){
+            $articulos = $articulos->where('subrubro_id', '=', $subrubro);
+        }
+        $articulos = $articulos
+            ->limit(10)
+            ->get();
+        if($articulos === null){
+            return response()->json('', 204);
+        }
+        else return response()->json($articulos);
+    }
 }

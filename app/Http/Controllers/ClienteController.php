@@ -116,4 +116,27 @@ class ClienteController extends Controller
         }
         else return response()->json($clientes);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param $busqueda
+     * @return \Illuminate\Http\Response
+     */
+    public function showByAll($busqueda)
+    {
+        $clientes = Cliente::where('nombre', 'like', '%' . $busqueda . '%')
+            ->orWhere('codigo', 'like', '%' . $busqueda . '%')
+            ->orWhere('cuit', 'like', '%' . $busqueda . '%')
+            ->orwhereHas('domicilios', function ($q) use ($busqueda) {
+                $q->where('direccion', 'like', '%' . $busqueda . '%');
+            })
+            ->with('domicilios')
+            ->limit(10)
+            ->get();
+        if($clientes === null){
+            return response()->json('', 204);
+        }
+        else return response()->json($clientes);
+    }
 }
