@@ -33,12 +33,12 @@ class ListaPreciosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\ListaPrecios  $listaPrecios
+     * @param ListaPrecios $listaprecio
      * @return \Illuminate\Http\Response
      */
-    public function show(ListaPrecios $listaPrecios)
+    public function show(ListaPrecios $listaprecio)
     {
-        return response()->json($listaPrecios);
+        return response()->json($listaprecio);
 
     }
 
@@ -46,25 +46,25 @@ class ListaPreciosController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ListaPrecios  $listaPrecios
+     * @param  \Illuminate\Http\Request $request
+     * @param ListaPrecios $listaprecio
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ListaPrecios $listaPrecios)
+    public function update(Request $request, ListaPrecios $listaprecio)
     {
-        $listaPrecios->fill($request->json()->all())->save();
-        return response()->json($listaPrecios);
+        $listaprecio->fill($request->json()->all())->save();
+        return response()->json($listaprecio);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ListaPrecios  $listaPrecios
+     * @param ListaPrecios $listaprecio
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ListaPrecios $listaPrecios)
+    public function destroy(ListaPrecios $listaprecio)
     {
-        $listaPrecios->delete();
+        $listaprecio->delete();
         return response()->json('ok', 200);
     }
 }
