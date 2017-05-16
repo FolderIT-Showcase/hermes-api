@@ -16,6 +16,11 @@ class Comprobante extends Model
         return $this->belongsTo(TipoComprobante::class);
     }
 
+    public function listaPrecios()
+    {
+        return $this->belongsTo(ListaPrecios::class, 'lista_id');
+    }
+
     public function items()
     {
         return $this->hasMany(ComproItem::class);
@@ -37,5 +42,6 @@ class Comprobante extends Model
         'cae',
         'fecha_cae',
         'fecha_venc_cae',
-        'anulado'];
+        'anulado',
+        'lista_id'];
 }
