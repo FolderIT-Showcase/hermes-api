@@ -65,7 +65,8 @@ class MarcaController extends Controller
             return response()->json(['error' => 'No se ha podido eliminar la marca ' . $marca->codigo . ' porque existen artículos asociados'], 200);
         };
         $marca->delete();
-        return response()->json('ok', 200);    }
+        return response()->json('ok', 200);
+    }
     
     /**
      * Display the specified resource.
