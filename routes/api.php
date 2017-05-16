@@ -67,4 +67,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
     Route::resource('comprobantes', 'ComprobanteController',
         ['only' => ['store']]);
+
+    Route::resource('listaprecios', 'ListaPreciosController',
+        ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 });
