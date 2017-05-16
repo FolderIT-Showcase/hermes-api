@@ -70,4 +70,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
     Route::resource('listaprecios', 'ListaPreciosController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+
+    Route::resource('parametros', 'ParametroController',
+        ['only' => ['index']]);
 });
