@@ -21,6 +21,11 @@ class Cliente extends Model
         return $this->belongsTo(TipoCategoriaCliente::class);
     }
 
+    public function listaPrecios()
+    {
+        return $this->belongsTo(ListaPrecios::class, 'lista_id');
+    }
+
     public function domicilios()
     {
         return $this->hasMany(Domicilio::class);
@@ -37,5 +42,6 @@ class Cliente extends Model
         'celular',
         'email',
         'activo',
-        'motivo'];
+        'motivo',
+        'lista_id'];
 }
