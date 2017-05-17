@@ -73,4 +73,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
     Route::resource('parametros', 'ParametroController',
         ['only' => ['index']]);
+
+    Route::resource('tipocategoriaclientes', 'TipoCategoriaClienteController',
+        ['only' => ['index']]);
 });
