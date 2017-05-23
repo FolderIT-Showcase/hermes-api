@@ -142,7 +142,7 @@ class ListaPreciosController extends Controller
 
                             if ($actualizarPrecioVenta) {
                                 $listaPrecios = ListaPrecios::where('id', $listaPrecioItem->lista_id)->first();
-                                $listaPrecioItem->update(['precio_venta' => $articulo->costo * (1 + $listaPrecios->porcentaje)]);
+                                $listaPrecioItem->update(['precio_venta' => $articulo->costo * (1 + ($listaPrecios->porcentaje / 100))]);
                             }
                         }
                     }
