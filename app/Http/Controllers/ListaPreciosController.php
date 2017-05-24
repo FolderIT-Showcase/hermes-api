@@ -122,8 +122,15 @@ class ListaPreciosController extends Controller
                     $campoCodigo = 'codigo';
             }
 
+            $articulosNoEncontrados = [];
+
             foreach ($excel as $row) {
                 $articulos = Articulo::where($campoCodigo, $row->codigo)->get();
+
+                if ($articulos->count() === 0) {
+                    $articulosNoEncontrados[] = $row;
+                }
+
                 foreach ($articulos as $articulo) {
                     if ($actualizarDescripcion) {
                         $articulo->update(['nombre' => $row->nombre]);
@@ -148,7 +155,7 @@ class ListaPreciosController extends Controller
                     }
                 }
             }
-            return response()->json('ok',200);
+            return response()->json(['no_encontrados' => $articulosNoEncontrados],200);
         } else {
             return response()->json(['error' => 'No se ha proporcionado un archivo']);
         }
