@@ -144,7 +144,7 @@ class ClienteController extends Controller
 
     /**
      * Generate report
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function report()
     {
@@ -152,17 +152,17 @@ class ClienteController extends Controller
 
         $EMPRESA_NOMBRE = '"' . "Hermes Web" . '"';
         $IMAGE_DIR = '"' . base_path() . "/resources/assets/img/" . '"';
-
+        $output_path = base_path() . '/resources/assets/reports/tmp/Blank_A4' . time();
         // Process a Jasper file to PDF and RTF (you can use directly the .jrxml)
         $jasper->process(
             base_path() . '/resources/assets/reports/Blank_A4.jasper',
-            false,
+            $output_path,
             array("pdf"),
             array("EMPRESA_NOMBRE" => $EMPRESA_NOMBRE,
                   "IMAGE_DIR" => $IMAGE_DIR),
             Config::get('database.connections.mysql')
         )->execute();
 
-        return response()->json('ok', 200);
+        return response()->download($output_path . '.pdf', 'reporte_clientes.pdf')->deleteFileAfterSend(true);
     }
 }
