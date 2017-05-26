@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Cliente;
 use App\Domicilio;
+use Illuminate\Support\Facades\Config;
+use JasperPHP\JasperPHP as JasperPHP;
 
 class ClienteController extends Controller
 {
@@ -138,5 +140,29 @@ class ClienteController extends Controller
             return response()->json('', 204);
         }
         else return response()->json($clientes);
+    }
+
+    /**
+     * Generate report
+     * @return \Illuminate\Http\Response
+     */
+    public function report()
+    {
+        $jasper = new JasperPHP;
+
+        $EMPRESA_NOMBRE = '"' . "Hermes Web" . '"';
+        $IMAGE_DIR = '"' . base_path() . "/resources/assets/img/" . '"';
+
+        // Process a Jasper file to PDF and RTF (you can use directly the .jrxml)
+        $jasper->process(
+            base_path() . '/resources/assets/reports/Blank_A4.jasper',
+            false,
+            array("pdf"),
+            array("EMPRESA_NOMBRE" => $EMPRESA_NOMBRE,
+                  "IMAGE_DIR" => $IMAGE_DIR),
+            Config::get('database.connections.mysql')
+        )->execute();
+
+        return response()->json('ok', 200);
     }
 }
