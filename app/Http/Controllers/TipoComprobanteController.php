@@ -9,19 +9,37 @@ class TipoComprobanteController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param $tipo_comprobante
      * @param $cod
      * @return \Illuminate\Http\Response
      */
-    public function showByTipoResponsable($cod)
+    public function showByTipoResponsable($tipo_comprobante, $cod)
     {
-        switch ($cod){
-            case 'RI': $codigo = 'FCA';
+        switch ($tipo_comprobante) {
+            case 'factura':
+                switch ($cod){
+                    case 'RI': $codigo = 'FCA';
+                        break;
+                    case 'CF': $codigo = 'FCB';
+                        break;
+                    case 'MON': $codigo = 'FCB';
+                        break;
+                    default: $codigo = 'FCC';
+                }
                 break;
-            case 'CF': $codigo = 'FCB';
+            case 'presupuesto':
+                switch ($cod){
+                    case 'RI': $codigo = 'PRA';
+                        break;
+                    case 'CF': $codigo = 'PRB';
+                        break;
+                    case 'MON': $codigo = 'PRB';
+                        break;
+                    default: $codigo = 'PRC';
+                }
                 break;
-            case 'MON': $codigo = 'FCB';
-                break;
-            default: $codigo = 'FCC';
+            default:
+                $codigo = 'FCC';
         }
 
         $tipoComprobante = TipoComprobante::where('codigo', $codigo)->first();

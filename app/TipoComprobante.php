@@ -10,4 +10,9 @@ class TipoComprobante extends Model
     {
         return $this->hasMany(Comprobante::class);
     }
+
+    public function contador()
+    {
+        return $this->hasOne( Contador::class);
+    }
 }

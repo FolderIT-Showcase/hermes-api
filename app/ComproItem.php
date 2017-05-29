@@ -13,7 +13,7 @@ class ComproItem extends Model
 
     public function articulo()
     {
-        return $this->hasOne(Articulo::class);
+        return $this->hasOne(Articulo::class, 'id', 'articulo_id');
     }
 
     protected $fillable  = ['comprobante_id',
