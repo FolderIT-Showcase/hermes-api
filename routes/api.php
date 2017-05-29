@@ -66,6 +66,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
     Route::get('contadores/{punto_venta}/{tipo_comprobante_id}', 'ContadorController@showByPuntoVentaTipoComprobante');
 
+    Route::get('comprobantes/presupuestos', 'ComprobanteController@indexPresupuestos');
     Route::resource('comprobantes', 'ComprobanteController',
         ['only' => ['store']]);
 

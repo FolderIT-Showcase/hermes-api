@@ -9,6 +9,23 @@ use Illuminate\Support\Facades\DB;
 class ComprobanteController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexPresupuestos()
+    {
+        return response()->json(Comprobante::whereHas(
+            'tipo_comprobante', function ($query) {
+            $query->where('codigo', 'like', 'PR_');
+        }
+        )
+            ->get()
+        );
+    }
+
+
+    /**
      * Store a newly created resource in storage.
      * @return \Illuminate\Http\Response
      */
