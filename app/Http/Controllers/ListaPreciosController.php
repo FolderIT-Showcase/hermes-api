@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Articulo;
 use App\ListaPrecioItem;
 use App\ListaPrecios;
 use Illuminate\Http\Request;
+use Excel;
 
 class ListaPreciosController extends Controller
 {
@@ -87,4 +89,76 @@ class ListaPreciosController extends Controller
         $listaprecio->delete();
         return response()->json('ok', 200);
     }
+
+    /**
+     * Import Excel file.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function import(Request $request)
+    {
+        if ( $request->hasFile('file')) {
+            $file = $request->file('file');
+            $actualizarDescripcion = $request->get('actualizarDescripcion');
+            $actualizarPrecioCosto = $request->get('actualizarPrecioCosto');
+            $actualizarPrecioVenta = $request->get('actualizarPrecioVenta');
+            $campoCodigoAUtilizar = $request->get('campoCodigoAUtilizar');
+
+            $excel = Excel::load($file, function($reader) {
+                    })->get();
+
+            switch ($campoCodigoAUtilizar) {
+                case 'codigo':
+                    $campoCodigo = 'codigo';
+                    break;
+                case 'fabrica':
+                    $campoCodigo = 'codigo_fabrica';
+                    break;
+                case 'auxiliar':
+                    $campoCodigo = 'codigo_auxiliar';
+                    break;
+                default:
+                    $campoCodigo = 'codigo';
+            }
+
+            $articulosNoEncontrados = [];
+
+            foreach ($excel as $row) {
+                $articulos = Articulo::where($campoCodigo, $row->codigo)->get();
+
+                if ($articulos->count() === 0) {
+                    $articulosNoEncontrados[] = $row;
+                }
+
+                foreach ($articulos as $articulo) {
+                    if ($actualizarDescripcion) {
+                        $articulo->update(['nombre' => $row->nombre]);
+                    }
+
+                    if ($actualizarPrecioCosto) {
+                        $articulo->update(['costo' => $row->precio_de_costo]);
+                    }
+
+                    $listasPreciosItems = ListaPrecioItem::where('articulo_id', $articulo->id)->get();
+                    if ($actualizarPrecioCosto) {
+                        foreach ($listasPreciosItems as $listaPrecioItem) {
+                            if ($actualizarPrecioCosto) {
+                                $listaPrecioItem->update(['precio_costo' => $articulo->costo]);
+                            }
+
+                            if ($actualizarPrecioVenta) {
+                                $listaPrecios = ListaPrecios::where('id', $listaPrecioItem->lista_id)->first();
+                                $listaPrecioItem->update(['precio_venta' => $articulo->costo * (1 + ($listaPrecios->porcentaje / 100))]);
+                            }
+                        }
+                    }
+                }
+            }
+            return response()->json(['no_encontrados' => $articulosNoEncontrados],200);
+        } else {
+            return response()->json(['error' => 'No se ha proporcionado un archivo']);
+        }
+    }
+
 }

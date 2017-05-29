@@ -20,7 +20,7 @@ class authJWT
             }else if ($e instanceof TokenExpiredException){
                 return response()->json(['error'=>'El token ha expirado'], 401);
             }else{
-                return response()->json(['error'=>'Ha ocurrido un error'], 500);
+                return response()->json(['error'=>$e->getMessage()], 500);
             }
         }
         return $next($request);
