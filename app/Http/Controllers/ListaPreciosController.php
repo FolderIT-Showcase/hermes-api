@@ -30,7 +30,7 @@ class ListaPreciosController extends Controller
     public function store(Request $request)
     {
         $newLista = ListaPrecios::create($request->json()->all());
-        return response()->json($newLista);
+        return response()->json($newLista->load('listaPrecioItem'));
     }
 
     /**
@@ -41,8 +41,7 @@ class ListaPreciosController extends Controller
      */
     public function show(ListaPrecios $listaprecio)
     {
-        return response()->json($listaprecio);
-
+        return response()->json($listaprecio->load('listaPrecioItem'));
     }
 
 
