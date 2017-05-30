@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Comprobante;
 use App\ComproItem;
 use App\Contador;
+use App\Parametro;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
+use JasperPHP\JasperPHP as JasperPHP;
 
 class ComprobanteController extends Controller
 {
@@ -104,5 +107,31 @@ class ComprobanteController extends Controller
             $comprobante->delete();
         });
         return response()->json('ok', 200);
+    }
+
+    /**
+     * Generate report
+     * @param Comprobante $comprobante
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function imprimirPresupuesto($comprobante_id)
+    {
+        $jasper = new JasperPHP;
+
+        $IMAGE_DIR = base_path() . "/resources/assets/img/";
+        $COMPROBANTE_ID = '"' . $comprobante_id . '"';
+        $output_path = base_path() . '/resources/assets/reports/tmp/presupuesto' . $comprobante_id . time();
+
+        $jasper->process(
+            base_path() . '/resources/assets/reports/presupuesto.jasper',
+            $output_path,
+            array("pdf"),
+            array("IMAGE_DIR" => $IMAGE_DIR,
+                  "COMPROBANTE_ID" => $COMPROBANTE_ID,
+            ),
+            Config::get('database.connections.mysql')
+        )->execute();
+
+        return response()->download($output_path . '.pdf', 'presupuesto_' . $comprobante_id . '.pdf')->deleteFileAfterSend(true);
     }
 }
