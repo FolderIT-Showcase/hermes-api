@@ -154,13 +154,20 @@ class ComprobanteController extends Controller
         $IMAGE_DIR = base_path() . "/resources/assets/img/";
         $COMPROBANTE_ID = '"' . $comprobante_id . '"';
         $output_path = base_path() . '/resources/assets/reports/tmp/presupuesto' . $comprobante_id . time();
-
+        $EMPRESA_NOMBRE = '"' . Parametro::where('nombre', 'EMPRESA_NOMBRE')->first()->valor . '"';
+        $EMPRESA_DOMICILIO = '"' . Parametro::where('nombre', 'EMPRESA_DOMICILIO')->first()->valor . '"';
+        $EMPRESA_CUIT = '"' . Parametro::where('nombre', 'EMPRESA_CUIT')->first()->valor . '"';
+        $EMPRESA_TIPO_RESP = '"' . Parametro::where('nombre', 'EMPRESA_TIPO_RESP')->first()->valor . '"';
         $jasper->process(
             base_path() . '/resources/assets/reports/presupuesto.jasper',
             $output_path,
             array("pdf"),
             array("IMAGE_DIR" => $IMAGE_DIR,
                   "COMPROBANTE_ID" => $COMPROBANTE_ID,
+                  "EMPRESA_NOMBRE" => $EMPRESA_NOMBRE,
+                  "EMPRESA_DIRECCION" => $EMPRESA_DOMICILIO,
+                  "EMPRESA_CUIT" => $EMPRESA_CUIT,
+                  "EMPRESA_TIPO_RESP" => $EMPRESA_TIPO_RESP,
             ),
             Config::get('database.connections.mysql')
         )->execute();

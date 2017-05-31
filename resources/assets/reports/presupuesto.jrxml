@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-05-30T13:49:41 -->
+<!-- 2017-05-31T12:33:45 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Hermes"/>
@@ -56,15 +56,21 @@
 			<style backcolor="#D8D8D8"/>
 		</conditionalStyle>
 	</style>
+	<subDataset name="Dataset1" uuid="204f4c43-e286-4917-9813-a244f392931f">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Hermes"/>
+		<queryString language="SQL">
+			<![CDATA[select *
+from parametros]]>
+		</queryString>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
 	<parameter name="EMPRESA_DIRECCION" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[]]></parameterDescription>
 		<defaultValueExpression><![CDATA["Francisco Miguens 180"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="EMPRESA_CIUDAD" class="java.lang.String" isForPrompting="false">
-		<parameterDescription><![CDATA[]]></parameterDescription>
-		<defaultValueExpression><![CDATA["Santa Fe, Argentina"]]></defaultValueExpression>
-	</parameter>
 	<parameter name="EMPRESA_WEBPAGE" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
 		<defaultValueExpression><![CDATA["www.hermesweb.com"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPROBANTE_ID" class="java.lang.String" isForPrompting="false">
@@ -73,20 +79,29 @@
 	<parameter name="IMAGE_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["../img/"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="EMPRESA_TIPO_RESP" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["RI"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_CUIT" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["30000000002"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_NOMBRE" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["Folder IT"]]></defaultValueExpression>
+	</parameter>
 	<queryString language="SQL">
 		<![CDATA[SELECT ci.cantidad, ci.importe_unitario, ci.importe_total,
 			 c.importe_iva, c.importe_neto, c.importe_total as c_importe_total, 
-			 a.codigo, a.nombre, c.fecha, c.numero, c.cliente_nombre,
-			  p.valor
+			 a.codigo, a.nombre, c.fecha, c.numero, c.cliente_nombre
 FROM compro_items ci,
 	articulos a,
-	comprobantes c,
-	parametros p
+	comprobantes c
 WHERE 
 	 c.id = $P!{COMPROBANTE_ID} 
 	 AND c.id = ci.comprobante_id 
-	 AND ci.articulo_id = a.id 
-	 AND p.nombre LIKE 'EMPRESA_NOMBRE']]>
+	 AND ci.articulo_id = a.id]]>
 	</queryString>
 	<field name="cantidad" class="java.lang.Integer"/>
 	<field name="importe_unitario" class="java.math.BigDecimal"/>
@@ -99,7 +114,6 @@ WHERE
 	<field name="fecha" class="java.sql.Date"/>
 	<field name="numero" class="java.math.BigDecimal"/>
 	<field name="cliente_nombre" class="java.lang.String"/>
-	<field name="valor" class="java.lang.String"/>
 	<title>
 		<band height="132" splitType="Stretch">
 			<staticText>
@@ -150,18 +164,14 @@ WHERE
 				<textElement>
 					<font size="19"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{EMPRESA_NOMBRE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="95" y="25" width="205" height="15" uuid="42501051-384f-46c8-9ad6-6c1e86808074"/>
+				<reportElement x="95" y="25" width="225" height="15" uuid="42501051-384f-46c8-9ad6-6c1e86808074"/>
 				<textFieldExpression><![CDATA[$P{EMPRESA_DIRECCION}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="95" y="40" width="205" height="15" uuid="347dc720-0d9b-433b-9714-011952e6043c"/>
-				<textFieldExpression><![CDATA[$P{EMPRESA_CIUDAD}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="95" y="55" width="205" height="15" uuid="fcd50171-9469-4c14-b248-98203a46522e"/>
+				<reportElement x="95" y="55" width="224" height="15" uuid="fcd50171-9469-4c14-b248-98203a46522e"/>
 				<textFieldExpression><![CDATA[$P{EMPRESA_WEBPAGE}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -172,6 +182,16 @@ WHERE
 				<reportElement x="0" y="105" width="40" height="14" uuid="b7bb5dde-d2f9-4df7-8e3e-fa94498dbf2b"/>
 				<text><![CDATA[Cliente:]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="95" y="40" width="15" height="15" uuid="efbdeae8-4988-4de5-ad47-3518b8bb5353"/>
+				<textFieldExpression><![CDATA[$P{EMPRESA_TIPO_RESP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="40" width="209" height="15" uuid="f3a73b32-3ee9-4a16-88a7-092556e895bb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{EMPRESA_CUIT}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>
