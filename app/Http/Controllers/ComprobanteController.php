@@ -9,6 +9,7 @@ use App\Contador;
 use App\Parametro;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use JasperPHP\JasperPHP as JasperPHP;
 
@@ -143,6 +144,8 @@ class ComprobanteController extends Controller
             $message->subject('Presupuesto');
             $message->attach($output_path . '.pdf', ['as' => 'Presupuesto.pdf', 'mime' => 'application/pdf']);
         });
+
+        File::delete($output_path . '.pdf');
 
         return response()->json('ok');
     }
