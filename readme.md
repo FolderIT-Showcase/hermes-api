@@ -19,7 +19,7 @@ Se recomienda descargar e instalar XAMPP:
 * Para plataformas Windows se obtiene de [acá](https://www.apachefriends.org/xampp-files/7.1.1/xampp-win32-7.1.1-0-VC14-installer.exe).
 * Para plataformas Linux se ontiene de [acá](https://www.apachefriends.org/xampp-files/7.1.1/xampp-linux-x64-7.1.1-0-installer.run).
 
-Instalar [Componser](https://getcomposer.org/download/) para gestionar los paquetes de PHP.
+Instalar [Composer](https://getcomposer.org/download/) para gestionar los paquetes de PHP.
 
 ## Instalación de HermesWeb - API
 
@@ -29,8 +29,9 @@ Pasos para instalar HermesWeb - API:
 3. Conectarse al motor de base de datos (via PHPMyAdmin o MySQLWorkbench) y crear una base de datos nueva con Collation `utf8 - default collation`.
 4. Copiar `.env.example` a `.env`
 5. Actualizar los datos en `.env` relacionados a la base de datos creada en el paso 3 (parametros DB_*).
-6. Desde línea de comandos, pararse en el raiz del proyecto y ejecutar: `php artisan migrate --seed`.
-7. Crear un Virtual Host en el Apache para levantar el API:
+6. Actualizar los datos en `.env` relacionados al servidor smtp que se utilizará para enviar emails.
+7. Desde línea de comandos, pararse en el raiz del proyecto y ejecutar: `php artisan migrate --seed`.
+8. Crear un Virtual Host en el Apache para levantar el API:
 ```
 <VirtualHost hermes.api:80>
   DocumentRoot "C:\Folder\HermesWeb\hermes.api\public"
@@ -42,9 +43,9 @@ Pasos para instalar HermesWeb - API:
   </Directory>
 </VirtualHost>
 ``` 
-7. Crear una entrada en el archivo `hosts` del SO para que la URL del API apunte al local: `127.0.0.1  hermes.api`
-8. Crear la key con `php artisan key:generate`
-9. Para comprobar que el API levantó correctamente abrir `http://hermes.api`, la página de inicio de Laravel debe desplegarse.
+9. Crear una entrada en el archivo `hosts` del SO para que la URL del API apunte al local: `127.0.0.1  hermes.api`
+10. Crear la key con `php artisan key:generate`
+11. Para comprobar que el API levantó correctamente abrir `http://hermes.api`, la página de inicio de Laravel debe desplegarse.
 
 
 ## Documentación

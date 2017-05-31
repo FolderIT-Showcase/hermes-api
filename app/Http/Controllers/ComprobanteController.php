@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Cliente;
 use App\Comprobante;
 use App\ComproItem;
 use App\Contador;
 use App\Parametro;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Mail;
 use JasperPHP\JasperPHP as JasperPHP;
 
 class ComprobanteController extends Controller
@@ -24,7 +26,7 @@ class ComprobanteController extends Controller
             $query->where('codigo', 'like', 'PR_');
         }
         )
-            ->get()
+            ->get()->load('cliente')
         );
     }
 
@@ -111,10 +113,41 @@ class ComprobanteController extends Controller
 
     /**
      * Generate report
-     * @param Comprobante $comprobante
+     * @param $comprobante_id
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function imprimirPresupuesto($comprobante_id)
+    {
+        $output_path = $this->generarPDFPresupuesto($comprobante_id);
+
+        return response()->download($output_path . '.pdf', 'presupuesto_' . $comprobante_id . '.pdf')->deleteFileAfterSend(true);
+    }
+
+    /**
+     * Generate report
+     * @param $comprobante_id
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function enviarMailPresupuesto($comprobante_id)
+    {
+        $output_path = $this->generarPDFPresupuesto($comprobante_id);
+        $comprobante = Comprobante::where('id', $comprobante_id)->first();
+        $cliente = Cliente::where('id', $comprobante->cliente_id)->first();
+        //TODO hacer una plantilla de email más linda
+        $email_text = 'Buenas tardes ' . $comprobante->cliente_nombre . ', le enviamos el presupuesto solicitado como archivo adjunto.';
+
+        Mail::raw($email_text, function($message) use ($cliente, $output_path) {
+            //TODO setear el from según algún parámetro
+            $message->from('hermesweb@folderit.net', Parametro::where('nombre', 'EMPRESA_NOMBRE')->first()->valor);
+            $message->to($cliente->email);
+            $message->subject('Presupuesto');
+            $message->attach($output_path . '.pdf', ['as' => 'Presupuesto.pdf', 'mime' => 'application/pdf']);
+        });
+
+        return response()->json('ok');
+    }
+
+    private function generarPDFPresupuesto($comprobante_id)
     {
         $jasper = new JasperPHP;
 
@@ -132,6 +165,6 @@ class ComprobanteController extends Controller
             Config::get('database.connections.mysql')
         )->execute();
 
-        return response()->download($output_path . '.pdf', 'presupuesto_' . $comprobante_id . '.pdf')->deleteFileAfterSend(true);
+        return $output_path;
     }
 }
