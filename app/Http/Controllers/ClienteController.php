@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Cliente;
 use App\Domicilio;
+use App\Parametro;
 use Illuminate\Support\Facades\Config;
 use JasperPHP\JasperPHP as JasperPHP;
 
@@ -144,22 +145,44 @@ class ClienteController extends Controller
 
     /**
      * Generate report
+     * @param $vendedor
+     * @param $zona
+     * @param $provincia
+     * @param $localidad
+     * @param $activos
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function report()
+    public function report($vendedor, $zona, $provincia, $localidad, $activos)
     {
         $jasper = new JasperPHP;
 
-        $EMPRESA_NOMBRE = '"' . "Hermes Web" . '"';
-        $IMAGE_DIR = '"' . base_path() . "/resources/assets/img/" . '"';
-        $output_path = base_path() . '/resources/assets/reports/tmp/Blank_A4' . time();
-        // Process a Jasper file to PDF and RTF (you can use directly the .jrxml)
+        $IMAGE_DIR = base_path() . "/resources/assets/img/";
+        $VENDEDOR = '"' . $vendedor . '"';
+        $ZONA = '"' . $zona . '"';
+        $PROVINCIA = '"' . $provincia . '"';
+        $LOCALIDAD = '"' . $localidad . '"';
+        $ACTIVOS = '"' . $activos . '"';
+        $EMPRESA_NOMBRE = '"' . Parametro::where('nombre', 'EMPRESA_NOMBRE')->first()->valor . '"';
+        $EMPRESA_DOMICILIO = '"' . Parametro::where('nombre', 'EMPRESA_DOMICILIO')->first()->valor . '"';
+        $EMPRESA_CUIT = '"' . Parametro::where('nombre', 'EMPRESA_CUIT')->first()->valor . '"';
+        $EMPRESA_TIPO_RESP = '"' . Parametro::where('nombre', 'EMPRESA_TIPO_RESP')->first()->valor . '"';
+        $output_path = base_path() . '/resources/assets/reports/tmp/clientes' . time();
+
         $jasper->process(
-            base_path() . '/resources/assets/reports/Blank_A4.jasper',
+            base_path() . '/resources/assets/reports/clientes.jasper',
             $output_path,
             array("pdf"),
-            array("EMPRESA_NOMBRE" => $EMPRESA_NOMBRE,
-                  "IMAGE_DIR" => $IMAGE_DIR),
+            array("IMAGE_DIR" => $IMAGE_DIR,
+                  "VENDEDOR" => $VENDEDOR,
+                  "ZONA" => $ZONA,
+                  "PROVINCIA" => $PROVINCIA,
+                  "LOCALIDAD" => $LOCALIDAD,
+                  "ACTIVOS" => $ACTIVOS,
+                  "EMPRESA_NOMBRE" => $EMPRESA_NOMBRE,
+                  "EMPRESA_DIRECCION" => $EMPRESA_DOMICILIO,
+                  "EMPRESA_CUIT" => $EMPRESA_CUIT,
+                  "EMPRESA_TIPO_RESP" => $EMPRESA_TIPO_RESP,
+            ),
             Config::get('database.connections.mysql')
         )->execute();
 
