@@ -12,9 +12,22 @@ class ContadoresTableSeeder extends Seeder
     public function run()
     {
         $contadores = [];
-        $contadores[] = ['tipo_comprobante_id' => 1, 'punto_venta' => 1, 'ultimo_generado' => 0];
-        $contadores[] = ['tipo_comprobante_id' => 2, 'punto_venta' => 1, 'ultimo_generado' => 0];
-        $contadores[] = ['tipo_comprobante_id' => 3, 'punto_venta' => 1, 'ultimo_generado' => 0];
-        \App\Contador::insert($contadores);
+        $contadores[] = ['codigo' => 'FCA', 'punto_venta' => 1, 'ultimo_generado' => 0];
+        $contadores[] = ['codigo' => 'FCB', 'punto_venta' => 1, 'ultimo_generado' => 0];
+        $contadores[] = ['codigo' => 'FCC', 'punto_venta' => 1, 'ultimo_generado' => 0];
+        $contadores[] = ['codigo' => 'PRA', 'punto_venta' => 1, 'ultimo_generado' => 0];
+        $contadores[] = ['codigo' => 'PRB', 'punto_venta' => 1, 'ultimo_generado' => 0];
+        $contadores[] = ['codigo' => 'PRC', 'punto_venta' => 1, 'ultimo_generado' => 0];
+
+        foreach ($contadores as $contador) {
+            $contadorDB = \App\Contador::whereHas('tipo_comprobante', function ($query) use ($contador) {
+                $query->where('codigo', $contador['codigo']);
+            })->first();
+            if($contadorDB === null) {
+                $contador['tipo_comprobante_id'] = \App\TipoComprobante::where('codigo', $contador['codigo'])->first()->id;
+                unset($contador['codigo']);
+                \App\Contador::insert($contador);
+            }
+        }
     }
 }

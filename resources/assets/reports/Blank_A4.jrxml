@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-05-26T10:06:21 -->
+<!-- 2017-05-30T09:06:23 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="6e46aff4-fc02-4203-8ac0-1eaacb90d299">
 	<property name="com.jaspersoft.studio.data.sql.tables" value="Y2xpZW50ZXMgLDE1OCw3NSwwYzI4MTIyYi1mYTA5LTRkMDktOTY0Yi1lMDIxNGQ5NzdmMzk7"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="479"/>
@@ -88,7 +88,7 @@ FROM clientes]]>
 	<title>
 		<band height="83" splitType="Stretch">
 			<textField pattern="">
-				<reportElement x="0" y="0" width="281" height="81" uuid="4a6ea916-cfb4-4609-b1c0-2690cd086db7"/>
+				<reportElement x="0" y="0" width="340" height="40" uuid="4a6ea916-cfb4-4609-b1c0-2690cd086db7"/>
 				<textElement>
 					<font fontName="SansSerif" size="21"/>
 					<paragraph lineSpacing="Single"/>

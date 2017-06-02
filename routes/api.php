@@ -62,12 +62,15 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('zonas', 'ZonaController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
-    Route::get('tipocomprobantes/tiporesponsable/{cod}', 'TipoComprobanteController@showByTipoResponsable');
+    Route::get('tipocomprobantes/{tipo_comprobante}/{cod}', 'TipoComprobanteController@showByTipoResponsable');
 
     Route::get('contadores/{punto_venta}/{tipo_comprobante_id}', 'ContadorController@showByPuntoVentaTipoComprobante');
 
+    Route::get('comprobantes/presupuestos', 'ComprobanteController@indexPresupuestos');
+    Route::get('comprobantes/presupuestos/imprimir/{comprobante_id}', 'ComprobanteController@imprimirPresupuesto');
+    Route::get('comprobantes/presupuestos/mail/{comprobante_id}', 'ComprobanteController@enviarMailPresupuesto');
     Route::resource('comprobantes', 'ComprobanteController',
-        ['only' => ['store']]);
+        ['only' => ['store', 'show', 'update', 'destroy']]);
 
     Route::post('listaprecios/importar', 'ListaPreciosController@import');
     Route::resource('listaprecios', 'ListaPreciosController',
