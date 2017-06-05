@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Cliente;
 use App\Domicilio;
 use App\Parametro;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use JasperPHP\JasperPHP as JasperPHP;
+use Mockery\Exception;
 
 class ClienteController extends Controller
 {
@@ -145,17 +147,23 @@ class ClienteController extends Controller
 
     /**
      * Generate report
-     * @param $vendedor
-     * @param $zona
-     * @param $provincia
-     * @param $localidad
-     * @param $activos
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @internal param $vendedor
+     * @internal param $zona
+     * @internal param $provincia
+     * @internal param $localidad
+     * @internal param $activos
      */
-    public function report($vendedor, $zona, $provincia, $localidad, $activos)
+    public function report(Request $request)
     {
-        $jasper = new JasperPHP;
+        $vendedor = $request->input('vendedor', '0');
+        $zona = $request->input('zona', '0');
+        $provincia = $request->input('provincia', '0');
+        $localidad = $request->input('localidad', '0');
+        $activos = $request->input('activos', '0');
 
+        $jasper = new JasperPHP;
         $IMAGE_DIR = base_path() . "/resources/assets/img/";
         $VENDEDOR = '"' . $vendedor . '"';
         $ZONA = '"' . $zona . '"';
