@@ -98,14 +98,20 @@ class ArticuloController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param $marca
-     * @param $rubro
-     * @param $subrubro
-     * @param $busqueda
+     * @param Request $request
      * @return \Illuminate\Http\Response
+     * @internal param $marca
+     * @internal param $rubro
+     * @internal param $subrubro
+     * @internal param $busqueda
      */
-    public function showByAll($marca, $rubro, $subrubro, $busqueda)
+    public function showByAll(Request $request)
     {
+        $marca = $request->input('marca', '0');
+        $rubro = $request->input('rubro', '0');
+        $subrubro = $request->input('subrubro', '0');
+        $busqueda = $request->input('busqueda', '0');
+
         $articulos = Articulo::orWhere( function($query) use ($busqueda) {
                 $query->orWhere('nombre', 'like', '%' . $busqueda . '%')
                     ->orWhere('codigo', 'like', '%' . $busqueda . '%')
