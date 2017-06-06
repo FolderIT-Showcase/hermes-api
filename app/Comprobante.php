@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\ComprobanteCreated;
 use Illuminate\Database\Eloquent\Model;
 
 class Comprobante extends Model
@@ -26,6 +27,11 @@ class Comprobante extends Model
         return $this->hasMany(ComproItem::class);
     }
 
+    public function ctaCteCliente()
+    {
+        return $this->hasOne(CtaCteCliente::class);
+    }
+
     protected $fillable  = ['cliente_id',
         'tipo_comprobante_id',
         'fecha',
@@ -44,4 +50,8 @@ class Comprobante extends Model
         'fecha_venc_cae',
         'anulado',
         'lista_id'];
+
+    protected $events = [
+        'created' => ComprobanteCreated::class,
+    ];
 }
