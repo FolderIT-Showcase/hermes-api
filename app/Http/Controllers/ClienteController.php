@@ -8,7 +8,6 @@ use App\Parametro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use JasperPHP\JasperPHP as JasperPHP;
-use Mockery\Exception;
 
 class ClienteController extends Controller
 {

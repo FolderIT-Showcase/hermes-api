@@ -83,5 +83,6 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         ['only' => ['index']]);
 
     Route::get('cuentacorriente/buscar', 'CtaCteClienteController@showByClientDate');
+    Route::get('cuentacorriente/reporte', 'CtaCteClienteController@report');
 
 });
