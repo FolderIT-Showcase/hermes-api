@@ -12,12 +12,12 @@ class TipoComprobantesTableSeeder extends Seeder
     public function run()
     {
         $tipoComprobantes = [];
-        $tipoComprobantes[] = ['codigo' => 'FCA', 'nombre' => 'A'];
-        $tipoComprobantes[] = ['codigo' => 'FCB', 'nombre' => 'B'];
-        $tipoComprobantes[] = ['codigo' => 'FCC', 'nombre' => 'C'];
-        $tipoComprobantes[] = ['codigo' => 'PRA', 'nombre' => 'A'];
-        $tipoComprobantes[] = ['codigo' => 'PRB', 'nombre' => 'B'];
-        $tipoComprobantes[] = ['codigo' => 'PRC', 'nombre' => 'C'];
+        $tipoComprobantes[] = ['codigo' => 'FCA', 'nombre' => 'Factura A'];
+        $tipoComprobantes[] = ['codigo' => 'FCB', 'nombre' => 'Factura B'];
+        $tipoComprobantes[] = ['codigo' => 'FCC', 'nombre' => 'Factura C'];
+        $tipoComprobantes[] = ['codigo' => 'PRA', 'nombre' => 'Presupuesto A'];
+        $tipoComprobantes[] = ['codigo' => 'PRB', 'nombre' => 'Presupuesto B'];
+        $tipoComprobantes[] = ['codigo' => 'PRC', 'nombre' => 'Presupuesto C'];
 
         foreach ($tipoComprobantes as $tipoComprobante) {
             $tipoComprobanteDB = \App\TipoComprobante::firstOrNew(['codigo' => $tipoComprobante['codigo']]);

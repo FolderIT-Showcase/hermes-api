@@ -25,5 +25,4 @@ class CtaCteClienteController extends Controller
             CtaCteCliente::where('cliente_id', $cliente_id)->whereBetween('fecha', [$fecha_inicio, $fecha_fin])->with('tipo_comprobante')->with('comprobante')->get()
         );
     }
-
 }
