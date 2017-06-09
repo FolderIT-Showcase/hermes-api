@@ -38,6 +38,28 @@ class TipoComprobanteController extends Controller
                     default: $codigo = 'PRC';
                 }
                 break;
+            case 'nota_debito':
+                switch ($cod){
+                    case 'RI': $codigo = 'NDA';
+                        break;
+                    case 'CF': $codigo = 'NDB';
+                        break;
+                    case 'MON': $codigo = 'NDB';
+                        break;
+                    default: $codigo = 'NDC';
+                }
+                break;
+            case 'nota_credito':
+                switch ($cod){
+                    case 'RI': $codigo = 'NCA';
+                        break;
+                    case 'CF': $codigo = 'NCB';
+                        break;
+                    case 'MON': $codigo = 'NCB';
+                        break;
+                    default: $codigo = 'NCC';
+                }
+                break;
             default:
                 $codigo = 'FCC';
         }
