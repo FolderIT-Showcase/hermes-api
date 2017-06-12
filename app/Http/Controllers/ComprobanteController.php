@@ -39,7 +39,7 @@ class ComprobanteController extends Controller
      */
     public function show(Comprobante $comprobante)
     {
-        return response()->json($comprobante->load('cliente')->load('items.articulo'));
+        return response()->json($comprobante->load('cliente')->load('items.articulo')->load('tipo_comprobante'));
     }
 
     /**
