@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-06-08T11:06:31 -->
+<!-- 2017-06-09T11:10:23 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Presupuesto" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Hermes"/>
@@ -104,7 +104,7 @@ from parametros]]>
 		<defaultValueExpression><![CDATA["9999/6/6"]]></defaultValueExpression>
 	</parameter>
 	<queryString language="SQL">
-		<![CDATA[SELECT cc.fecha, tc.nombre, com.numero, cc.debe, cc.haber, cli.nombre as nombre_cliente
+		<![CDATA[SELECT cc.fecha, tc.nombre, com.numero, cc.debe, cc.haber, cli.nombre as nombre_cliente, cc.updated_at
 FROM cta_cte_clientes cc,
 	clientes cli,
 	comprobantes com,
@@ -114,7 +114,8 @@ WHERE
 	AND cc.cliente_id = cli.id
 	AND com.id = cc.comprobante_id
 	 AND tc.id = cc.tipo_comprobante_id
-	 AND cc.fecha BETWEEN $P{FECHA_INICIO} AND $P{FECHA_FIN}]]>
+	 AND cc.fecha BETWEEN $P{FECHA_INICIO} AND $P{FECHA_FIN}
+ORDER BY  cc.fecha, cc.updated_at ASC]]>
 	</queryString>
 	<field name="fecha" class="java.sql.Date"/>
 	<field name="nombre" class="java.lang.String"/>

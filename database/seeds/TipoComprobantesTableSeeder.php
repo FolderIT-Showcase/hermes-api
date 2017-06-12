@@ -18,6 +18,12 @@ class TipoComprobantesTableSeeder extends Seeder
         $tipoComprobantes[] = ['codigo' => 'PRA', 'nombre' => 'Presupuesto A'];
         $tipoComprobantes[] = ['codigo' => 'PRB', 'nombre' => 'Presupuesto B'];
         $tipoComprobantes[] = ['codigo' => 'PRC', 'nombre' => 'Presupuesto C'];
+        $tipoComprobantes[] = ['codigo' => 'NCA', 'nombre' => 'Nota de Crédito A'];
+        $tipoComprobantes[] = ['codigo' => 'NCB', 'nombre' => 'Nota de Crédito B'];
+        $tipoComprobantes[] = ['codigo' => 'NCC', 'nombre' => 'Nota de Crédito C'];
+        $tipoComprobantes[] = ['codigo' => 'NDA', 'nombre' => 'Nota de Débito A'];
+        $tipoComprobantes[] = ['codigo' => 'NDB', 'nombre' => 'Nota de Débito B'];
+        $tipoComprobantes[] = ['codigo' => 'NDC', 'nombre' => 'Nota de Débito C'];
 
         foreach ($tipoComprobantes as $tipoComprobante) {
             $tipoComprobanteDB = \App\TipoComprobante::firstOrNew(['codigo' => $tipoComprobante['codigo']]);
