@@ -28,15 +28,7 @@ class TipoComprobanteController extends Controller
                 }
                 break;
             case 'presupuesto':
-                switch ($cod){
-                    case 'RI': $codigo = 'PRA';
-                        break;
-                    case 'CF': $codigo = 'PRB';
-                        break;
-                    case 'MON': $codigo = 'PRB';
-                        break;
-                    default: $codigo = 'PRC';
-                }
+                $codigo = 'PRX';
                 break;
             case 'nota_debito':
                 switch ($cod){

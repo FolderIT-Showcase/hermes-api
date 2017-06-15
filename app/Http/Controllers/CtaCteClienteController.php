@@ -25,7 +25,7 @@ class CtaCteClienteController extends Controller
         $fecha_fin = $request->input('fecha_fin', Carbon::today()->format('yyyy-MM-dd'));
 
         return response()->json(
-            CtaCteCliente::where('cliente_id', $cliente_id)->whereBetween('fecha', [$fecha_inicio, $fecha_fin])->with('tipo_comprobante')->with('comprobante')->get()
+            CtaCteCliente::where('cliente_id', $cliente_id)->whereBetween('fecha', [$fecha_inicio, $fecha_fin])->orderBy('fecha', 'ASC')->orderBy('updated_at', 'ASC')->with('tipo_comprobante')->with('comprobante')->get()
         );
     }
 

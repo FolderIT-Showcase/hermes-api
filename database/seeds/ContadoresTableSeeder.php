@@ -15,9 +15,7 @@ class ContadoresTableSeeder extends Seeder
         $contadores[] = ['codigo' => 'FCA', 'punto_venta' => 1, 'ultimo_generado' => 0];
         $contadores[] = ['codigo' => 'FCB', 'punto_venta' => 1, 'ultimo_generado' => 0];
         $contadores[] = ['codigo' => 'FCC', 'punto_venta' => 1, 'ultimo_generado' => 0];
-        $contadores[] = ['codigo' => 'PRA', 'punto_venta' => 1, 'ultimo_generado' => 0];
-        $contadores[] = ['codigo' => 'PRB', 'punto_venta' => 1, 'ultimo_generado' => 0];
-        $contadores[] = ['codigo' => 'PRC', 'punto_venta' => 1, 'ultimo_generado' => 0];
+        $contadores[] = ['codigo' => 'PRX', 'punto_venta' => 1, 'ultimo_generado' => 0];
         $contadores[] = ['codigo' => 'NDA', 'punto_venta' => 1, 'ultimo_generado' => 0];
         $contadores[] = ['codigo' => 'NDB', 'punto_venta' => 1, 'ultimo_generado' => 0];
         $contadores[] = ['codigo' => 'NDC', 'punto_venta' => 1, 'ultimo_generado' => 0];

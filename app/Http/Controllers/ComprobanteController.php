@@ -53,6 +53,15 @@ class ComprobanteController extends Controller
         $newComprobante = (new Comprobante())->fill($data);
         $items = $data['items'];
 
+        $compr = Comprobante::where('tipo_comprobante_id', $newComprobante->tipo_comprobante_id)
+            ->where('punto_venta', $newComprobante->punto_venta)
+            ->where('numero', $newComprobante->numero)
+            ->first();
+
+        if($compr !== null) {
+            return response()->json(['error' => 'No se puede volver a generar el mismo comprobante'],200);
+        }
+
         DB::transaction(function () use ($items, $newComprobante) {
             $newComprobante->save();
             foreach ($items as $item){
