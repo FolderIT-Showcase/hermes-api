@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Comprobante;
 use App\TipoComprobante;
+use Carbon\Carbon;
 
 class TipoComprobanteController extends Controller
 {
@@ -28,15 +30,7 @@ class TipoComprobanteController extends Controller
                 }
                 break;
             case 'presupuesto':
-                switch ($cod){
-                    case 'RI': $codigo = 'PRA';
-                        break;
-                    case 'CF': $codigo = 'PRB';
-                        break;
-                    case 'MON': $codigo = 'PRB';
-                        break;
-                    default: $codigo = 'PRC';
-                }
+                $codigo = 'PRX';
                 break;
             case 'nota_debito':
                 switch ($cod){
@@ -68,6 +62,15 @@ class TipoComprobanteController extends Controller
         if($tipoComprobante === null){
             return response()->json('', 204);
         }
-        else return response()->json($tipoComprobante);
+        else {
+            $ultimoComprobante = Comprobante::where('tipo_comprobante_id', $tipoComprobante->id)->orderBy('fecha', 'DESC')->first();
+            if($ultimoComprobante === null){
+                $tipoComprobante->ultima_fecha = '1900-01-01';
+            }
+            else {
+                $tipoComprobante->ultima_fecha = Carbon::createFromFormat('Y-m-d', $ultimoComprobante->fecha)->subDay()->format('Y-m-d');
+            }
+            return response()->json($tipoComprobante);
+        }
     }
 }

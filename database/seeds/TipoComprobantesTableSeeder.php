@@ -15,9 +15,7 @@ class TipoComprobantesTableSeeder extends Seeder
         $tipoComprobantes[] = ['codigo' => 'FCA', 'nombre' => 'Factura A'];
         $tipoComprobantes[] = ['codigo' => 'FCB', 'nombre' => 'Factura B'];
         $tipoComprobantes[] = ['codigo' => 'FCC', 'nombre' => 'Factura C'];
-        $tipoComprobantes[] = ['codigo' => 'PRA', 'nombre' => 'Presupuesto A'];
-        $tipoComprobantes[] = ['codigo' => 'PRB', 'nombre' => 'Presupuesto B'];
-        $tipoComprobantes[] = ['codigo' => 'PRC', 'nombre' => 'Presupuesto C'];
+        $tipoComprobantes[] = ['codigo' => 'PRX', 'nombre' => 'Presupuesto'];
         $tipoComprobantes[] = ['codigo' => 'NCA', 'nombre' => 'Nota de Crédito A'];
         $tipoComprobantes[] = ['codigo' => 'NCB', 'nombre' => 'Nota de Crédito B'];
         $tipoComprobantes[] = ['codigo' => 'NCC', 'nombre' => 'Nota de Crédito C'];
