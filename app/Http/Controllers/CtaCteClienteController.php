@@ -11,6 +11,11 @@ use JasperPHP\JasperPHP as JasperPHP;
 
 class CtaCteClienteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_cta_cte', ['only' => ['showByClientDate', 'report']]);
+    }
+
     /**
      * Display the specified resource.
      *

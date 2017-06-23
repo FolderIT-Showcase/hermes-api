@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class ArticuloController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:view_articulo', ['only' => ['index', 'showByCode', 'showByName', 'showByAll']]);
+        $this->middleware('permission:create_articulo', ['only' => ['store']]);
+        $this->middleware('permission:edit_articulo', ['only' => ['update']]);
+        $this->middleware('permission:delete_articulo', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -61,6 +70,7 @@ class ArticuloController extends Controller
      */
     public function destroy(Articulo $articulo)
     {
+        // TODO chequear Integrity constraint violation
         $articulo->delete();
         return response()->json('ok', 200);
     }

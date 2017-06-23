@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class MarcaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_marca', ['only' => ['index', 'show', 'showByCode']]);
+        $this->middleware('permission:create_marca', ['only' => ['store']]);
+        $this->middleware('permission:edit_marca', ['only' => ['update']]);
+        $this->middleware('permission:delete_marca', ['only' => ['destroy']]);
+    }
+    
     /**
      * Display a listing of the resource.
      *
