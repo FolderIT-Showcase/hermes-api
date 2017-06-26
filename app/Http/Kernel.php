@@ -2,6 +2,9 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\TokenEntrustAbility;
+use App\Http\Middleware\TokenEntrustPermission;
+use App\Http\Middleware\TokenEntrustRole;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -58,5 +61,8 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'jwt.auth' => \App\Http\Middleware\AuthJWT::class,
+        'role' => TokenEntrustRole::class,
+        'permission' => TokenEntrustPermission::class,
+        'ability' => TokenEntrustAbility::class,
     ];
 }

@@ -21,6 +21,11 @@ class Articulo extends Model
         return $this->hasMany(ComproItem::class, 'articulo_id', 'id');
     }
 
+    public function lista_precio_item()
+    {
+        return $this->hasMany(ListaPrecioItem::class, 'articulo_id', 'id');
+    }
+
     protected $fillable  = ['marca_id',
         'subrubro_id',
         'codigo',
