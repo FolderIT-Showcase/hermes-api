@@ -77,116 +77,176 @@ window.onload = function() {
 	spec: {
     "swagger": "2.0",
     "info": {
-        "title": "Uber API",
-        "description": "Move your app forward with the Uber API",
+        "title": "Hermes API",
+        "description": "API del Sistema de Gestión Comercial Hermes",
         "version": "1.0.0"
     },
-    "host": "api.uber.com",
+    "host": "hermes.api",
     "schemes": [
-        "https"
+        "http"
     ],
-    "basePath": "/v1",
+    "basePath": "/api",
+    "consumes": [
+        "application/json"
+    ],
     "produces": [
         "application/json"
     ],
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization"
+        }
+    },
+    "security": [
+        {
+            "ApiKeyAuth": []
+        }
+    ],
+    "tags": [
+        {
+            "name": "Login"
+        },
+        {
+            "name": "Articulos"
+        },
+        {
+            "name": "Clientes"
+        },
+        {
+            "name": "Comprobantes"
+        },
+        {
+            "name": "Cuenta Corriente"
+        },
+        {
+            "name": "Lista de Precios"
+        },
+        {
+            "name": "Localidades"
+        },
+        {
+            "name": "Provincias"
+        },
+        {
+            "name": "Marcas"
+        },
+        {
+            "name": "Rubros"
+        },
+        {
+            "name": "Subrubros"
+        },
+        {
+            "name": "Parametros"
+        },
+        {
+            "name": "Tipo Categoria Clientes"
+        },
+        {
+            "name": "Tipo Comprobantes"
+        },
+        {
+            "name": "Zonas"
+        }
+    ],
     "paths": {
-        "/products": {
-            "get": {
-                "summary": "Product Types",
-                "description": "The Products endpoint returns information about the *Uber* products\noffered at a given location. The response includes the display name\nand other details about each product, and lists the products in the\nproper display order.\n",
+        "/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "security": [],
+                "summary": "Inicio de sesión",
+                "description": "El endpoint login es utilizado para el inicio de sesión de los usuarios  con su email y contraseña. La respuesta devuelve un token que es requerido en las llamadas a la API, además devuelve la información del usuario. \n",
                 "parameters": [
                     {
-                        "name": "latitude",
-                        "in": "query",
-                        "description": "Latitude component of location.",
+                        "name": "user",
+                        "in": "body",
+                        "description": "Email y constraseña del usuario a autenticar",
                         "required": true,
-                        "type": "number",
-                        "format": "double"
-                    },
-                    {
-                        "name": "longitude",
-                        "in": "query",
-                        "description": "Longitude component of location.",
-                        "required": true,
-                        "type": "number",
-                        "format": "double"
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "description": "email del usuario a autenticar"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "format": "password",
+                                    "description": "contraseña del usuario a autenticar"
+                                }
+                            }
+                        }
                     }
-                ],
-                "tags": [
-                    "Products"
                 ],
                 "responses": {
                     "200": {
-                        "description": "An array of products",
+                        "description": "Token y usuario autenticado",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                    "type": "string",
+                                    "description": "asd"
+                                },
+                                "user": {
+                                    "$ref": "#/definitions/Articulo"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario o contraseña inválidos"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/articulos": {
+            "get": {
+                "tags": [
+                    "Articulos"
+                ],
+                "summary": "Listar Artículos",
+                "description": "El endpoint articulos devuelve información sobre todos los artículos en el sistema, incluyendo todos los detalles de los mismos. Se listan los artículos sin un orden específico. Se debe contar con permiso para ver artículos\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de articulos",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/Product"
+                                "$ref": "#/definitions/Articulo"
                             }
                         }
                     },
                     "default": {
-                        "description": "Unexpected error",
+                        "description": "Error inesperado",
                         "schema": {
                             "$ref": "#/definitions/Error"
                         }
                     }
                 }
-            }
-        },
-        "/estimates/price": {
-            "get": {
-                "summary": "Price Estimates",
-                "description": "The Price Estimates endpoint returns an estimated price range\nfor each product offered at a given location. The price estimate is\nprovided as a formatted string with the full price range and the localized\ncurrency symbol.<br><br>The response also includes low and high estimates,\nand the [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code for\nsituations requiring currency conversion. When surge is active for a particular\nproduct, its surge_multiplier will be greater than 1, but the price estimate\nalready factors in this multiplier.\n",
-                "parameters": [
-                    {
-                        "name": "start_latitude",
-                        "in": "query",
-                        "description": "Latitude component of start location.",
-                        "required": true,
-                        "type": "number",
-                        "format": "double"
-                    },
-                    {
-                        "name": "start_longitude",
-                        "in": "query",
-                        "description": "Longitude component of start location.",
-                        "required": true,
-                        "type": "number",
-                        "format": "double"
-                    },
-                    {
-                        "name": "end_latitude",
-                        "in": "query",
-                        "description": "Latitude component of end location.",
-                        "required": true,
-                        "type": "number",
-                        "format": "double"
-                    },
-                    {
-                        "name": "end_longitude",
-                        "in": "query",
-                        "description": "Longitude component of end location.",
-                        "required": true,
-                        "type": "number",
-                        "format": "double"
-                    }
-                ],
+            },
+            "post": {
                 "tags": [
-                    "Estimates"
+                    "Articulos"
                 ],
+                "summary": "Crear nuevo artículo",
+                "description": "Crea un nuevo artículo y lo persiste en la base de datos. Se requiere contar con permiso para crear artículos.\n",
                 "responses": {
                     "200": {
-                        "description": "An array of price estimates by product",
+                        "description": "Nuevo artículo creado",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/PriceEstimate"
-                            }
+                            "$ref": "#/definitions/Articulo"
                         }
                     },
-                    "default": {
-                        "description": "Unexpected error",
+                    "500": {
+                        "description": "Error inesperado",
                         "schema": {
                             "$ref": "#/definitions/Error"
                         }
@@ -194,118 +254,2082 @@ window.onload = function() {
                 }
             }
         },
-        "/estimates/time": {
+        "/articulos/{id}": {
             "get": {
-                "summary": "Time Estimates",
-                "description": "The Time Estimates endpoint returns ETAs for all products offered at a given location, with the responses expressed as integers in seconds. We recommend that this endpoint be called every minute to provide the most accurate, up-to-date ETAs.",
+                "tags": [
+                    "Articulos"
+                ],
+                "summary": "Artículo con el id proporcionado",
+                "description": "Devuelve el artículo que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver artículos.\n",
                 "parameters": [
                     {
-                        "name": "start_latitude",
-                        "in": "query",
-                        "description": "Latitude component of start location.",
+                        "name": "id",
+                        "in": "path",
                         "required": true,
-                        "type": "number",
-                        "format": "double"
-                    },
-                    {
-                        "name": "start_longitude",
-                        "in": "query",
-                        "description": "Longitude component of start location.",
-                        "required": true,
-                        "type": "number",
-                        "format": "double"
-                    },
-                    {
-                        "name": "customer_uuid",
-                        "in": "query",
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Unique customer identifier to be used for experience customization."
-                    },
-                    {
-                        "name": "product_id",
-                        "in": "query",
-                        "type": "string",
-                        "description": "Unique identifier representing a specific product for a given latitude & longitude."
-                    }
-                ],
-                "tags": [
-                    "Estimates"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "An array of products",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Product"
-                            }
-                        }
-                    },
-                    "default": {
-                        "description": "Unexpected error",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                }
-            }
-        },
-        "/me": {
-            "get": {
-                "summary": "User Profile",
-                "description": "The User Profile endpoint returns information about the Uber user that has authorized with the application.",
-                "tags": [
-                    "User"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Profile information for a user",
-                        "schema": {
-                            "$ref": "#/definitions/Profile"
-                        }
-                    },
-                    "default": {
-                        "description": "Unexpected error",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                }
-            }
-        },
-        "/history": {
-            "get": {
-                "summary": "User Activity",
-                "description": "The User Activity endpoint returns data about a user's lifetime activity with Uber. The response will include pickup locations and times, dropoff locations and times, the distance of past requests, and information about which products were requested.<br><br>The history array in the response will have a maximum length based on the limit parameter. The response value count may exceed limit, therefore subsequent API requests may be necessary.",
-                "parameters": [
-                    {
-                        "name": "offset",
-                        "in": "query",
                         "type": "integer",
-                        "format": "int32",
-                        "description": "Offset the list of returned results by this amount. Default is zero."
-                    },
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Number of items to retrieve. Default is 5, maximum is 100."
+                        "format": "int32"
                     }
-                ],
-                "tags": [
-                    "User"
                 ],
                 "responses": {
                     "200": {
-                        "description": "History information for the given user",
+                        "description": "Artículo",
                         "schema": {
-                            "$ref": "#/definitions/Activities"
+                            "$ref": "#/definitions/Articulo"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Articulos"
+                ],
+                "summary": "Actualiza los datos del artículo",
+                "description": "Edita el artículo que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar artículos.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "articulo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Articulo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Artículo con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/Articulo"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Articulos"
+                ],
+                "summary": "Borra un artículo",
+                "description": "Borra el artículo que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar artículos.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/articulos/codigo/{codigo}": {
+            "get": {
+                "tags": [
+                    "Articulos"
+                ],
+                "summary": "Artículo con el código proporcionado",
+                "description": "Devuelve el artículo que se corresponde con el código pasado como parámetro. Se requiere contar con permiso para ver artículos.\n",
+                "parameters": [
+                    {
+                        "name": "codigo",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Artículo",
+                        "schema": {
+                            "$ref": "#/definitions/Articulo"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/articulos/nombre/{nombre}": {
+            "get": {
+                "tags": [
+                    "Articulos"
+                ],
+                "summary": "Artículos con el nombre proporcionado",
+                "description": "Devuelve los artículos que contienen el string pasado como parámetro en el campo nombre del artículo. Se requiere contar con permiso para ver artículos.\n",
+                "parameters": [
+                    {
+                        "name": "nombre",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array de artículos",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Articulo"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/articulos/buscar": {
+            "get": {
+                "tags": [
+                    "Articulos"
+                ],
+                "summary": "Artículos filtrados por los parámetros",
+                "description": "Devuelve los 10 primeros artículos que contienen el string de búsqueda en el campo nombre, codigo, rubro o subrubro del artículo. Además se filtra por marca, rubro y subrubro asociados. Se requiere contar con permiso para ver artículos.\n",
+                "parameters": [
+                    {
+                        "name": "marca",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "rubro",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "subrubro",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "busqueda",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array de artículos",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Articulo"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/clientes": {
+            "get": {
+                "tags": [
+                    "Clientes"
+                ],
+                "summary": "Listar Clientes",
+                "description": "El endpoint clientes devuelve información sobre todos los clientes en el sistema, incluyendo todos los detalles de los mismos. Se listan los clientes sin un orden específico. Se debe contar con permiso para ver clientes\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de clientes",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Cliente"
+                            }
                         }
                     },
                     "default": {
-                        "description": "Unexpected error",
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Clientes"
+                ],
+                "summary": "Crear nuevo cliente",
+                "description": "Crea un nuevo cliente y lo persiste en la base de datos. Se requiere contar con permiso para crear clientes.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nuevo cliente creado",
+                        "schema": {
+                            "$ref": "#/definitions/Cliente"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/clientes/{id}": {
+            "get": {
+                "tags": [
+                    "Clientes"
+                ],
+                "summary": "Cliente con el id proporcionado",
+                "description": "Devuelve el cliente que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver clientes.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cliente",
+                        "schema": {
+                            "$ref": "#/definitions/Cliente"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Clientes"
+                ],
+                "summary": "Actualiza los datos del cliente",
+                "description": "Edita el cliente que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar clientes.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "cliente",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Cliente"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cliente con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/Cliente"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Clientes"
+                ],
+                "summary": "Borra un cliente",
+                "description": "Borra el cliente que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar clientes.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/clientes/codigo/{codigo}": {
+            "get": {
+                "tags": [
+                    "Clientes"
+                ],
+                "summary": "Cliente con el código proporcionado",
+                "description": "Devuelve los clientes que se corresponden con el código pasado como parámetro. Se requiere contar con permiso para ver clientes.\n",
+                "parameters": [
+                    {
+                        "name": "codigo",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array de clientes",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Cliente"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/clientes/nombre/{nombre}": {
+            "get": {
+                "tags": [
+                    "Clientes"
+                ],
+                "summary": "Clientes con el nombre proporcionado",
+                "description": "Devuelve los clientes que contienen el string pasado como parámetro en el campo nombre del cliente. Se requiere contar con permiso para ver clientes.\n",
+                "parameters": [
+                    {
+                        "name": "nombre",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array de artículos",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Articulo"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/clientes/buscar/{busqueda}": {
+            "get": {
+                "tags": [
+                    "Clientes"
+                ],
+                "summary": "Clientes filtrados por el parámetro de búsqueda",
+                "description": "Devuelve los 10 primeros cliente que contiene el string de búsqueda en el campo nombre, codigo, cuit o dirección del cliente. Se requiere contar con permiso para ver clientes.\n",
+                "parameters": [
+                    {
+                        "name": "busqueda",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array de clientes",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Cliente"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/clientes/reporte": {
+            "get": {
+                "tags": [
+                    "Clientes"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "summary": "Reporte con listado de clientes",
+                "description": "Devuelve un reporte en pdf con un listado de los clientes en el sistema filtrados por los parámetros. Se requiere contar con permiso para ver clientes.\n",
+                "parameters": [
+                    {
+                        "name": "vendedor",
+                        "in": "query",
+                        "required": false,
+                        "type": "number",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "zona",
+                        "in": "query",
+                        "required": false,
+                        "type": "number",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "provincia",
+                        "in": "query",
+                        "required": false,
+                        "type": "number",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "localidad",
+                        "in": "query",
+                        "required": false,
+                        "type": "number",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "activos",
+                        "in": "query",
+                        "required": false,
+                        "type": "number",
+                        "description": "1 = solo clientes activos. 0 = todos los clientes"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/comprobantes": {
+            "post": {
+                "tags": [
+                    "Comprobantes"
+                ],
+                "summary": "Crear nuevo comprobante",
+                "description": "Crea un nuevo comprobante y lo persiste en la base de datos. Se requiere contar con permiso para crear comprobantes.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nuevo comprobante creado",
+                        "schema": {
+                            "$ref": "#/definitions/Comprobante"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/comprobantes/{id}": {
+            "get": {
+                "tags": [
+                    "Comprobantes"
+                ],
+                "summary": "comprobante con el id proporcionado",
+                "description": "Devuelve el comprobante que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver comprobantes.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comprobante",
+                        "schema": {
+                            "$ref": "#/definitions/Comprobante"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Comprobantes"
+                ],
+                "summary": "Actualiza los datos del comprobante",
+                "description": "Edita el comprobante que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar comprobantes.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "comprobante",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Comprobante"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comprobante con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/Comprobante"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Comprobantes"
+                ],
+                "summary": "Borra un comprobante",
+                "description": "Borra el Comprobante que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar comprobantes.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/comprobantes/presupuestos": {
+            "get": {
+                "tags": [
+                    "Comprobantes"
+                ],
+                "summary": "Listar Presupuestos",
+                "description": "El endpoint presupuestos devuelve información sobre todos los presupuestos en el sistema, incluyendo todos los detalles de los mismos. Se listan los presupuestos sin un orden específico. Se debe contar con permiso para ver presupuestos.\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de presupuestos",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Comprobante"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/comprobantes/presupuestos/imprimir/{comprobante_id}": {
+            "get": {
+                "tags": [
+                    "Comprobantes"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "summary": "Reporte del presupuesto como pdf",
+                "description": "Devuelve un reporte en pdf con el presupuesto que corresponde al id pasado como parámetro. Se requiere contar con permiso para ver presupuestos.\n",
+                "parameters": [
+                    {
+                        "name": "comprobante_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/comprobantes/presupuestos/mail/{comprobante_id}": {
+            "get": {
+                "tags": [
+                    "Comprobantes"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "summary": "Envía un mail al cliente",
+                "description": "Envía un mail al cliente del presupuesto con un pdf del presupuesto cuyo id corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver presupuestos.\n",
+                "parameters": [
+                    {
+                        "name": "comprobante_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/contadores/{punto_venta}/{tipo_comprobante_id}": {
+            "get": {
+                "tags": [
+                    "Comprobantes"
+                ],
+                "summary": "Contador del último comprobante generado",
+                "description": "Devuelve contador que contiene el número del último comprobante generado de ese tipo para ese punto de venta.\n",
+                "parameters": [
+                    {
+                        "name": "punto_venta",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "tipo_comprobante_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contador",
+                        "schema": {
+                            "$ref": "#/definitions/Contador"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/cuentacorriente/buscar": {
+            "get": {
+                "tags": [
+                    "Cuenta Corriente"
+                ],
+                "summary": "Cuenta corriente del cliente",
+                "description": "Devuelve el detalle de la cuenta corriente del cliente cuya id corresponde con la id pasada como parámetro entre las fechas de inicio y fin también pasadas como parámetros. Se requiere contar con permiso para ver cuenta corriente de clientes.\n",
+                "parameters": [
+                    {
+                        "name": "cliente_id",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fecha_inicio",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "fecha_fin",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CuentaCorrienteCliente"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/cuentacorriente/reporte": {
+            "get": {
+                "tags": [
+                    "Cuenta Corriente"
+                ],
+                "summary": "Reporte de cuenta corriente del cliente",
+                "description": "Devuelve un pdf con el detalle de la cuenta corriente del cliente cuya id corresponde con la id pasada como parámetro entre las fechas de inicio y fin también pasadas como parámetros. Se requiere contar con permiso para ver cuenta corriente de clientes.\n",
+                "parameters": [
+                    {
+                        "name": "cliente_id",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fecha_inicio",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "fecha_fin",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/listaprecios": {
+            "get": {
+                "tags": [
+                    "Lista de Precios"
+                ],
+                "summary": "Devuelve todas las listas de precios",
+                "description": "El endpoint listaprecios devuelve información sobre todas las listas de precios en el sistema, incluyendo todos los items de las mismas. Se listan las listas de precios sin un orden específico. Se debe contar con permiso para ver listas de precios.\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de listas de precios",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ListaPrecios"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Lista de Precios"
+                ],
+                "summary": "Crear nueva lista de precios",
+                "description": "Crea una nueva lista de precios y la persiste en la base de datos. Se requiere contar con permiso para crear listas de precios.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nueva lista de precios creada",
+                        "schema": {
+                            "$ref": "#/definitions/ListaPrecios"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/listaprecios/{id}": {
+            "get": {
+                "tags": [
+                    "Lista de Precios"
+                ],
+                "summary": "Lista de precios con el id proporcionado",
+                "description": "Devuelve la lista de precios que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver listas de precios.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de precios",
+                        "schema": {
+                            "$ref": "#/definitions/ListaPrecios"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Lista de Precios"
+                ],
+                "summary": "Actualiza los datos de la lista de precios",
+                "description": "Edita la lista de precios que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar listas de precios.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "articulo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ListaPrecios"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de precios con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/ListaPrecios"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Lista de Precios"
+                ],
+                "summary": "Borra una lista de precios",
+                "description": "Borra la lista de precios que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar listas de precios.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/listaprecios/importar": {
+            "post": {
+                "tags": [
+                    "Lista de Precios"
+                ],
+                "summary": "Lista de precios con el id proporcionado",
+                "description": "Importación y actualización de precios en base a un archivo Excel.. Se requiere contar con permiso para editar listas de precios.\n",
+                "parameters": [
+                    {
+                        "name": "file",
+                        "in": "formData",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "actualizarDescripcion",
+                        "in": "formData",
+                        "required": true,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "actualizarPrecioCosto",
+                        "in": "formData",
+                        "required": true,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "actualizarPrecioVenta",
+                        "in": "formData",
+                        "required": true,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "campoCodigoAUtilizar",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "codigo",
+                            "codigo_fabrica",
+                            "codigo_auxiliar"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de artículos no encontrados",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Articulo"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/provincias": {
+            "get": {
+                "tags": [
+                    "Provincias"
+                ],
+                "summary": "Lista las provincias",
+                "description": "El endpoint provincias devuelve información sobre todas las provincias. Se listan las provincias sin un orden específico.\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de provincias",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Provincia"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/provincias/{id}": {
+            "get": {
+                "tags": [
+                    "Provincias"
+                ],
+                "summary": "Provincia con el id proporcionado",
+                "description": "Devuelve la provincia que se corresponde con el id pasado como parámetro, junto con todas sus localidades.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Provincia",
+                        "schema": {
+                            "$ref": "#/definitions/Provincia"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/localidades/{id}": {
+            "get": {
+                "tags": [
+                    "Localidades"
+                ],
+                "summary": "Localidad con el id proporcionado",
+                "description": "Devuelve la localidad que se corresponde con el id pasado como parámetro.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Localidad",
+                        "schema": {
+                            "$ref": "#/definitions/Localidad"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/marcas": {
+            "get": {
+                "tags": [
+                    "Marcas"
+                ],
+                "summary": "Listar Marcas",
+                "description": "El endpoint marcas devuelve información sobre todos las marcas en el sistema. Se listan las marcas sin un orden específico. Se debe contar con permiso para ver marcas.\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de marcas",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Marca"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Marcas"
+                ],
+                "summary": "Crear nueva marca",
+                "description": "Crea una nueva marca y la persiste en la base de datos. Se requiere contar con permiso para crear marcas.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nueva marca creada",
+                        "schema": {
+                            "$ref": "#/definitions/Marca"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/marcas/{id}": {
+            "get": {
+                "tags": [
+                    "Marcas"
+                ],
+                "summary": "Marca con el id proporcionado",
+                "description": "Devuelve la marca que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver marcas.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Marca",
+                        "schema": {
+                            "$ref": "#/definitions/Marca"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Marcas"
+                ],
+                "summary": "Actualiza los datos de la marca",
+                "description": "Edita la marca que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar marcas.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "marca",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Marca"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Marca con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/Marca"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Marcas"
+                ],
+                "summary": "Borra una marca",
+                "description": "Borra la marca que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar marcas.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/marcas/codigo/{codigo}": {
+            "get": {
+                "tags": [
+                    "Marcas"
+                ],
+                "summary": "Marca con el código proporcionado",
+                "description": "Devuelve la marca que se corresponde con el código pasado como parámetro. Se requiere contar con permiso para ver marcas.\n",
+                "parameters": [
+                    {
+                        "name": "codigo",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Marca",
+                        "schema": {
+                            "$ref": "#/definitions/Marca"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/rubros": {
+            "get": {
+                "tags": [
+                    "Rubros"
+                ],
+                "summary": "Listar Rubros",
+                "description": "El endpoint rubros devuelve información sobre todos los rubros en el sistema. Se listan los rubros sin un orden específico. Se debe contar con permiso para ver rubros.\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de rubros",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Rubro"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Rubros"
+                ],
+                "summary": "Crear nuevo rubro",
+                "description": "Crea un nuevo rubro y lo persiste en la base de datos. Se requiere contar con permiso para crear rubros.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nuevo rubro creado",
+                        "schema": {
+                            "$ref": "#/definitions/Rubro"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/rubros/{id}": {
+            "get": {
+                "tags": [
+                    "Rubros"
+                ],
+                "summary": "Rubro con el id proporcionado",
+                "description": "Devuelve el rubro que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver rubros.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rubro",
+                        "schema": {
+                            "$ref": "#/definitions/Rubro"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Rubros"
+                ],
+                "summary": "Actualiza los datos del rubro",
+                "description": "Edita el rubro que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar rubros.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "rubro",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Rubro"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rubro con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/Rubro"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Rubros"
+                ],
+                "summary": "Borra un rubro",
+                "description": "Borra el rubro que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar rubros.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/rubros/codigo/{codigo}": {
+            "get": {
+                "tags": [
+                    "Rubros"
+                ],
+                "summary": "Rubro con el código proporcionado",
+                "description": "Devuelve el rubro que se corresponde con el código pasado como parámetro. Se requiere contar con permiso para ver rubros.\n",
+                "parameters": [
+                    {
+                        "name": "codigo",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rubro",
+                        "schema": {
+                            "$ref": "#/definitions/Rubro"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/subrubros": {
+            "get": {
+                "tags": [
+                    "Subrubros"
+                ],
+                "summary": "Listar Subrubros",
+                "description": "El endpoint subrubros devuelve información sobre todos los subrubros en el sistema. Se listan los subrubros sin un orden específico. Se debe contar con permiso para ver subrubros.\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de subrubros",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Subrubro"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Subrubros"
+                ],
+                "summary": "Crear nuevo subrubro",
+                "description": "Crea un nuevo subrubro y lo persiste en la base de datos. Se requiere contar con permiso para crear subrubros.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nuevo subrubro creado",
+                        "schema": {
+                            "$ref": "#/definitions/Subrubro"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/subrubros/{id}": {
+            "get": {
+                "tags": [
+                    "Subrubros"
+                ],
+                "summary": "Subrubro con el id proporcionado",
+                "description": "Devuelve el subrubro que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver subrubros.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Subrubro",
+                        "schema": {
+                            "$ref": "#/definitions/Subrubro"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Subrubros"
+                ],
+                "summary": "Actualiza los datos del subrubro",
+                "description": "Edita el subrubro que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar subrubros.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "subrubro",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Subrubro"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Subrubro con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/Subrubro"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Subrubros"
+                ],
+                "summary": "Borra un subrubro",
+                "description": "Borra el subrubro que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar subrubros.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/subrubros/codigo/{codigo}": {
+            "get": {
+                "tags": [
+                    "Subrubros"
+                ],
+                "summary": "Subrubro con el código proporcionado",
+                "description": "Devuelve el subrubro que se corresponde con el código pasado como parámetro. Se requiere contar con permiso para ver subrubros.\n",
+                "parameters": [
+                    {
+                        "name": "codigo",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Subrubro",
+                        "schema": {
+                            "$ref": "#/definitions/Subrubro"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/parametros": {
+            "get": {
+                "tags": [
+                    "Parametros"
+                ],
+                "summary": "Listar Parámetros del sistema",
+                "description": "El endpoint parametros devuelve información sobre todos los parametros en el sistema. Se listan los parametros sin un orden específico.\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de parametros",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Parametro"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/tipocategoriaclientes": {
+            "get": {
+                "tags": [
+                    "Tipo Categoria Clientes"
+                ],
+                "summary": "Listar tipos de categoría de clientes",
+                "description": "El endpoint tipocategoriaclientes devuelve información sobre todos los tipos de categoria de clientes en el sistema. Se listan sin un orden específico.\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de tipocategoriaclientes",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/TipoCategoriaClientes"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/tipocomprobantes/{tipo_comprobante}/{codigo}": {
+            "get": {
+                "tags": [
+                    "Tipo Comprobantes"
+                ],
+                "summary": "Tipo de comprobante",
+                "description": "Devuelve el tipo de comprobante que se corresponde con la categoría del cliente pasada como parametro y segun si es factura, presupuesto, nota de debito o nota de credito. También se devuelve la fecha del dia anterior al ultimo comprobante del mismo tipo generado.\n",
+                "parameters": [
+                    {
+                        "name": "tipo_comprobante",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "factura",
+                            "presupuesto",
+                            "nota_debito",
+                            "nota_credito"
+                        ]
+                    },
+                    {
+                        "name": "codigo",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "RI",
+                            "CF",
+                            "MON"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tipo Comprobante y última fecha",
+                        "schema": {
+                            "$ref": "#/definitions/TipoComprobante"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/vendedores": {
+            "get": {
+                "tags": [
+                    "Vendedores"
+                ],
+                "summary": "Listar Vendedores",
+                "description": "El endpoint vendedores devuelve información sobre todos los vendedores en el sistema. Se listan los vendedores sin un orden específico. Se debe contar con permiso para ver vendedores.\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de vendedores",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Vendedor"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Vendedores"
+                ],
+                "summary": "Crear nuevo vendedor",
+                "description": "Crea un nuevo vendedor y lo persiste en la base de datos. Se requiere contar con permiso para crear vendedores.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nuevo vendedor creado",
+                        "schema": {
+                            "$ref": "#/definitions/Vendedor"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/vendedores/{id}": {
+            "get": {
+                "tags": [
+                    "Vendedores"
+                ],
+                "summary": "Vendedor con el id proporcionado",
+                "description": "Devuelve el vendedor que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver vendedores.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vendedor",
+                        "schema": {
+                            "$ref": "#/definitions/Vendedor"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Vendedores"
+                ],
+                "summary": "Actualiza los datos del vendedor",
+                "description": "Edita el vendedor que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar vendedores.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "vendedor",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Vendedor"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vendedor con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/Vendedor"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Vendedores"
+                ],
+                "summary": "Borra un vendedor",
+                "description": "Borra el vendedor que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar vendedores.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/zonas": {
+            "get": {
+                "tags": [
+                    "Zonas"
+                ],
+                "summary": "Listar Zonas",
+                "description": "El endpoint zonas devuelve información sobre todos las zonas en el sistema. Se listan las zonas sin un orden específico. Se debe contar con permiso para ver zonas.\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de zonas",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Zona"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Zonas"
+                ],
+                "summary": "Crear nueva zona",
+                "description": "Crea una nueva zona y la persiste en la base de datos. Se requiere contar con permiso para crear zonas.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nueva zona creada",
+                        "schema": {
+                            "$ref": "#/definitions/Zona"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/zonas/{id}": {
+            "get": {
+                "tags": [
+                    "Zonas"
+                ],
+                "summary": "Zona con el id proporcionado",
+                "description": "Devuelve la zona que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver zonas.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Zona",
+                        "schema": {
+                            "$ref": "#/definitions/Zona"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Zonas"
+                ],
+                "summary": "Actualiza los datos de la zona",
+                "description": "Edita la zona que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar zonas.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "zona",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Zona"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Zona con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/Zona"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Zonas"
+                ],
+                "summary": "Borra una zona",
+                "description": "Borra la zona que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar zonas.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
                         "schema": {
                             "$ref": "#/definitions/Error"
                         }
@@ -315,136 +2339,489 @@ window.onload = function() {
         }
     },
     "definitions": {
-        "Product": {
+        "Articulo": {
             "type": "object",
             "properties": {
-                "product_id": {
-                    "type": "string",
-                    "description": "Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles."
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
                 },
-                "description": {
-                    "type": "string",
-                    "description": "Description of product."
+                "marca_id": {
+                    "type": "integer",
+                    "format": "int32"
                 },
-                "display_name": {
-                    "type": "string",
-                    "description": "Display name of product."
+                "subrubro_id": {
+                    "type": "integer",
+                    "format": "int32"
                 },
-                "capacity": {
-                    "type": "string",
-                    "description": "Capacity of product. For example, 4 people."
+                "codigo": {
+                    "type": "string"
                 },
-                "image": {
-                    "type": "string",
-                    "description": "Image URL representing the product."
+                "codigo_fabrica": {
+                    "type": "string"
+                },
+                "codigo_auxiliar": {
+                    "type": "string"
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "nombre_reducido": {
+                    "type": "string"
+                },
+                "lleva_stock": {
+                    "type": "boolean"
+                },
+                "costo": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "punto_pedido": {
+                    "type": "number"
+                },
+                "bajo_minimo": {
+                    "type": "number"
+                },
+                "activo": {
+                    "type": "boolean"
+                },
+                "motivo": {
+                    "type": "string"
                 }
             }
         },
-        "PriceEstimate": {
+        "Cliente": {
             "type": "object",
             "properties": {
-                "product_id": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "vendedor_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "zona_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "tipo_categoria_id": {
+                    "type": "integer",
+                    "description": "int32"
+                },
+                "codigo": {
+                    "type": "string"
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "tipo_responsable": {
                     "type": "string",
-                    "description": "Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles"
+                    "enum": [
+                        "RI",
+                        "NR",
+                        "SE",
+                        "CF",
+                        "M",
+                        "PE",
+                        "CE"
+                    ]
                 },
-                "currency_code": {
-                    "type": "string",
-                    "description": "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
+                "cuit": {
+                    "type": "string"
                 },
-                "display_name": {
-                    "type": "string",
-                    "description": "Display name of product."
+                "telefono": {
+                    "type": "string"
                 },
-                "estimate": {
-                    "type": "string",
-                    "description": "Formatted string of estimate in local currency of the start location. Estimate could be a range, a single number (flat rate) or \"Metered\" for TAXI."
-                },
-                "low_estimate": {
-                    "type": "number",
-                    "description": "Lower bound of the estimated price."
-                },
-                "high_estimate": {
-                    "type": "number",
-                    "description": "Upper bound of the estimated price."
-                },
-                "surge_multiplier": {
-                    "type": "number",
-                    "description": "Expected surge multiplier. Surge is active if surge_multiplier is greater than 1. Price estimate already factors in the surge multiplier."
-                }
-            }
-        },
-        "Profile": {
-            "type": "object",
-            "properties": {
-                "first_name": {
-                    "type": "string",
-                    "description": "First name of the Uber user."
-                },
-                "last_name": {
-                    "type": "string",
-                    "description": "Last name of the Uber user."
+                "celular": {
+                    "type": "string"
                 },
                 "email": {
-                    "type": "string",
-                    "description": "Email address of the Uber user"
+                    "type": "string"
                 },
-                "picture": {
-                    "type": "string",
-                    "description": "Image URL of the Uber user."
+                "lista_id": {
+                    "type": "number",
+                    "description": "int32"
                 },
-                "promo_code": {
-                    "type": "string",
-                    "description": "Promo code of the Uber user."
+                "activo": {
+                    "type": "boolean"
+                },
+                "motivo": {
+                    "type": "string"
                 }
             }
         },
-        "Activity": {
+        "Comprobante": {
             "type": "object",
             "properties": {
-                "uuid": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "cliente_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "tipo_comprobante_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "fecha": {
                     "type": "string",
-                    "description": "Unique identifier for the activity"
+                    "format": "date"
+                },
+                "punto_venta": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "numero": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "cliente_nombre": {
+                    "type": "string"
+                },
+                "cliente_tipo_resp": {
+                    "type": "string",
+                    "enum": [
+                        "RI",
+                        "NR",
+                        "SE",
+                        "CF",
+                        "M",
+                        "PE",
+                        "CE"
+                    ]
+                },
+                "cliente_cuit": {
+                    "type": "string"
+                },
+                "importe_neto": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "alicuota_iva": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "importe_iva": {
+                    "type": "number",
+                    "description": "double"
+                },
+                "importe_total": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "saldo": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "cae": {
+                    "type": "string"
+                },
+                "fecha_cae": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "fecha_venc_cae": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "anulado": {
+                    "type": "boolean"
+                },
+                "lista_id": {
+                    "type": "number",
+                    "format": "int32"
                 }
             }
         },
-        "Activities": {
+        "Contador": {
             "type": "object",
             "properties": {
-                "offset": {
+                "id": {
                     "type": "integer",
-                    "format": "int32",
-                    "description": "Position in pagination."
+                    "format": "int32"
                 },
-                "limit": {
+                "tipo_comprobante_id": {
                     "type": "integer",
-                    "format": "int32",
-                    "description": "Number of items to retrieve (100 max)."
+                    "format": "int32"
                 },
-                "count": {
+                "punto_venta": {
                     "type": "integer",
-                    "format": "int32",
-                    "description": "Total number of items available."
+                    "format": "int32"
                 },
-                "history": {
+                "ultimo_generado": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "CuentaCorrienteCliente": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "cliente_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "tipo_comprobante_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "comprobante_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "fecha": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "descripcion": {
+                    "type": "string"
+                },
+                "debe": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "haber": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "ListaPrecios": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "porcentaje": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "activo": {
+                    "type": "boolean"
+                },
+                "lista_precio_items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/Activity"
+                        "$ref": "#/definitions/ListaPrecioItem"
                     }
+                }
+            }
+        },
+        "ListaPrecioItem": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "lista_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "articulo_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "precio_costo": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "precio_venta": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "Localidad": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "cp": {
+                    "type": "string"
+                },
+                "provincia_id": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "Provincia": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "pais_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "localidades": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Localidad"
+                    }
+                }
+            }
+        },
+        "Marca": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "codigo": {
+                    "type": "string"
+                },
+                "nombre": {
+                    "type": "string"
+                }
+            }
+        },
+        "Rubro": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "codigo": {
+                    "type": "string"
+                },
+                "nombre": {
+                    "type": "string"
+                }
+            }
+        },
+        "Subrubro": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "codigo": {
+                    "type": "string"
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "rubro_id": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "Parametro": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "modulo": {
+                    "type": "string"
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "descripcion": {
+                    "type": "string"
+                },
+                "valor": {
+                    "type": "string"
+                },
+                "data_type": {
+                    "type": "string"
+                }
+            }
+        },
+        "TipoCategoriaClientes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "nombre": {
+                    "type": "string"
+                }
+            }
+        },
+        "TipoComprobante": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "codigo": {
+                    "type": "string"
+                },
+                "nombre": {
+                    "type": "string"
+                }
+            }
+        },
+        "Vendedor": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "zona_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "comision": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "Zona": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "nombre": {
+                    "type": "string"
                 }
             }
         },
         "Error": {
             "type": "object",
             "properties": {
-                "code": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "fields": {
-                    "type": "string"
+                "error": {
+                    "type": "string",
+                    "description": "descripción del error"
                 }
             }
         }
