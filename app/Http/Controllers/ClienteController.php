@@ -11,6 +11,14 @@ use JasperPHP\JasperPHP as JasperPHP;
 
 class ClienteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_cliente', ['only' => ['index', 'show', 'showByCode', 'showByName', 'showByAll', 'report']]);
+        $this->middleware('permission:create_cliente', ['only' => ['store']]);
+        $this->middleware('permission:edit_cliente', ['only' => ['update']]);
+        $this->middleware('permission:delete_cliente', ['only' => ['destroy']]);
+    }
+    
     /**
      * Display a listing of the resource.
      *

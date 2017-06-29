@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class VendedorController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_vendedor', ['only' => ['index', 'show', 'showByCode']]);
+        $this->middleware('permission:create_vendedor', ['only' => ['store']]);
+        $this->middleware('permission:edit_vendedor', ['only' => ['update']]);
+        $this->middleware('permission:delete_vendedor', ['only' => ['destroy']]);
+    }
+    
     /**
      * Display a listing of the resource.
      *

@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class RubroController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_rubro', ['only' => ['index', 'show', 'showByCode']]);
+        $this->middleware('permission:create_rubro', ['only' => ['store']]);
+        $this->middleware('permission:edit_rubro', ['only' => ['update']]);
+        $this->middleware('permission:delete_rubro', ['only' => ['destroy']]);
+    }
+    
     /**
      * Display a listing of the resource.
      *

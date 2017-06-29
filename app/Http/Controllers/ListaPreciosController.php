@@ -10,6 +10,14 @@ use Excel;
 
 class ListaPreciosController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_lista_precios', ['only' => ['index', 'show']]);
+        $this->middleware('permission:create_lista_precios', ['only' => ['store']]);
+        $this->middleware('permission:edit_lista_precios', ['only' => ['update', 'import']]);
+        $this->middleware('permission:delete_lista_precios', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

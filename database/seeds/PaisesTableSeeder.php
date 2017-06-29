@@ -11,18 +11,20 @@ class PaisesTableSeeder extends Seeder
      */
     public function run()
     {
-        $file_n = 'database\seeds\paises.csv';
-        $file = fopen($file_n, "r");
+        if(\App\Pais::first() === null) {
+            $file_n = 'database\seeds\paises.csv';
+            $file = fopen($file_n, "r");
 
-        $paises = [];
-        while ( ($data = fgetcsv($file, 200, ";")) !==FALSE) {
+            $paises = [];
+            while ( ($data = fgetcsv($file, 200, ";")) !==FALSE) {
 
-            $pais = ['id' => $data[0], 'nombre' => $data[1]];
+                $pais = ['id' => $data[0], 'nombre' => $data[1]];
 
-            $paises[] = $pais;
+                $paises[] = $pais;
+            }
+
+            \App\Pais::insert($paises);
+            fclose($file);
         }
-
-        \App\Pais::insert($paises);
-        fclose($file);
     }
 }

@@ -15,6 +15,29 @@ use JasperPHP\JasperPHP as JasperPHP;
 
 class ComprobanteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_presupuesto', ['only' => ['indexPresupuestos', 'show', 'imprimirPresupuesto', 'generarPDFPresupuesto', 'enviarMailPresupuesto']]);
+        $this->middleware('permission:create_presupuesto', ['only' => ['store']]);
+        $this->middleware('permission:edit_presupuesto', ['only' => ['update']]);
+        $this->middleware('permission:delete_presupuesto', ['only' => ['destroy']]);
+
+        $this->middleware('permission:view_factura', ['only' => ['show']]);
+        $this->middleware('permission:create_factura', ['only' => ['store']]);
+        $this->middleware('permission:edit_factura', ['only' => ['update']]);
+        $this->middleware('permission:delete_factura', ['only' => ['destroy']]);
+
+        $this->middleware('permission:view_nota_debito', ['only' => ['show']]);
+        $this->middleware('permission:create_nota_debito', ['only' => ['store']]);
+        $this->middleware('permission:edit_nota_debito', ['only' => ['update']]);
+        $this->middleware('permission:delete_nota_debito', ['only' => ['destroy']]);
+
+        $this->middleware('permission:view_nota_credito', ['only' => ['show']]);
+        $this->middleware('permission:create_nota_credito', ['only' => ['store']]);
+        $this->middleware('permission:edit_nota_credito', ['only' => ['update']]);
+        $this->middleware('permission:delete_nota_credito', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
