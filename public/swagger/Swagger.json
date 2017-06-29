@@ -1,8 +1,8 @@
-{
+﻿{
     "swagger": "2.0",
     "info": {
         "title": "Hermes API",
-        "description": "API del Sistema de Gestión Comercial Hermes",
+        "description": "API del Sistema de Gesti\u00F3n Comercial Hermes",
         "version": "1.0.0"
     },
     "host": "hermes.api",
@@ -82,13 +82,13 @@
                     "Login"
                 ],
                 "security": [],
-                "summary": "Inicio de sesión",
-                "description": "El endpoint login es utilizado para el inicio de sesión de los usuarios  con su email y contraseña. La respuesta devuelve un token que es requerido en las llamadas a la API, además devuelve la información del usuario. \n",
+                "summary": "Inicio de sesi\u00F3n",
+                "description": "El endpoint login es utilizado para el inicio de sesi\u00F3n de los usuarios  con su email y contrase\u00f1a. La respuesta devuelve un token que es requerido en las llamadas a la API, adem\u00E1s devuelve la informaci\u00F3n del usuario. \n",
                 "parameters": [
                     {
                         "name": "user",
                         "in": "body",
-                        "description": "Email y constraseña del usuario a autenticar",
+                        "description": "Email y constrase\u00f1a del usuario a autenticar",
                         "required": true,
                         "schema": {
                             "type": "object",
@@ -100,7 +100,7 @@
                                 "password": {
                                     "type": "string",
                                     "format": "password",
-                                    "description": "contraseña del usuario a autenticar"
+                                    "description": "contrase\u00f1a del usuario a autenticar"
                                 }
                             }
                         }
@@ -123,7 +123,7 @@
                         }
                     },
                     "401": {
-                        "description": "Usuario o contraseña inválidos"
+                        "description": "Usuario o contrase\u00f1a inv\u00E1lidos"
                     },
                     "500": {
                         "description": "Error del servidor"
@@ -136,8 +136,8 @@
                 "tags": [
                     "Articulos"
                 ],
-                "summary": "Listar Artículos",
-                "description": "El endpoint articulos devuelve información sobre todos los artículos en el sistema, incluyendo todos los detalles de los mismos. Se listan los artículos sin un orden específico. Se debe contar con permiso para ver artículos\n",
+                "summary": "Listar Art\u00EDculos",
+                "description": "El endpoint articulos devuelve informaci\u00F3n sobre todos los art\u00EDculos en el sistema, incluyendo todos los detalles de los mismos. Se listan los art\u00EDculos sin un orden espec\u00EDfico. Se debe contar con permiso para ver art\u00EDculos\n",
                 "responses": {
                     "200": {
                         "description": "Un array de articulos",
@@ -160,11 +160,11 @@
                 "tags": [
                     "Articulos"
                 ],
-                "summary": "Crear nuevo artículo",
-                "description": "Crea un nuevo artículo y lo persiste en la base de datos. Se requiere contar con permiso para crear artículos.\n",
+                "summary": "Crear nuevo art\u00EDculo",
+                "description": "Crea un nuevo art\u00EDculo y lo persiste en la base de datos. Se requiere contar con permiso para crear art\u00EDculos.\n",
                 "responses": {
                     "200": {
-                        "description": "Nuevo artículo creado",
+                        "description": "Nuevo art\u00EDculo creado",
                         "schema": {
                             "$ref": "#/definitions/Articulo"
                         }
@@ -183,8 +183,8 @@
                 "tags": [
                     "Articulos"
                 ],
-                "summary": "Artículo con el id proporcionado",
-                "description": "Devuelve el artículo que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver artículos.\n",
+                "summary": "Art\u00EDculo con el id proporcionado",
+                "description": "Devuelve el art\u00EDculo que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para ver art\u00EDculos.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -196,7 +196,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Artículo",
+                        "description": "Art\u00EDculo",
                         "schema": {
                             "$ref": "#/definitions/Articulo"
                         }
@@ -213,8 +213,8 @@
                 "tags": [
                     "Articulos"
                 ],
-                "summary": "Actualiza los datos del artículo",
-                "description": "Edita el artículo que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar artículos.\n",
+                "summary": "Actualiza los datos del art\u00EDculo",
+                "description": "Edita el art\u00EDculo que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para editar art\u00EDculos.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -234,7 +234,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Artículo con los datos actualizados",
+                        "description": "Art\u00EDculo con los datos actualizados",
                         "schema": {
                             "$ref": "#/definitions/Articulo"
                         }
@@ -251,8 +251,8 @@
                 "tags": [
                     "Articulos"
                 ],
-                "summary": "Borra un artículo",
-                "description": "Borra el artículo que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar artículos.\n",
+                "summary": "Borra un art\u00EDculo",
+                "description": "Borra el art\u00EDculo que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para borrar art\u00EDculos.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -264,7 +264,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operación realizada con éxito"
+                        "description": "Operaci\u00F3n realizada con \u00E9xito"
                     },
                     "500": {
                         "description": "Error inesperado",
@@ -280,8 +280,8 @@
                 "tags": [
                     "Articulos"
                 ],
-                "summary": "Artículo con el código proporcionado",
-                "description": "Devuelve el artículo que se corresponde con el código pasado como parámetro. Se requiere contar con permiso para ver artículos.\n",
+                "summary": "Art\u00EDculo con el c\u00F3digo proporcionado",
+                "description": "Devuelve el art\u00EDculo que se corresponde con el c\u00F3digo pasado como par\u00E1metro. Se requiere contar con permiso para ver art\u00EDculos.\n",
                 "parameters": [
                     {
                         "name": "codigo",
@@ -293,7 +293,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Artículo",
+                        "description": "Art\u00EDculo",
                         "schema": {
                             "$ref": "#/definitions/Articulo"
                         }
@@ -312,8 +312,8 @@
                 "tags": [
                     "Articulos"
                 ],
-                "summary": "Artículos con el nombre proporcionado",
-                "description": "Devuelve los artículos que contienen el string pasado como parámetro en el campo nombre del artículo. Se requiere contar con permiso para ver artículos.\n",
+                "summary": "Art\u00EDculos con el nombre proporcionado",
+                "description": "Devuelve los art\u00EDculos que contienen el string pasado como par\u00E1metro en el campo nombre del art\u00EDculo. Se requiere contar con permiso para ver art\u00EDculos.\n",
                 "parameters": [
                     {
                         "name": "nombre",
@@ -324,7 +324,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Array de artículos",
+                        "description": "Array de art\u00EDculos",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -346,8 +346,8 @@
                 "tags": [
                     "Articulos"
                 ],
-                "summary": "Artículos filtrados por los parámetros",
-                "description": "Devuelve los 10 primeros artículos que contienen el string de búsqueda en el campo nombre, codigo, rubro o subrubro del artículo. Además se filtra por marca, rubro y subrubro asociados. Se requiere contar con permiso para ver artículos.\n",
+                "summary": "Art\u00EDculos filtrados por los par\u00E1metros",
+                "description": "Devuelve los 10 primeros art\u00EDculos que contienen el string de búsqueda en el campo nombre, codigo, rubro o subrubro del art\u00EDculo. Adem\u00E1s se filtra por marca, rubro y subrubro asociados. Se requiere contar con permiso para ver art\u00EDculos.\n",
                 "parameters": [
                     {
                         "name": "marca",
@@ -376,7 +376,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Array de artículos",
+                        "description": "Array de art\u00EDculos",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -399,7 +399,7 @@
                     "Clientes"
                 ],
                 "summary": "Listar Clientes",
-                "description": "El endpoint clientes devuelve información sobre todos los clientes en el sistema, incluyendo todos los detalles de los mismos. Se listan los clientes sin un orden específico. Se debe contar con permiso para ver clientes\n",
+                "description": "El endpoint clientes devuelve informaci\u00F3n sobre todos los clientes en el sistema, incluyendo todos los detalles de los mismos. Se listan los clientes sin un orden espec\u00EDfico. Se debe contar con permiso para ver clientes\n",
                 "responses": {
                     "200": {
                         "description": "Un array de clientes",
@@ -446,7 +446,7 @@
                     "Clientes"
                 ],
                 "summary": "Cliente con el id proporcionado",
-                "description": "Devuelve el cliente que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver clientes.\n",
+                "description": "Devuelve el cliente que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para ver clientes.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -476,7 +476,7 @@
                     "Clientes"
                 ],
                 "summary": "Actualiza los datos del cliente",
-                "description": "Edita el cliente que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar clientes.\n",
+                "description": "Edita el cliente que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para editar clientes.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -514,7 +514,7 @@
                     "Clientes"
                 ],
                 "summary": "Borra un cliente",
-                "description": "Borra el cliente que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar clientes.\n",
+                "description": "Borra el cliente que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para borrar clientes.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -526,7 +526,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operación realizada con éxito"
+                        "description": "Operaci\u00F3n realizada con \u00E9xito"
                     },
                     "500": {
                         "description": "Error inesperado",
@@ -542,8 +542,8 @@
                 "tags": [
                     "Clientes"
                 ],
-                "summary": "Cliente con el código proporcionado",
-                "description": "Devuelve los clientes que se corresponden con el código pasado como parámetro. Se requiere contar con permiso para ver clientes.\n",
+                "summary": "Cliente con el c\u00F3digo proporcionado",
+                "description": "Devuelve los clientes que se corresponden con el c\u00F3digo pasado como par\u00E1metro. Se requiere contar con permiso para ver clientes.\n",
                 "parameters": [
                     {
                         "name": "codigo",
@@ -578,7 +578,7 @@
                     "Clientes"
                 ],
                 "summary": "Clientes con el nombre proporcionado",
-                "description": "Devuelve los clientes que contienen el string pasado como parámetro en el campo nombre del cliente. Se requiere contar con permiso para ver clientes.\n",
+                "description": "Devuelve los clientes que contienen el string pasado como par\u00E1metro en el campo nombre del cliente. Se requiere contar con permiso para ver clientes.\n",
                 "parameters": [
                     {
                         "name": "nombre",
@@ -589,7 +589,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Array de artículos",
+                        "description": "Array de art\u00EDculos",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -611,8 +611,8 @@
                 "tags": [
                     "Clientes"
                 ],
-                "summary": "Clientes filtrados por el parámetro de búsqueda",
-                "description": "Devuelve los 10 primeros cliente que contiene el string de búsqueda en el campo nombre, codigo, cuit o dirección del cliente. Se requiere contar con permiso para ver clientes.\n",
+                "summary": "Clientes filtrados por el par\u00E1metro de búsqueda",
+                "description": "Devuelve los 10 primeros cliente que contiene el string de búsqueda en el campo nombre, codigo, cuit o direcci\u00F3n del cliente. Se requiere contar con permiso para ver clientes.\n",
                 "parameters": [
                     {
                         "name": "busqueda",
@@ -649,7 +649,7 @@
                     "application/pdf"
                 ],
                 "summary": "Reporte con listado de clientes",
-                "description": "Devuelve un reporte en pdf con un listado de los clientes en el sistema filtrados por los parámetros. Se requiere contar con permiso para ver clientes.\n",
+                "description": "Devuelve un reporte en pdf con un listado de los clientes en el sistema filtrados por los par\u00E1metros. Se requiere contar con permiso para ver clientes.\n",
                 "parameters": [
                     {
                         "name": "vendedor",
@@ -732,7 +732,7 @@
                     "Comprobantes"
                 ],
                 "summary": "comprobante con el id proporcionado",
-                "description": "Devuelve el comprobante que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver comprobantes.\n",
+                "description": "Devuelve el comprobante que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para ver comprobantes.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -762,7 +762,7 @@
                     "Comprobantes"
                 ],
                 "summary": "Actualiza los datos del comprobante",
-                "description": "Edita el comprobante que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar comprobantes.\n",
+                "description": "Edita el comprobante que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para editar comprobantes.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -800,7 +800,7 @@
                     "Comprobantes"
                 ],
                 "summary": "Borra un comprobante",
-                "description": "Borra el Comprobante que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar comprobantes.\n",
+                "description": "Borra el Comprobante que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para borrar comprobantes.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -812,7 +812,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operación realizada con éxito"
+                        "description": "Operaci\u00F3n realizada con \u00E9xito"
                     },
                     "500": {
                         "description": "Error inesperado",
@@ -829,7 +829,7 @@
                     "Comprobantes"
                 ],
                 "summary": "Listar Presupuestos",
-                "description": "El endpoint presupuestos devuelve información sobre todos los presupuestos en el sistema, incluyendo todos los detalles de los mismos. Se listan los presupuestos sin un orden específico. Se debe contar con permiso para ver presupuestos.\n",
+                "description": "El endpoint presupuestos devuelve informaci\u00F3n sobre todos los presupuestos en el sistema, incluyendo todos los detalles de los mismos. Se listan los presupuestos sin un orden espec\u00EDfico. Se debe contar con permiso para ver presupuestos.\n",
                 "responses": {
                     "200": {
                         "description": "Un array de presupuestos",
@@ -858,7 +858,7 @@
                     "application/pdf"
                 ],
                 "summary": "Reporte del presupuesto como pdf",
-                "description": "Devuelve un reporte en pdf con el presupuesto que corresponde al id pasado como parámetro. Se requiere contar con permiso para ver presupuestos.\n",
+                "description": "Devuelve un reporte en pdf con el presupuesto que corresponde al id pasado como par\u00E1metro. Se requiere contar con permiso para ver presupuestos.\n",
                 "parameters": [
                     {
                         "name": "comprobante_id",
@@ -892,8 +892,8 @@
                 "produces": [
                     "application/pdf"
                 ],
-                "summary": "Envía un mail al cliente",
-                "description": "Envía un mail al cliente del presupuesto con un pdf del presupuesto cuyo id corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver presupuestos.\n",
+                "summary": "Env\u00EDa un mail al cliente",
+                "description": "Env\u00EDa un mail al cliente del presupuesto con un pdf del presupuesto cuyo id corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para ver presupuestos.\n",
                 "parameters": [
                     {
                         "name": "comprobante_id",
@@ -905,7 +905,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operación realizada con éxito"
+                        "description": "Operaci\u00F3n realizada con \u00E9xito"
                     },
                     "500": {
                         "description": "Error inesperado",
@@ -961,7 +961,7 @@
                     "Cuenta Corriente"
                 ],
                 "summary": "Cuenta corriente del cliente",
-                "description": "Devuelve el detalle de la cuenta corriente del cliente cuya id corresponde con la id pasada como parámetro entre las fechas de inicio y fin también pasadas como parámetros. Se requiere contar con permiso para ver cuenta corriente de clientes.\n",
+                "description": "Devuelve el detalle de la cuenta corriente del cliente cuya id corresponde con la id pasada como par\u00E1metro entre las fechas de inicio y fin tambi\u00E9n pasadas como par\u00E1metros. Se requiere contar con permiso para ver cuenta corriente de clientes.\n",
                 "parameters": [
                     {
                         "name": "cliente_id",
@@ -1009,7 +1009,7 @@
                     "Cuenta Corriente"
                 ],
                 "summary": "Reporte de cuenta corriente del cliente",
-                "description": "Devuelve un pdf con el detalle de la cuenta corriente del cliente cuya id corresponde con la id pasada como parámetro entre las fechas de inicio y fin también pasadas como parámetros. Se requiere contar con permiso para ver cuenta corriente de clientes.\n",
+                "description": "Devuelve un pdf con el detalle de la cuenta corriente del cliente cuya id corresponde con la id pasada como par\u00E1metro entre las fechas de inicio y fin tambi\u00E9n pasadas como par\u00E1metros. Se requiere contar con permiso para ver cuenta corriente de clientes.\n",
                 "parameters": [
                     {
                         "name": "cliente_id",
@@ -1054,7 +1054,7 @@
                     "Lista de Precios"
                 ],
                 "summary": "Devuelve todas las listas de precios",
-                "description": "El endpoint listaprecios devuelve información sobre todas las listas de precios en el sistema, incluyendo todos los items de las mismas. Se listan las listas de precios sin un orden específico. Se debe contar con permiso para ver listas de precios.\n",
+                "description": "El endpoint listaprecios devuelve informaci\u00F3n sobre todas las listas de precios en el sistema, incluyendo todos los items de las mismas. Se listan las listas de precios sin un orden espec\u00EDfico. Se debe contar con permiso para ver listas de precios.\n",
                 "responses": {
                     "200": {
                         "description": "Un array de listas de precios",
@@ -1101,7 +1101,7 @@
                     "Lista de Precios"
                 ],
                 "summary": "Lista de precios con el id proporcionado",
-                "description": "Devuelve la lista de precios que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver listas de precios.\n",
+                "description": "Devuelve la lista de precios que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para ver listas de precios.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1131,7 +1131,7 @@
                     "Lista de Precios"
                 ],
                 "summary": "Actualiza los datos de la lista de precios",
-                "description": "Edita la lista de precios que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar listas de precios.\n",
+                "description": "Edita la lista de precios que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para editar listas de precios.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1169,7 +1169,7 @@
                     "Lista de Precios"
                 ],
                 "summary": "Borra una lista de precios",
-                "description": "Borra la lista de precios que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar listas de precios.\n",
+                "description": "Borra la lista de precios que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para borrar listas de precios.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1181,7 +1181,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operación realizada con éxito"
+                        "description": "Operaci\u00F3n realizada con \u00E9xito"
                     },
                     "500": {
                         "description": "Error inesperado",
@@ -1198,7 +1198,7 @@
                     "Lista de Precios"
                 ],
                 "summary": "Lista de precios con el id proporcionado",
-                "description": "Importación y actualización de precios en base a un archivo Excel.. Se requiere contar con permiso para editar listas de precios.\n",
+                "description": "Importaci\u00F3n y actualizaci\u00F3n de precios en base a un archivo Excel.. Se requiere contar con permiso para editar listas de precios.\n",
                 "parameters": [
                     {
                         "name": "file",
@@ -1238,7 +1238,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Lista de artículos no encontrados",
+                        "description": "Lista de art\u00EDculos no encontrados",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -1261,7 +1261,7 @@
                     "Provincias"
                 ],
                 "summary": "Lista las provincias",
-                "description": "El endpoint provincias devuelve información sobre todas las provincias. Se listan las provincias sin un orden específico.\n",
+                "description": "El endpoint provincias devuelve informaci\u00F3n sobre todas las provincias. Se listan las provincias sin un orden espec\u00EDfico.\n",
                 "responses": {
                     "200": {
                         "description": "Un array de provincias",
@@ -1287,7 +1287,7 @@
                     "Provincias"
                 ],
                 "summary": "Provincia con el id proporcionado",
-                "description": "Devuelve la provincia que se corresponde con el id pasado como parámetro, junto con todas sus localidades.\n",
+                "description": "Devuelve la provincia que se corresponde con el id pasado como par\u00E1metro, junto con todas sus localidades.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1319,7 +1319,7 @@
                     "Localidades"
                 ],
                 "summary": "Localidad con el id proporcionado",
-                "description": "Devuelve la localidad que se corresponde con el id pasado como parámetro.\n",
+                "description": "Devuelve la localidad que se corresponde con el id pasado como par\u00E1metro.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1351,7 +1351,7 @@
                     "Marcas"
                 ],
                 "summary": "Listar Marcas",
-                "description": "El endpoint marcas devuelve información sobre todos las marcas en el sistema. Se listan las marcas sin un orden específico. Se debe contar con permiso para ver marcas.\n",
+                "description": "El endpoint marcas devuelve informaci\u00F3n sobre todos las marcas en el sistema. Se listan las marcas sin un orden espec\u00EDfico. Se debe contar con permiso para ver marcas.\n",
                 "responses": {
                     "200": {
                         "description": "Un array de marcas",
@@ -1398,7 +1398,7 @@
                     "Marcas"
                 ],
                 "summary": "Marca con el id proporcionado",
-                "description": "Devuelve la marca que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver marcas.\n",
+                "description": "Devuelve la marca que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para ver marcas.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1428,7 +1428,7 @@
                     "Marcas"
                 ],
                 "summary": "Actualiza los datos de la marca",
-                "description": "Edita la marca que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar marcas.\n",
+                "description": "Edita la marca que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para editar marcas.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1466,7 +1466,7 @@
                     "Marcas"
                 ],
                 "summary": "Borra una marca",
-                "description": "Borra la marca que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar marcas.\n",
+                "description": "Borra la marca que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para borrar marcas.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1478,7 +1478,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operación realizada con éxito"
+                        "description": "Operaci\u00F3n realizada con \u00E9xito"
                     },
                     "500": {
                         "description": "Error inesperado",
@@ -1494,8 +1494,8 @@
                 "tags": [
                     "Marcas"
                 ],
-                "summary": "Marca con el código proporcionado",
-                "description": "Devuelve la marca que se corresponde con el código pasado como parámetro. Se requiere contar con permiso para ver marcas.\n",
+                "summary": "Marca con el c\u00F3digo proporcionado",
+                "description": "Devuelve la marca que se corresponde con el c\u00F3digo pasado como par\u00E1metro. Se requiere contar con permiso para ver marcas.\n",
                 "parameters": [
                     {
                         "name": "codigo",
@@ -1527,7 +1527,7 @@
                     "Rubros"
                 ],
                 "summary": "Listar Rubros",
-                "description": "El endpoint rubros devuelve información sobre todos los rubros en el sistema. Se listan los rubros sin un orden específico. Se debe contar con permiso para ver rubros.\n",
+                "description": "El endpoint rubros devuelve informaci\u00F3n sobre todos los rubros en el sistema. Se listan los rubros sin un orden espec\u00EDfico. Se debe contar con permiso para ver rubros.\n",
                 "responses": {
                     "200": {
                         "description": "Un array de rubros",
@@ -1574,7 +1574,7 @@
                     "Rubros"
                 ],
                 "summary": "Rubro con el id proporcionado",
-                "description": "Devuelve el rubro que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver rubros.\n",
+                "description": "Devuelve el rubro que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para ver rubros.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1604,7 +1604,7 @@
                     "Rubros"
                 ],
                 "summary": "Actualiza los datos del rubro",
-                "description": "Edita el rubro que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar rubros.\n",
+                "description": "Edita el rubro que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para editar rubros.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1642,7 +1642,7 @@
                     "Rubros"
                 ],
                 "summary": "Borra un rubro",
-                "description": "Borra el rubro que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar rubros.\n",
+                "description": "Borra el rubro que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para borrar rubros.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1654,7 +1654,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operación realizada con éxito"
+                        "description": "Operaci\u00F3n realizada con \u00E9xito"
                     },
                     "500": {
                         "description": "Error inesperado",
@@ -1670,8 +1670,8 @@
                 "tags": [
                     "Rubros"
                 ],
-                "summary": "Rubro con el código proporcionado",
-                "description": "Devuelve el rubro que se corresponde con el código pasado como parámetro. Se requiere contar con permiso para ver rubros.\n",
+                "summary": "Rubro con el c\u00F3digo proporcionado",
+                "description": "Devuelve el rubro que se corresponde con el c\u00F3digo pasado como par\u00E1metro. Se requiere contar con permiso para ver rubros.\n",
                 "parameters": [
                     {
                         "name": "codigo",
@@ -1703,7 +1703,7 @@
                     "Subrubros"
                 ],
                 "summary": "Listar Subrubros",
-                "description": "El endpoint subrubros devuelve información sobre todos los subrubros en el sistema. Se listan los subrubros sin un orden específico. Se debe contar con permiso para ver subrubros.\n",
+                "description": "El endpoint subrubros devuelve informaci\u00F3n sobre todos los subrubros en el sistema. Se listan los subrubros sin un orden espec\u00EDfico. Se debe contar con permiso para ver subrubros.\n",
                 "responses": {
                     "200": {
                         "description": "Un array de subrubros",
@@ -1750,7 +1750,7 @@
                     "Subrubros"
                 ],
                 "summary": "Subrubro con el id proporcionado",
-                "description": "Devuelve el subrubro que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver subrubros.\n",
+                "description": "Devuelve el subrubro que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para ver subrubros.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1780,7 +1780,7 @@
                     "Subrubros"
                 ],
                 "summary": "Actualiza los datos del subrubro",
-                "description": "Edita el subrubro que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar subrubros.\n",
+                "description": "Edita el subrubro que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para editar subrubros.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1818,7 +1818,7 @@
                     "Subrubros"
                 ],
                 "summary": "Borra un subrubro",
-                "description": "Borra el subrubro que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar subrubros.\n",
+                "description": "Borra el subrubro que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para borrar subrubros.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1830,7 +1830,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operación realizada con éxito"
+                        "description": "Operaci\u00F3n realizada con \u00E9xito"
                     },
                     "500": {
                         "description": "Error inesperado",
@@ -1846,8 +1846,8 @@
                 "tags": [
                     "Subrubros"
                 ],
-                "summary": "Subrubro con el código proporcionado",
-                "description": "Devuelve el subrubro que se corresponde con el código pasado como parámetro. Se requiere contar con permiso para ver subrubros.\n",
+                "summary": "Subrubro con el c\u00F3digo proporcionado",
+                "description": "Devuelve el subrubro que se corresponde con el c\u00F3digo pasado como par\u00E1metro. Se requiere contar con permiso para ver subrubros.\n",
                 "parameters": [
                     {
                         "name": "codigo",
@@ -1878,8 +1878,8 @@
                 "tags": [
                     "Parametros"
                 ],
-                "summary": "Listar Parámetros del sistema",
-                "description": "El endpoint parametros devuelve información sobre todos los parametros en el sistema. Se listan los parametros sin un orden específico.\n",
+                "summary": "Listar Par\u00E1metros del sistema",
+                "description": "El endpoint parametros devuelve informaci\u00F3n sobre todos los parametros en el sistema. Se listan los parametros sin un orden espec\u00EDfico.\n",
                 "responses": {
                     "200": {
                         "description": "Un array de parametros",
@@ -1904,8 +1904,8 @@
                 "tags": [
                     "Tipo Categoria Clientes"
                 ],
-                "summary": "Listar tipos de categoría de clientes",
-                "description": "El endpoint tipocategoriaclientes devuelve información sobre todos los tipos de categoria de clientes en el sistema. Se listan sin un orden específico.\n",
+                "summary": "Listar tipos de categor\u00EDa de clientes",
+                "description": "El endpoint tipocategoriaclientes devuelve informaci\u00F3n sobre todos los tipos de categoria de clientes en el sistema. Se listan sin un orden espec\u00EDfico.\n",
                 "responses": {
                     "200": {
                         "description": "Un array de tipocategoriaclientes",
@@ -1931,7 +1931,7 @@
                     "Tipo Comprobantes"
                 ],
                 "summary": "Tipo de comprobante",
-                "description": "Devuelve el tipo de comprobante que se corresponde con la categoría del cliente pasada como parametro y segun si es factura, presupuesto, nota de debito o nota de credito. También se devuelve la fecha del dia anterior al ultimo comprobante del mismo tipo generado.\n",
+                "description": "Devuelve el tipo de comprobante que se corresponde con la categor\u00EDa del cliente pasada como parametro y segun si es factura, presupuesto, nota de debito o nota de credito. Tambi\u00E9n se devuelve la fecha del dia anterior al ultimo comprobante del mismo tipo generado.\n",
                 "parameters": [
                     {
                         "name": "tipo_comprobante",
@@ -1979,7 +1979,7 @@
                     "Vendedores"
                 ],
                 "summary": "Listar Vendedores",
-                "description": "El endpoint vendedores devuelve información sobre todos los vendedores en el sistema. Se listan los vendedores sin un orden específico. Se debe contar con permiso para ver vendedores.\n",
+                "description": "El endpoint vendedores devuelve informaci\u00F3n sobre todos los vendedores en el sistema. Se listan los vendedores sin un orden espec\u00EDfico. Se debe contar con permiso para ver vendedores.\n",
                 "responses": {
                     "200": {
                         "description": "Un array de vendedores",
@@ -2026,7 +2026,7 @@
                     "Vendedores"
                 ],
                 "summary": "Vendedor con el id proporcionado",
-                "description": "Devuelve el vendedor que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver vendedores.\n",
+                "description": "Devuelve el vendedor que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para ver vendedores.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -2056,7 +2056,7 @@
                     "Vendedores"
                 ],
                 "summary": "Actualiza los datos del vendedor",
-                "description": "Edita el vendedor que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar vendedores.\n",
+                "description": "Edita el vendedor que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para editar vendedores.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -2094,7 +2094,7 @@
                     "Vendedores"
                 ],
                 "summary": "Borra un vendedor",
-                "description": "Borra el vendedor que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar vendedores.\n",
+                "description": "Borra el vendedor que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para borrar vendedores.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -2106,7 +2106,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operación realizada con éxito"
+                        "description": "Operaci\u00F3n realizada con \u00E9xito"
                     },
                     "500": {
                         "description": "Error inesperado",
@@ -2123,7 +2123,7 @@
                     "Zonas"
                 ],
                 "summary": "Listar Zonas",
-                "description": "El endpoint zonas devuelve información sobre todos las zonas en el sistema. Se listan las zonas sin un orden específico. Se debe contar con permiso para ver zonas.\n",
+                "description": "El endpoint zonas devuelve informaci\u00F3n sobre todos las zonas en el sistema. Se listan las zonas sin un orden espec\u00EDfico. Se debe contar con permiso para ver zonas.\n",
                 "responses": {
                     "200": {
                         "description": "Un array de zonas",
@@ -2170,7 +2170,7 @@
                     "Zonas"
                 ],
                 "summary": "Zona con el id proporcionado",
-                "description": "Devuelve la zona que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver zonas.\n",
+                "description": "Devuelve la zona que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para ver zonas.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -2200,7 +2200,7 @@
                     "Zonas"
                 ],
                 "summary": "Actualiza los datos de la zona",
-                "description": "Edita la zona que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar zonas.\n",
+                "description": "Edita la zona que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para editar zonas.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -2238,7 +2238,7 @@
                     "Zonas"
                 ],
                 "summary": "Borra una zona",
-                "description": "Borra la zona que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar zonas.\n",
+                "description": "Borra la zona que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para borrar zonas.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -2250,7 +2250,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operación realizada con éxito"
+                        "description": "Operaci\u00F3n realizada con \u00E9xito"
                     },
                     "500": {
                         "description": "Error inesperado",
@@ -2745,7 +2745,7 @@
             "properties": {
                 "error": {
                     "type": "string",
-                    "description": "descripción del error"
+                    "description": "descripci\u00F3n del error"
                 }
             }
         }
