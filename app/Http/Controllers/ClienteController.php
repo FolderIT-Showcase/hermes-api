@@ -108,7 +108,7 @@ class ClienteController extends Controller
     public function showByCode($cod)
     {
         $clientes = Cliente::where('codigo', $cod)->get();
-        if($clientes === null){
+        if($clientes->isEmpty()){
             return response()->json('', 204);
         }
         else return response()->json($clientes);

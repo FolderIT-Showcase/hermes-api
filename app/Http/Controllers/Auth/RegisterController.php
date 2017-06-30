@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Role;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -39,9 +40,11 @@ class RegisterController extends Controller
 
         $newUser = $this->create($request->json()->all());
 
-        return response()->json([
-            'token' => $this->jwtauth->fromUser($newUser)
-        ]);
+        $rol = Role::where('id', $request->rol_id)->first();
+        $newUser->attachRole($rol);
+        $newUser->save();
+
+        return response()->json($newUser->load('roles'));
     }
 
     /**
