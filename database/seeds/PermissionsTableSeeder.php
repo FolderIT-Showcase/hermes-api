@@ -318,5 +318,30 @@ class PermissionsTableSeeder extends Seeder
         $deleteZona->display_name = 'Borrar Zonas';
         $deleteZona->description  = 'Borrar zonas existentes';
         $deleteZona->save();
+
+        //Permisos Usuarios
+        $createUsuario = permission::firstOrNew(array('name' => 'create_usuario'));
+        $createUsuario->name         = 'create_usuario';
+        $createUsuario->display_name = 'Crear Usuarios';
+        $createUsuario->description  = 'Crear nuevos usuarios';
+        $createUsuario->save();
+
+        $editUsuario = permission::firstOrNew(array('name' => 'edit_usuario'));
+        $editUsuario->name         = 'edit_usuario';
+        $editUsuario->display_name = 'Editar Usuarios';
+        $editUsuario->description  = 'Editar usuarios existentes';
+        $editUsuario->save();
+
+        $viewUsuario = permission::firstOrNew(array('name' => 'view_usuario'));
+        $viewUsuario->name         = 'view_usuario';
+        $viewUsuario->display_name = 'Ver Usuarios';
+        $viewUsuario->description  = 'Ver usuarios existentes';
+        $viewUsuario->save();
+
+        $deleteUsuario = permission::firstOrNew(array('name' => 'delete_usuario'));
+        $deleteUsuario->name         = 'delete_usuario';
+        $deleteUsuario->display_name = 'Borrar Usuarios';
+        $deleteUsuario->description  = 'Borrar usuarios existentes';
+        $deleteUsuario->save();
     }
 }

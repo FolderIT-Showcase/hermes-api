@@ -6,7 +6,6 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Validator;
 use JWTAuth;
 
@@ -17,10 +16,10 @@ class UserController extends Controller
     public function __construct(JWTAuth $jwtauth)
     {
         $this->jwtauth = $jwtauth;
-/*        $this->middleware('permission:view_cliente', ['only' => ['index', 'show', 'showByCode', 'showByName', 'showByAll', 'report']]);
-        $this->middleware('permission:create_cliente', ['only' => ['store']]);
-        $this->middleware('permission:edit_cliente', ['only' => ['update']]);
-        $this->middleware('permission:delete_cliente', ['only' => ['destroy']]);*/
+        $this->middleware('permission:view_usuario', ['only' => ['index', 'indexRoles', 'show']]);
+        $this->middleware('permission:create_usuario', ['only' => ['store']]);
+        $this->middleware('permission:edit_usuario', ['only' => ['update']]);
+        $this->middleware('permission:delete_usuario', ['only' => ['destroy']]);
     }
 
     /**
