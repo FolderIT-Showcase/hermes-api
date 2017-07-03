@@ -73,6 +73,9 @@
         },
         {
             "name": "Zonas"
+        },
+        {
+            "name": "Usuarios"
         }
     ],
     "paths": {
@@ -83,12 +86,12 @@
                 ],
                 "security": [],
                 "summary": "Inicio de sesi\u00F3n",
-                "description": "El endpoint login es utilizado para el inicio de sesi\u00F3n de los usuarios  con su email y contrase\u00f1a. La respuesta devuelve un token que es requerido en las llamadas a la API, adem\u00E1s devuelve la informaci\u00F3n del usuario. \n",
+                "description": "El endpoint login es utilizado para el inicio de sesi\u00F3n de los usuarios  con su email y contraseña. La respuesta devuelve un token que es requerido en las llamadas a la API, adem\u00E1s devuelve la informaci\u00F3n del usuario. \n",
                 "parameters": [
                     {
                         "name": "user",
                         "in": "body",
-                        "description": "Email y constrase\u00f1a del usuario a autenticar",
+                        "description": "Email y constraseña del usuario a autenticar",
                         "required": true,
                         "schema": {
                             "type": "object",
@@ -100,7 +103,7 @@
                                 "password": {
                                     "type": "string",
                                     "format": "password",
-                                    "description": "contrase\u00f1a del usuario a autenticar"
+                                    "description": "contraseña del usuario a autenticar"
                                 }
                             }
                         }
@@ -123,7 +126,7 @@
                         }
                     },
                     "401": {
-                        "description": "Usuario o contrase\u00f1a inv\u00E1lidos"
+                        "description": "Usuario o contraseña inv\u00E1lidos"
                     },
                     "500": {
                         "description": "Error del servidor"
@@ -347,7 +350,7 @@
                     "Articulos"
                 ],
                 "summary": "Art\u00EDculos filtrados por los par\u00E1metros",
-                "description": "Devuelve los 10 primeros art\u00EDculos que contienen el string de búsqueda en el campo nombre, codigo, rubro o subrubro del art\u00EDculo. Adem\u00E1s se filtra por marca, rubro y subrubro asociados. Se requiere contar con permiso para ver art\u00EDculos.\n",
+                "description": "Devuelve los 10 primeros art\u00EDculos que contienen el string de b\u00FAsqueda en el campo nombre, codigo, rubro o subrubro del art\u00EDculo. Adem\u00E1s se filtra por marca, rubro y subrubro asociados. Se requiere contar con permiso para ver art\u00EDculos.\n",
                 "parameters": [
                     {
                         "name": "marca",
@@ -611,8 +614,8 @@
                 "tags": [
                     "Clientes"
                 ],
-                "summary": "Clientes filtrados por el par\u00E1metro de búsqueda",
-                "description": "Devuelve los 10 primeros cliente que contiene el string de búsqueda en el campo nombre, codigo, cuit o direcci\u00F3n del cliente. Se requiere contar con permiso para ver clientes.\n",
+                "summary": "Clientes filtrados por el par\u00E1metro de b\u00FAsqueda",
+                "description": "Devuelve los 10 primeros cliente que contiene el string de b\u00FAsqueda en el campo nombre, codigo, cuit o direcci\u00F3n del cliente. Se requiere contar con permiso para ver clientes.\n",
                 "parameters": [
                     {
                         "name": "busqueda",
@@ -921,8 +924,8 @@
                 "tags": [
                     "Comprobantes"
                 ],
-                "summary": "Contador del último comprobante generado",
-                "description": "Devuelve contador que contiene el número del último comprobante generado de ese tipo para ese punto de venta.\n",
+                "summary": "Contador del \u00FAltimo comprobante generado",
+                "description": "Devuelve contador que contiene el n\u00FAmero del \u00FAltimo comprobante generado de ese tipo para ese punto de venta.\n",
                 "parameters": [
                     {
                         "name": "punto_venta",
@@ -1959,10 +1962,154 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Tipo Comprobante y última fecha",
+                        "description": "Tipo Comprobante y \u00FAltima fecha",
                         "schema": {
                             "$ref": "#/definitions/TipoComprobante"
                         }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/usuarios": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Listar Usuarios",
+                "description": "El endpoint usuarios devuelve informaci\u00F3n sobre todos los usuarios en el sistema. Se listan los usuarios sin un orden espec\u00EDfico. Se debe contar con permiso para ver usuarios.\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de usuarios",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Usuario"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Crear nuevo usuario",
+                "description": "Crea un nuevo usuario y lo persiste en la base de datos. Se requiere contar con permiso para crear usuarios.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nuevo usuario creado",
+                        "schema": {
+                            "$ref": "#/definitions/Usuario"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/usuarios/{id}": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Usuario con el id proporcionado",
+                "description": "Devuelve el usuario que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para ver usuarios.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuario",
+                        "schema": {
+                            "$ref": "#/definitions/Usuario"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Actualiza los datos del usuario",
+                "description": "Edita el usuario que se corresponde con el id pasado como par\u00E1metro. Si no se pasa una password, se mantiene la actual. Se requiere contar con permiso para editar usuarios.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "usuario",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Usuario"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuario con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/Usuario"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Borra un usuario",
+                "description": "Borra el usuario que se corresponde con el id pasado como par\u00E1metro. Se requiere contar con permiso para borrar usuarios.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operaci\u00F3n realizada con \u00E9xito"
                     },
                     "500": {
                         "description": "Error inesperado",
@@ -2681,6 +2828,24 @@
                 }
             }
         },
+        "Role": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "display_name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            }
+        },
         "TipoCategoriaClientes": {
             "type": "object",
             "properties": {
@@ -2705,6 +2870,34 @@
                 },
                 "nombre": {
                     "type": "string"
+                }
+            }
+        },
+        "Usuario": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Role"
+                    }
+                },
+                "rol_id": {
+                    "type": "integer",
+                    "format": "int32"
                 }
             }
         },
