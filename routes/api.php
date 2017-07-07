@@ -34,6 +34,11 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         ['only'       => ['index', 'store', 'show', 'update', 'destroy'],
          'parameters' => ['vendedores' => 'vendedor']]);
 
+    Route::get('proveedores/codigo/{cod}', 'ProveedorController@showByCode');
+    Route::resource('proveedores', 'ProveedorController',
+        ['only' => ['index', 'store', 'show', 'update', 'destroy'],
+            'parameters' => ['proveedores' => 'proveedor']]);
+
     Route::get('rubros/codigo/{cod}', 'RubroController@showByCode');
     Route::resource('rubros', 'RubroController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);

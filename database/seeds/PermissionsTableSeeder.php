@@ -36,6 +36,31 @@ class PermissionsTableSeeder extends Seeder
         $deleteCliente->display_name = 'Borrar Clientes';
         $deleteCliente->description  = 'Borrar clientes existentes';
         $deleteCliente->save();
+
+        //Permisos proveedores
+        $createProveedor = permission::firstOrNew(array('name' => 'create_proveedor'));
+        $createProveedor->name          = 'create_proveedor';
+        $createProveedor->display_name  = 'Crear Proveedores';
+        $createProveedor->description   = 'Crear nuevos proveedores';
+        $createProveedor->save();
+
+        $editProveedor = permission::firstOrNew(array('name' => 'edit_proveedor'));
+        $editProveedor->name         = 'edit_proveedor';
+        $editProveedor->display_name = 'Editar Proveedores';
+        $editProveedor->description  = 'Editar proveedores existentes';
+        $editProveedor->save();
+
+        $viewProveedor = permission::firstOrNew(array('name' => 'view_proveedor'));
+        $viewProveedor->name         = 'view_proveedor';
+        $viewProveedor->display_name = 'Ver Proveedores';
+        $viewProveedor->description  = 'Ver proveedores existentes';
+        $viewProveedor->save();
+
+        $deleteProveedor = permission::firstOrNew(array('name' => 'delete_proveedor'));
+        $deleteProveedor->name         = 'delete_proveedor';
+        $deleteProveedor->display_name = 'Borrar Proveedores';
+        $deleteProveedor->description  = 'Borrar proveedores existentes';
+        $deleteProveedor->save();
         
         //Permisos artículos
         $createArticulo = permission::firstOrNew(array('name' => 'create_articulo'));
