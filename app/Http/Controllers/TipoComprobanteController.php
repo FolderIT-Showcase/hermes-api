@@ -8,6 +8,17 @@ use Carbon\Carbon;
 
 class TipoComprobanteController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return response()->json(TipoComprobante::all());
+    }
+
     /**
      * Display the specified resource.
      *

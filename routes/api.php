@@ -68,12 +68,16 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
     Route::get('tipocomprobantes/{tipo_comprobante}/{cod}', 'TipoComprobanteController@showByTipoResponsable');
+    Route::resource('tipocomprobantes', 'TipoComprobanteController',
+        ['only' => ['index']]);
 
     Route::get('contadores/{punto_venta}/{tipo_comprobante_id}', 'ContadorController@showByPuntoVentaTipoComprobante');
 
     Route::get('comprobantes/presupuestos', 'ComprobanteController@indexPresupuestos');
     Route::get('comprobantes/presupuestos/imprimir/{comprobante_id}', 'ComprobanteController@imprimirPresupuesto');
     Route::get('comprobantes/presupuestos/mail/{comprobante_id}', 'ComprobanteController@enviarMailPresupuesto');
+    Route::get('comprobantes/facturas/imprimir/{comprobante_id}', 'ComprobanteController@imprimirFactura');
+    Route::get('comprobantes/buscar', 'ComprobanteController@showByTypeDate');
     Route::resource('comprobantes', 'ComprobanteController',
         ['only' => ['store', 'show', 'update', 'destroy']]);
 

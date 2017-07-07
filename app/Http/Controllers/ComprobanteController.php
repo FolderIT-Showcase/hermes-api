@@ -7,11 +7,13 @@ use App\Comprobante;
 use App\ComproItem;
 use App\Contador;
 use App\Parametro;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use JasperPHP\JasperPHP as JasperPHP;
+use Illuminate\Http\Request;
 
 class ComprobanteController extends Controller
 {
@@ -22,7 +24,7 @@ class ComprobanteController extends Controller
         $this->middleware('permission:edit_presupuesto', ['only' => ['update']]);
         $this->middleware('permission:delete_presupuesto', ['only' => ['destroy']]);
 
-        $this->middleware('permission:view_factura', ['only' => ['show']]);
+        $this->middleware('permission:view_factura', ['only' => ['show', 'imprimirFactura', 'generarPDFFactura']]);
         $this->middleware('permission:create_factura', ['only' => ['store']]);
         $this->middleware('permission:edit_factura', ['only' => ['update']]);
         $this->middleware('permission:delete_factura', ['only' => ['destroy']]);
@@ -208,5 +210,80 @@ class ComprobanteController extends Controller
         )->execute();
 
         return $output_path;
+    }
+
+    /**
+     * Generate report
+     * @param $comprobante_id
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function imprimirFactura($comprobante_id)
+    {
+        $output_path = $this->generarPDFFactura($comprobante_id);
+        return response()->download($output_path . '.pdf', 'factura_' . $comprobante_id . '.pdf')->deleteFileAfterSend(true);
+    }
+
+    private function generarPDFFactura($comprobante_id)
+    {
+        $jasper = new JasperPHP;
+
+        $IMAGE_DIR = base_path() . "/resources/assets/img/";
+        $COMPROBANTE_ID = '"' . $comprobante_id . '"';
+        $output_path = base_path() . '/resources/assets/reports/tmp/factura' . $comprobante_id . time();
+        $EMPRESA_NOMBRE = '"' . Parametro::where('nombre', 'EMPRESA_NOMBRE')->first()->valor . '"';
+        $EMPRESA_DOMICILIO = '"' . Parametro::where('nombre', 'EMPRESA_DOMICILIO')->first()->valor . '"';
+        $EMPRESA_CUIT = '"' . Parametro::where('nombre', 'EMPRESA_CUIT')->first()->valor . '"';
+        $EMPRESA_TIPO_RESP = '"' . Parametro::where('nombre', 'EMPRESA_TIPO_RESP')->first()->valor . '"';
+        $domicilioCliente = Comprobante::where('id', $comprobante_id)->first()->cliente->domicilios[0];
+        $CLIENTE_DOMICILIO = '"' . $domicilioCliente->direccion . ' - '
+            . $domicilioCliente->localidad->nombre . ' , '
+            . $domicilioCliente->localidad->provincia->nombre . '"';
+        $jasper->process(
+            base_path() . '/resources/assets/reports/factura.jasper',
+            $output_path,
+            array("pdf"),
+            array("IMAGE_DIR" => $IMAGE_DIR,
+                  "COMPROBANTE_ID" => $COMPROBANTE_ID,
+                  "EMPRESA_NOMBRE" => $EMPRESA_NOMBRE,
+                  "EMPRESA_DIRECCION" => $EMPRESA_DOMICILIO,
+                  "EMPRESA_CUIT" => $EMPRESA_CUIT,
+                  "EMPRESA_TIPO_RESP" => $EMPRESA_TIPO_RESP,
+                  "CLIENTE_DOMICILIO" => $CLIENTE_DOMICILIO
+            ),
+            Config::get('database.connections.mysql')
+        )->execute();
+
+        return $output_path;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     * @internal param CtaCteCliente $ctaCteCliente
+     */
+    public function showByTypeDate(Request $request)
+    {
+        $tipo = $request->input('tipo_comprobante', '0');
+        $fecha_inicio = $request->input('fecha_inicio', Carbon::create(1928, 1, 1, 0, 0, 0)->format('yyyy-MM-dd'));
+        $fecha_fin = $request->input('fecha_fin', Carbon::today()->format('yyyy-MM-dd'));
+
+        if($tipo !== '0') {
+            $comprobantes = Comprobante::where('tipo_comprobante_id', $tipo)
+                ->whereBetween('fecha', [$fecha_inicio, $fecha_fin])
+                ->orderBy('fecha', 'ASC')
+                ->orderBy('updated_at', 'ASC')
+                ->with('tipo_comprobante')
+                ->get();
+        } else {
+            $comprobantes = Comprobante::whereBetween('fecha', [$fecha_inicio, $fecha_fin])
+                ->orderBy('fecha', 'ASC')
+                ->orderBy('updated_at', 'ASC')
+                ->with('tipo_comprobante')
+                ->get();
+        }
+
+        return response()->json($comprobantes);
     }
 }
