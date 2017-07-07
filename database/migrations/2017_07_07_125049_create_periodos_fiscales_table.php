@@ -16,7 +16,7 @@ class CreatePeriodosFiscalesTable extends Migration
         Schema::create('periodos_fiscales', function (Blueprint $table) {
             $table->increments('id');
 			$table->integer('mes');
-            $table->string('anio');
+            $table->integer('anio');
             $table->boolean('abierto');
 			$table->timestamps();	
         });
