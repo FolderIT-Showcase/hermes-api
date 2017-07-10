@@ -19,22 +19,22 @@ class ComprobanteController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:view_presupuesto', ['only' => ['indexPresupuestos', 'show', 'imprimirPresupuesto', 'generarPDFPresupuesto', 'enviarMailPresupuesto']]);
+        $this->middleware('permission:view_presupuesto', ['only' => ['indexPresupuestos', 'show', 'imprimir', 'generarPDFPresupuesto', 'enviarMailPresupuesto', 'showByTypeDate']]);
         $this->middleware('permission:create_presupuesto', ['only' => ['store']]);
         $this->middleware('permission:edit_presupuesto', ['only' => ['update']]);
         $this->middleware('permission:delete_presupuesto', ['only' => ['destroy']]);
 
-        $this->middleware('permission:view_factura', ['only' => ['show', 'imprimirFactura', 'generarPDFFactura']]);
+        $this->middleware('permission:view_factura', ['only' => ['show', 'imprimir', 'generarPDFFactura', 'showByTypeDate']]);
         $this->middleware('permission:create_factura', ['only' => ['store']]);
         $this->middleware('permission:edit_factura', ['only' => ['update']]);
         $this->middleware('permission:delete_factura', ['only' => ['destroy']]);
 
-        $this->middleware('permission:view_nota_debito', ['only' => ['show']]);
+        $this->middleware('permission:view_nota_debito', ['only' => ['show', 'imprimir', 'generarPDFNotaCreditoDebito', 'showByTypeDate']]);
         $this->middleware('permission:create_nota_debito', ['only' => ['store']]);
         $this->middleware('permission:edit_nota_debito', ['only' => ['update']]);
         $this->middleware('permission:delete_nota_debito', ['only' => ['destroy']]);
 
-        $this->middleware('permission:view_nota_credito', ['only' => ['show']]);
+        $this->middleware('permission:view_nota_credito', ['only' => ['show', 'imprimir', 'generarPDFNotaCreditoDebito', 'showByTypeDate']]);
         $this->middleware('permission:create_nota_credito', ['only' => ['store']]);
         $this->middleware('permission:edit_nota_credito', ['only' => ['update']]);
         $this->middleware('permission:delete_nota_credito', ['only' => ['destroy']]);
@@ -151,18 +151,6 @@ class ComprobanteController extends Controller
      * @param $comprobante_id
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function imprimirPresupuesto($comprobante_id)
-    {
-        $output_path = $this->generarPDFPresupuesto($comprobante_id);
-
-        return response()->download($output_path . '.pdf', 'presupuesto_' . $comprobante_id . '.pdf')->deleteFileAfterSend(true);
-    }
-
-    /**
-     * Generate report
-     * @param $comprobante_id
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-     */
     public function enviarMailPresupuesto($comprobante_id)
     {
         $output_path = $this->generarPDFPresupuesto($comprobante_id);
@@ -182,6 +170,32 @@ class ComprobanteController extends Controller
         File::delete($output_path . '.pdf');
 
         return response()->json('ok');
+    }
+
+    /**
+     * Generate report
+     * @param $comprobante_id
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function imprimir($comprobante_id)
+    {
+        $comprobante = Comprobante::where('id', $comprobante_id)->first();
+        $cod_tipo_comprobante = $comprobante->tipo_comprobante->codigo;
+        $output_path = '';
+        switch (substr($cod_tipo_comprobante, 0 , 2)){
+            case 'FC':
+                $output_path = $this->generarPDFFactura($comprobante_id);
+                break;
+            case 'ND':
+            case 'NC':
+                $output_path = $this->generarPDFNotaCreditoDebito($comprobante_id);
+                break;
+            case 'PR':
+                $output_path = $this->generarPDFPresupuesto($comprobante_id);
+                break;
+        }
+
+        return response()->download($output_path . '.pdf', 'comprobante' . $comprobante_id . '.pdf')->deleteFileAfterSend(true);
     }
 
     private function generarPDFPresupuesto($comprobante_id)
@@ -212,17 +226,6 @@ class ComprobanteController extends Controller
         return $output_path;
     }
 
-    /**
-     * Generate report
-     * @param $comprobante_id
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-     */
-    public function imprimirFactura($comprobante_id)
-    {
-        $output_path = $this->generarPDFFactura($comprobante_id);
-        return response()->download($output_path . '.pdf', 'factura_' . $comprobante_id . '.pdf')->deleteFileAfterSend(true);
-    }
-
     private function generarPDFFactura($comprobante_id)
     {
         $jasper = new JasperPHP;
@@ -249,6 +252,43 @@ class ComprobanteController extends Controller
                   "EMPRESA_CUIT" => $EMPRESA_CUIT,
                   "EMPRESA_TIPO_RESP" => $EMPRESA_TIPO_RESP,
                   "CLIENTE_DOMICILIO" => $CLIENTE_DOMICILIO
+            ),
+            Config::get('database.connections.mysql')
+        )->execute();
+
+        return $output_path;
+    }
+
+    private function generarPDFNotaCreditoDebito($comprobante_id)
+    {
+        $jasper = new JasperPHP;
+
+        $comprobante = Comprobante::where('id', $comprobante_id)->first();
+
+        $IMAGE_DIR = base_path() . "/resources/assets/img/";
+        $COMPROBANTE_ID = '"' . $comprobante_id . '"';
+        $output_path = base_path() . '/resources/assets/reports/tmp/nota_debito_credito' . $comprobante_id . time();
+        $EMPRESA_NOMBRE = '"' . Parametro::where('nombre', 'EMPRESA_NOMBRE')->first()->valor . '"';
+        $EMPRESA_DOMICILIO = '"' . Parametro::where('nombre', 'EMPRESA_DOMICILIO')->first()->valor . '"';
+        $EMPRESA_CUIT = '"' . Parametro::where('nombre', 'EMPRESA_CUIT')->first()->valor . '"';
+        $EMPRESA_TIPO_RESP = '"' . Parametro::where('nombre', 'EMPRESA_TIPO_RESP')->first()->valor . '"';
+        $domicilioCliente = $comprobante->cliente->domicilios[0];
+        $CLIENTE_DOMICILIO = '"' . $domicilioCliente->direccion . ' - '
+            . $domicilioCliente->localidad->nombre . ' , '
+            . $domicilioCliente->localidad->provincia->nombre . '"';
+        $TITULO = '"' . ((strpos($comprobante->tipo_comprobante->codigo, 'ND') !== false)? "NOTA DE DÉBITO": "NOTA DE CRÉDITO") . '"';
+        $jasper->process(
+            base_path() . '/resources/assets/reports/nota_debito_credito.jasper',
+            $output_path,
+            array("pdf"),
+            array("IMAGE_DIR" => $IMAGE_DIR,
+                  "COMPROBANTE_ID" => $COMPROBANTE_ID,
+                  "EMPRESA_NOMBRE" => $EMPRESA_NOMBRE,
+                  "EMPRESA_DIRECCION" => $EMPRESA_DOMICILIO,
+                  "EMPRESA_CUIT" => $EMPRESA_CUIT,
+                  "EMPRESA_TIPO_RESP" => $EMPRESA_TIPO_RESP,
+                  "CLIENTE_DOMICILIO" => $CLIENTE_DOMICILIO,
+                  "TITULO" => $TITULO
             ),
             Config::get('database.connections.mysql')
         )->execute();
