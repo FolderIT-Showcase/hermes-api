@@ -97,4 +97,8 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('roles', 'UserController@indexRoles');
     Route::resource('usuarios', 'UserController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+
+    Route::resource('periodosfiscales', 'PeriodoFiscalController',
+        ['only' => ['index', 'show', 'store', 'update', 'destroy'],
+            'parameters' => ['periodosfiscales' => 'periodofiscal']]);
 });
