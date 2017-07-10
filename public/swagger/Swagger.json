@@ -832,6 +832,41 @@
                 }
             }
         },
+        "/comprobantes/facturas/imprimir/{comprobante_id}": {
+            "get": {
+                "tags": [
+                    "Comprobantes"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "summary": "Factura como pdf",
+                "description": "Devuelve un reporte en pdf con la factura que corresponde al id pasado como parámetro. Se requiere contar con permiso para ver facturas.\n",
+                "parameters": [
+                    {
+                        "name": "comprobante_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
         "/comprobantes/presupuestos": {
             "get": {
                 "tags": [
