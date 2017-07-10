@@ -69,6 +69,9 @@
             "name": "Parametros"
         },
         {
+            "name": "Periodos Fiscales"
+        },
+        {
             "name": "Tipo Categoria Clientes"
         },
         {
@@ -2589,6 +2592,150 @@
                     }
                 }
             }
+        },
+        "/periodosfiscales": {
+            "get": {
+                "tags": [
+                    "Periodos Fiscales"
+                ],
+                "summary": "Listar Periodos Fiscales",
+                "description": "El endpoint de periodos fiscales devuelve una lista con todos los periodos fiscales en el sistema, incluyendo todos los detalles de los mismos. Se listan sin un orden específico. Se debe contar con permiso para verlos\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de periodos fiscales",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/PeriodoFiscal"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Periodos Fiscales"
+                ],
+                "summary": "Crear nuevo periodo fiscal",
+                "description": "Crea un nuevo periodo fiscal y lo persiste en la base de datos. Se requiere contar con los permisos necesarios para hacer dicha tarea\n",
+                "responses": {
+                    "200": {
+                        "description": "Nuevo periodo fiscal creado",
+                        "schema": {
+                            "$ref": "#/definitions/PeriodoFiscal"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/periodosfiscales/{id}": {
+            "get": {
+                "tags": [
+                    "Periodos Fiscales"
+                ],
+                "summary": "Periodo Fiscal con el id proporcionado",
+                "description": "Devuelve el periodo fiscal que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver periodos fiscales.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Periodo fiscal",
+                        "schema": {
+                            "$ref": "#/definitions/PeriodoFiscal"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Periodos Fiscales"
+                ],
+                "summary": "Actualiza los datos del periodo fiscal",
+                "description": "Edita el periodo fiscal que se corresponde con el id pasado como parámetro. Se requiere contar con los permisos para editar.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "periodo fiscal",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PeriodoFiscal"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Periodo fiscal con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/PeriodoFiscal"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Periodos Fiscales"
+                ],
+                "summary": "Borra un periodo fiscal",
+                "description": "Borra el periodo fiscal que se corresponde con el id pasado como parámetro. Se requiere contar con el respectivo permiso para eliminar.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -3007,6 +3154,24 @@
                 },
                 "data_type": {
                     "type": "string"
+                }
+            }
+        },
+        "PeriodoFiscal": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "mes": {
+                    "type": "string"
+                },
+                "anio": {
+                    "type": "string"
+                },
+                "abierto": {
+                    "type": "boolean"
                 }
             }
         },
