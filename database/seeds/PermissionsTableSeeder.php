@@ -368,5 +368,30 @@ class PermissionsTableSeeder extends Seeder
         $deleteUsuario->display_name = 'Borrar Usuarios';
         $deleteUsuario->description  = 'Borrar usuarios existentes';
         $deleteUsuario->save();
+
+        //Permisos PeriodoFiscal
+        $createPeriodoFiscal = permission::firstOrNew(array('name' => 'create_periodoFiscal'));
+        $createPeriodoFiscal->name         = 'create_periodoFiscal';
+        $createPeriodoFiscal->display_name = 'Crear Periodo Fiscal';
+        $createPeriodoFiscal->description  = 'Crear nuevo periodo fiscal';
+        $createPeriodoFiscal->save();
+
+        $editPeriodoFiscal = permission::firstOrNew(array('name' => 'edit_periodoFiscal'));
+        $editPeriodoFiscal->name         = 'edit_periodoFiscal';
+        $editPeriodoFiscal->display_name = 'Editar Periodo Fiscal';
+        $editPeriodoFiscal->description  = 'Editar periodo fiscal existente';
+        $editPeriodoFiscal->save();
+
+        $viewPeriodoFiscal = permission::firstOrNew(array('name' => 'view_periodoFiscal'));
+        $viewPeriodoFiscal->name         = 'view_periodoFiscal';
+        $viewPeriodoFiscal->display_name = 'Ver Periodo Fiscal';
+        $viewPeriodoFiscal->description  = 'Ver periodos fiscales existentes';
+        $viewPeriodoFiscal->save();
+
+        $deletePeriodoFiscal = permission::firstOrNew(array('name' => 'delete_periodoFiscal'));
+        $deletePeriodoFiscal->name         = 'delete_periodoFiscal';
+        $deletePeriodoFiscal->display_name = 'Borrar Periodo Fiscal';
+        $deletePeriodoFiscal->description  = 'Borrar periodo fiscal existente';
+        $deletePeriodoFiscal->save();
     }
 }
