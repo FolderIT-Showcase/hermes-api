@@ -78,6 +78,9 @@
             "name": "Tipo Comprobantes"
         },
         {
+            "name": "Tipo Retenciones"
+        },
+        {
             "name": "Zonas"
         },
         {
@@ -822,41 +825,6 @@
                 "responses": {
                     "200": {
                         "description": "Operación realizada con éxito"
-                    },
-                    "500": {
-                        "description": "Error inesperado",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                }
-            }
-        },
-        "/comprobantes/facturas/imprimir/{comprobante_id}": {
-            "get": {
-                "tags": [
-                    "Comprobantes"
-                ],
-                "produces": [
-                    "application/pdf"
-                ],
-                "summary": "Factura como pdf",
-                "description": "Devuelve un reporte en pdf con la factura que corresponde al id pasado como parámetro. Se requiere contar con permiso para ver facturas.\n",
-                "parameters": [
-                    {
-                        "name": "comprobante_id",
-                        "in": "path",
-                        "required": true,
-                        "type": "number",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "PDF",
-                        "schema": {
-                            "type": "file"
-                        }
                     },
                     "500": {
                         "description": "Error inesperado",
@@ -2771,6 +2739,150 @@
                     }
                 }
             }
+        },
+        "/tiporetenciones": {
+            "get": {
+                "tags": [
+                    "Tipo Retenciones"
+                ],
+                "summary": "Listar Tipos de Retenciones",
+                "description": "El endpoint de tipos de retenciones devuelve una lista con todos los tipos de retencion en el sistema, incluyendo todos los detalles de los mismos. Se listan sin un orden específico. Se debe contar con permiso para verlos\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de tipos de retenciones",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/TipoRetencion"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tipo Retenciones"
+                ],
+                "summary": "Crear nuevo tipo de retencion",
+                "description": "Crea un nuevo tipo de retencion y lo persiste en la base de datos. Se requiere contar con los permisos necesarios para hacer dicha tarea\n",
+                "responses": {
+                    "200": {
+                        "description": "Nuevo tipo de retencion creado",
+                        "schema": {
+                            "$ref": "#/definitions/TipoRetencion"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/tiporetenciones/{id}": {
+            "get": {
+                "tags": [
+                    "Tipo Retenciones"
+                ],
+                "summary": "Tipo de Retencion con el id proporcionado",
+                "description": "Devuelve el tipo de retencion que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver periodos fiscales.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tipo Retencion",
+                        "schema": {
+                            "$ref": "#/definitions/TipoRetencion"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Tipo Retenciones"
+                ],
+                "summary": "Actualiza los datos del tipo de retencion",
+                "description": "Edita el tipo de retencion que se corresponde con el id pasado como parámetro. Se requiere contar con los permisos para editar.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "tipo de retencion",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TipoRetencion"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tipo de retencion con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/TipoRetencion"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tipo Retenciones"
+                ],
+                "summary": "Borra un periodo fiscal",
+                "description": "Borra el tipo de retencion que se corresponde con el id pasado como parámetro. Se requiere contar con el respectivo permiso para eliminar.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -3297,6 +3409,22 @@
                 },
                 "nombre": {
                     "type": "string"
+                }
+            }
+        },
+        "TipoRetencion": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "alicuota": {
+                    "type": "number",
+                    "format": "double"
                 }
             }
         },

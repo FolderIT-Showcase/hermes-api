@@ -101,4 +101,8 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('periodosfiscales', 'PeriodoFiscalController',
         ['only' => ['index', 'show', 'store', 'update', 'destroy'],
             'parameters' => ['periodosfiscales' => 'periodofiscal']]);
+
+    Route::resource('tiporetenciones', 'TipoRetencionController',
+        ['only' => ['index', 'show', 'store', 'update', 'destroy'],
+            'parameters' => ['tiporetenciones' => 'tiporetencion']]);
 });
