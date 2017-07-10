@@ -204,11 +204,15 @@ class ComprobanteController extends Controller
 
         $IMAGE_DIR = base_path() . "/resources/assets/img/";
         $COMPROBANTE_ID = '"' . $comprobante_id . '"';
-        $output_path = base_path() . '/resources/assets/reports/tmp/presupuesto' . $comprobante_id . time();
+        $output_path = base_path() . '/resources/assets/reports/tmp/factura' . $comprobante_id . time();
         $EMPRESA_NOMBRE = '"' . Parametro::where('nombre', 'EMPRESA_NOMBRE')->first()->valor . '"';
         $EMPRESA_DOMICILIO = '"' . Parametro::where('nombre', 'EMPRESA_DOMICILIO')->first()->valor . '"';
         $EMPRESA_CUIT = '"' . Parametro::where('nombre', 'EMPRESA_CUIT')->first()->valor . '"';
         $EMPRESA_TIPO_RESP = '"' . Parametro::where('nombre', 'EMPRESA_TIPO_RESP')->first()->valor . '"';
+        $domicilioCliente = Comprobante::where('id', $comprobante_id)->first()->cliente->domicilios[0];
+        $CLIENTE_DOMICILIO = '"' . $domicilioCliente->direccion . ' - '
+            . $domicilioCliente->localidad->nombre . ' , '
+            . $domicilioCliente->localidad->provincia->nombre . '"';
         $jasper->process(
             base_path() . '/resources/assets/reports/presupuesto.jasper',
             $output_path,
@@ -219,6 +223,7 @@ class ComprobanteController extends Controller
                   "EMPRESA_DIRECCION" => $EMPRESA_DOMICILIO,
                   "EMPRESA_CUIT" => $EMPRESA_CUIT,
                   "EMPRESA_TIPO_RESP" => $EMPRESA_TIPO_RESP,
+                  "CLIENTE_DOMICILIO" => $CLIENTE_DOMICILIO
             ),
             Config::get('database.connections.mysql')
         )->execute();

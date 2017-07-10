@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-07-10T10:00:26 -->
+<!-- 2017-07-10T11:27:38 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Factura" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Hermes"/>
@@ -77,7 +77,7 @@ from parametros]]>
 		<defaultValueExpression><![CDATA["www.hermesweb.com"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPROBANTE_ID" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA[115]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[107]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IMAGE_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["../img/"]]></defaultValueExpression>
