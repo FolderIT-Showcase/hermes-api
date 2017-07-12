@@ -139,7 +139,7 @@ class UserController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:users',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
         ]);
@@ -154,7 +154,7 @@ class UserController extends Controller
     protected function validatorUpdateNoPass(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:users,name,'.$data['id'],
             'email' => 'required|email|max:255|unique:users,email,'.$data['id'],
         ]);
     }
@@ -168,7 +168,7 @@ class UserController extends Controller
     protected function validatorUpdate(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:users,name,'.$data['id'],
             'email' => 'required|email|max:255|unique:users,email,'.$data['id'],
             'password' => 'required|min:6',
         ]);

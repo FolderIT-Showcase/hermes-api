@@ -33,7 +33,7 @@ class LoginController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => 'Ha ocurrido un error'], 500);
         }
-        $user = User::where('email', $credentials['email'])->first();
+        $user = $this->jwtauth->toUser($token);
 
         return response()->json(['token'=>$token, 'user'=>$user]);
     }
