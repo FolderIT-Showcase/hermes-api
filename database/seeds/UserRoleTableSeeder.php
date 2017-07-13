@@ -15,7 +15,7 @@ class UserRoleTableSeeder extends Seeder
     {
         $user = User::where('name', '=', 'admin')->first();
         if($user !== null){
-            $user->detachRole(Role::where('name', 'admin')->first());
+            $user->detachRoles();
             $user->attachRole(Role::where('name', 'admin')->first());
         } else {
             $newUser = new User;
@@ -23,7 +23,7 @@ class UserRoleTableSeeder extends Seeder
             $newUser->email = 'admin@folderit.net';
             $newUser->password = bcrypt('admin');
             $newUser->save();
-            $newUser->attachRole(Role::where('name', 'dev')->first());
+            $newUser->attachRole(Role::where('name', 'admin')->first());
         }
     }
 }
