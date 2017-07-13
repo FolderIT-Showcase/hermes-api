@@ -23,7 +23,7 @@ class UserRoleTableSeeder extends Seeder
             $newUser->email = 'admin@folderit.net';
             $newUser->password = bcrypt('admin');
             $newUser->save();
-            $newUser->attachRole(Role::where('name', 'dev')->first());
+            $newUser->attachRole(Role::where('name', 'admin')->first());
         }
     }
 }
