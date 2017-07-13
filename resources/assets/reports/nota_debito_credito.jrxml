@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-07-10T11:27:38 -->
+<!-- 2017-07-13T11:29:36 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Factura" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Hermes"/>
@@ -77,7 +77,7 @@ from parametros]]>
 		<defaultValueExpression><![CDATA["www.hermesweb.com"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPROBANTE_ID" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA[107]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[118]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IMAGE_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["../img/"]]></defaultValueExpression>
@@ -473,7 +473,10 @@ WHERE
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($F{importe_neto})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[IF(RIGHT($F{tc_nombre}).equals("A"), 
+	new java.text.DecimalFormat("#,##0.00").format($F{importe_neto}), 
+	new java.text.DecimalFormat("#,##0.00").format($F{c_importe_total})
+)]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -496,8 +499,8 @@ WHERE
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[IF($F{importe_iva}.equals(new BigDecimal("0.00")), "",
-	new java.text.DecimalFormat("$ #,##0.00").format($F{importe_neto}).toString()
+				<textFieldExpression><![CDATA[IF(RIGHT($F{tc_nombre}).equals("A"),
+	new java.text.DecimalFormat("$ #,##0.00").format($F{importe_neto}).toString(), ""
 )]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -514,7 +517,7 @@ WHERE
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[IF($F{importe_iva}.equals(new BigDecimal("0.00")), "", "Subtotal:")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[IF(RIGHT($F{tc_nombre}).equals("A"), "Subtotal:", "")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="334" y="26" width="103" height="19" backcolor="#FFFFFF" uuid="7fd5bd5b-bb30-42d4-acdc-230cb2c34bb7">
@@ -530,7 +533,7 @@ WHERE
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[IF($F{importe_iva} .equals(new BigDecimal("0.00")), "", "IVA:")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[IF(RIGHT($F{tc_nombre}).equals("A"), "IVA:", "")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="437" y="26" width="116" height="19" backcolor="#FFFFFF" uuid="30ef5f1a-a1dd-484d-8183-5ab82cbb11e3">
@@ -546,7 +549,7 @@ WHERE
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[IF($F{importe_iva}.equals(new BigDecimal("0.00")), "", new java.text.DecimalFormat("$ #,##0.00").format($F{importe_iva}).toString())]]></textFieldExpression>
+				<textFieldExpression><![CDATA[IF(RIGHT($F{tc_nombre}).equals("A"), new java.text.DecimalFormat("$ #,##0.00").format($F{importe_iva}).toString(), "")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement mode="Opaque" x="437" y="45" width="116" height="19" backcolor="#FFFFFF" uuid="5242a900-d768-4d58-9a88-8cee3b56255f">

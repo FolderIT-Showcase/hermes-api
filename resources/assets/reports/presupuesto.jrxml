@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-07-10T11:35:17 -->
+<!-- 2017-07-13T11:43:18 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Factura" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Hermes"/>
@@ -77,7 +77,7 @@ from parametros]]>
 		<defaultValueExpression><![CDATA["www.hermesweb.com"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPROBANTE_ID" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA[115]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[122]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IMAGE_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["../img/"]]></defaultValueExpression>
@@ -99,8 +99,8 @@ from parametros]]>
 		<defaultValueExpression><![CDATA["Rivadavia 3355 - Santa Fe, Santa Fe"]]></defaultValueExpression>
 	</parameter>
 	<queryString language="SQL">
-		<![CDATA[SELECT ci.cantidad, ci.importe_unitario, ci.importe_total,
-			 c.importe_iva, c.importe_neto, c.importe_total as c_importe_total, 
+		<![CDATA[SELECT ci.cantidad, ci.importe_unitario, ci.importe_total, ci.importe_neto,
+			 c.importe_iva, c.importe_neto as c_importe_neto, c.importe_total as c_importe_total, 
 			 a.codigo, a.nombre, c.fecha, c.numero, c.cliente_nombre,
 			 tc.nombre as tc_nombre, c.punto_venta, c.cliente_cuit,
 			 c.cliente_tipo_resp
@@ -117,8 +117,9 @@ WHERE
 	<field name="cantidad" class="java.lang.Integer"/>
 	<field name="importe_unitario" class="java.math.BigDecimal"/>
 	<field name="importe_total" class="java.math.BigDecimal"/>
-	<field name="importe_iva" class="java.math.BigDecimal"/>
 	<field name="importe_neto" class="java.math.BigDecimal"/>
+	<field name="importe_iva" class="java.math.BigDecimal"/>
+	<field name="c_importe_neto" class="java.math.BigDecimal"/>
 	<field name="c_importe_total" class="java.math.BigDecimal"/>
 	<field name="codigo" class="java.lang.String"/>
 	<field name="nombre" class="java.lang.String"/>
@@ -594,7 +595,10 @@ WHERE
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($F{importe_total})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[IF($F{cliente_tipo_resp}.equals("RI"), 
+	new java.text.DecimalFormat("#,##0.00").format($F{importe_neto}),
+	new java.text.DecimalFormat("#,##0.00").format($F{importe_total})
+	)]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="350" y="0" width="50" height="19" uuid="aaa127f1-4bbc-4929-ad91-f85b93af039d">
@@ -645,8 +649,8 @@ WHERE
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[IF($F{importe_iva}.equals(new BigDecimal("0.00")), "",
-	new java.text.DecimalFormat("$ #,##0.00").format($F{importe_neto}).toString()
+				<textFieldExpression><![CDATA[IF($F{cliente_tipo_resp}.equals("RI"),
+	new java.text.DecimalFormat("$ #,##0.00").format($F{c_importe_neto}).toString(), ""
 )]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -663,7 +667,7 @@ WHERE
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[IF($F{importe_iva}.equals(new BigDecimal("0.00")), "", "Subtotal:")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[IF($F{cliente_tipo_resp}.equals("RI"), "Subtotal:", "")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="334" y="26" width="103" height="19" backcolor="#FFFFFF" uuid="7fd5bd5b-bb30-42d4-acdc-230cb2c34bb7">
@@ -679,7 +683,7 @@ WHERE
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[IF($F{importe_iva} .equals(new BigDecimal("0.00")), "", "IVA:")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[IF($F{cliente_tipo_resp}.equals("RI"), "IVA:", "")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="437" y="26" width="116" height="19" backcolor="#FFFFFF" uuid="30ef5f1a-a1dd-484d-8183-5ab82cbb11e3">
@@ -695,7 +699,7 @@ WHERE
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[IF($F{importe_iva}.equals(new BigDecimal("0.00")), "", new java.text.DecimalFormat("$ #,##0.00").format($F{importe_iva}).toString())]]></textFieldExpression>
+				<textFieldExpression><![CDATA[IF($F{cliente_tipo_resp}.equals("RI"), new java.text.DecimalFormat("$ #,##0.00").format($F{importe_iva}).toString(), "")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement mode="Opaque" x="437" y="45" width="116" height="19" backcolor="#FFFFFF" uuid="5242a900-d768-4d58-9a88-8cee3b56255f">
