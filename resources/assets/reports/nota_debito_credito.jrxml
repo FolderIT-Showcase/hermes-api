@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-07-13T11:45:03 -->
+<!-- 2017-07-13T11:29:36 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Factura" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Hermes"/>
@@ -77,7 +77,7 @@ from parametros]]>
 		<defaultValueExpression><![CDATA["www.hermesweb.com"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPROBANTE_ID" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA[122]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[118]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IMAGE_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["../img/"]]></defaultValueExpression>
@@ -98,31 +98,25 @@ from parametros]]>
 		<parameterDescription><![CDATA[]]></parameterDescription>
 		<defaultValueExpression><![CDATA["Rivadavia 3355 - Santa Fe, Santa Fe"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="TITULO" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["NOTA DE DÉBITO"]]></defaultValueExpression>
+	</parameter>
 	<queryString language="SQL">
-		<![CDATA[SELECT ci.cantidad, ci.importe_unitario, ci.importe_total, ci.importe_neto,
-			 c.importe_iva, c.importe_neto as c_importe_neto, c.importe_total as c_importe_total, 
-			 a.codigo, a.nombre, c.fecha, c.numero, c.cliente_nombre,
+		<![CDATA[SELECT c.importe_iva, c.importe_neto, c.importe_total as c_importe_total, 
+			 c.fecha, c.numero, c.cliente_nombre,
 			 tc.nombre as tc_nombre, c.punto_venta, c.cliente_cuit,
 			 c.cliente_tipo_resp
-FROM compro_items ci,
-	articulos a,
+FROM 
 	comprobantes c,
 	tipo_comprobantes tc
 WHERE 
 	 c.id = $P!{COMPROBANTE_ID} 
-	 AND c.id = ci.comprobante_id 
-	 AND ci.articulo_id = a.id
 	 AND tc.id = c.tipo_comprobante_id]]>
 	</queryString>
-	<field name="cantidad" class="java.lang.Integer"/>
-	<field name="importe_unitario" class="java.math.BigDecimal"/>
-	<field name="importe_total" class="java.math.BigDecimal"/>
-	<field name="importe_neto" class="java.math.BigDecimal"/>
 	<field name="importe_iva" class="java.math.BigDecimal"/>
-	<field name="c_importe_neto" class="java.math.BigDecimal"/>
+	<field name="importe_neto" class="java.math.BigDecimal"/>
 	<field name="c_importe_total" class="java.math.BigDecimal"/>
-	<field name="codigo" class="java.lang.String"/>
-	<field name="nombre" class="java.lang.String"/>
 	<field name="fecha" class="java.sql.Date"/>
 	<field name="numero" class="java.math.BigDecimal"/>
 	<field name="cliente_nombre" class="java.lang.String"/>
@@ -269,13 +263,6 @@ WHERE
 				<textFieldExpression><![CDATA[RIGHT($F{tc_nombre})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="320" y="10" width="100" height="30" uuid="8d15daf8-5fe6-4ea2-8f1e-934e635eb992"/>
-				<textElement>
-					<font size="19" isBold="true"/>
-				</textElement>
-				<text><![CDATA[FACTURA]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="320" y="51" width="80" height="14" uuid="56bc5266-bc6d-4182-b7da-d809d1cf4efc">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -418,12 +405,19 @@ WHERE
 				</textElement>
 				<textFieldExpression><![CDATA[$P{CLIENTE_DOMICILIO}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="320" y="10" width="220" height="30" uuid="d12e56a8-5af6-4cdb-ad33-7fd718bbc11d"/>
+				<textElement>
+					<font size="19" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TITULO}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>
 		<band height="20">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="40" height="20" backcolor="#D4D4D4" uuid="f1ee0d85-8866-4529-9db2-c4ec5706c27f"/>
+				<reportElement mode="Opaque" x="0" y="0" width="380" height="20" backcolor="#D4D4D4" uuid="f1ee0d85-8866-4529-9db2-c4ec5706c27f"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -433,51 +427,10 @@ WHERE
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Código]]></text>
+				<text><![CDATA[Descripción]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="40" y="0" width="170" height="20" backcolor="#D4D4D4" uuid="630ec766-019e-485b-9058-6a9a14707110"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Producto / Servicio]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="270" y="0" width="80" height="20" backcolor="#D4D4D4" uuid="1acef211-5a9a-42c6-b79e-c89f380df213">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Precio Unit.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="210" y="0" width="60" height="20" backcolor="#D4D4D4" uuid="9382ff34-e059-4dd6-bf39-858046e41024"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Cantidad]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="457" y="0" width="98" height="20" backcolor="#D4D4D4" uuid="0304a5e6-a8a0-4ad7-98e0-7255d30f8795">
+				<reportElement mode="Opaque" x="380" y="0" width="175" height="20" backcolor="#D4D4D4" uuid="0304a5e6-a8a0-4ad7-98e0-7255d30f8795">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
@@ -492,42 +445,12 @@ WHERE
 				</textElement>
 				<text><![CDATA[Subtotal]]></text>
 			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="350" y="0" width="50" height="20" backcolor="#D4D4D4" uuid="547c5aad-7eb7-4e8a-a543-13e0c0ff76ef">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[% Bonif.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="400" y="0" width="57" height="20" backcolor="#D4D4D4" uuid="84203bf7-2a47-42d0-8d9e-b435ae624994">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Imp. Bonif.]]></text>
-			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="19" splitType="Prevent">
 			<textField>
-				<reportElement x="0" y="0" width="40" height="19" uuid="894b347c-beb7-4f51-8e0a-da525dbf32cc"/>
+				<reportElement x="0" y="0" width="380" height="19" uuid="894b347c-beb7-4f51-8e0a-da525dbf32cc"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -535,49 +458,11 @@ WHERE
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="40" y="0" width="170" height="19" uuid="665f3d58-dc58-49bc-8d74-dc3498574826"/>
-				<box leftPadding="8">
-					<pen lineColor="#666666"/>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Descripción de la nota de crédito/débito"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="270" y="0" width="80" height="19" uuid="f6040a5a-bd7e-45fa-9534-ebd4a9157f51">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
-				<box rightPadding="8">
-					<pen lineColor="#ABABAB"/>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($F{importe_unitario})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="210" y="0" width="60" height="19" uuid="852b6f04-8c27-4488-b00b-96b1385b85f4"/>
-				<box>
-					<pen lineColor="#ABABAB"/>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="457" y="0" width="98" height="19" uuid="9a1b11c2-3a5e-470e-a2f3-24ac0d26a15b">
+				<reportElement x="380" y="0" width="175" height="19" uuid="9a1b11c2-3a5e-470e-a2f3-24ac0d26a15b">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box rightPadding="8">
@@ -588,38 +473,10 @@ WHERE
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[IF(RIGHT($F{tc_nombre}).equals("A"),
-	new java.text.DecimalFormat("#,##0.00").format($F{importe_neto}),
-	new java.text.DecimalFormat("#,##0.00").format($F{importe_total})
+				<textFieldExpression><![CDATA[IF(RIGHT($F{tc_nombre}).equals("A"), 
+	new java.text.DecimalFormat("#,##0.00").format($F{importe_neto}), 
+	new java.text.DecimalFormat("#,##0.00").format($F{c_importe_total})
 )]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="350" y="0" width="50" height="19" uuid="aaa127f1-4bbc-4929-ad91-f85b93af039d">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
-				<box rightPadding="8">
-					<pen lineColor="#ABABAB"/>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["0,00"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="400" y="0" width="57" height="19" uuid="ba6529f3-9056-42b5-a49e-e57dc87280ff">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
-				<box rightPadding="8">
-					<pen lineColor="#ABABAB"/>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["0,00"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -643,7 +500,7 @@ WHERE
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[IF(RIGHT($F{tc_nombre}).equals("A"),
-	new java.text.DecimalFormat("$ #,##0.00").format($F{c_importe_neto}).toString(), ""
+	new java.text.DecimalFormat("$ #,##0.00").format($F{importe_neto}).toString(), ""
 )]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
