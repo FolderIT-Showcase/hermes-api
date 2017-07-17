@@ -12,10 +12,10 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        $owner = role::firstOrNew(array('name' => 'dev'));
-        $owner->name         = 'dev';
-        $owner->display_name = 'Developer'; // optional
-        $owner->description  = 'El usuario es un desarrollador de Hermes API'; // optional
+        $owner = role::firstOrNew(array('name' => 'admin'));
+        $owner->name         = 'admin';
+        $owner->display_name = 'Administrador'; // optional
+        $owner->description  = 'El usuario es un administrador de Hermes API'; // optional
         $owner->save();
     }
 }
