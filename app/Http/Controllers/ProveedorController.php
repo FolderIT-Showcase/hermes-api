@@ -22,7 +22,10 @@ class ProveedorController extends Controller
      */
     public function index()
     {
-        return response()->json(Proveedor::all());
+        // los devuelvo ordenados alfabeticamente por nombre
+        return response()->json(Proveedor::orderBy('nombre', 'ASC')
+            ->get()
+        );
     }
 
     /**

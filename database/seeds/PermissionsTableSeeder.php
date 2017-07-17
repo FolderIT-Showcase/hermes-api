@@ -418,5 +418,30 @@ class PermissionsTableSeeder extends Seeder
         $deleteTipoRetencion->display_name = 'Borrar tipoRetencion';
         $deleteTipoRetencion->description  = 'Borrar tipo de retencion existente';
         $deleteTipoRetencion->save();
+
+        //Permisos FacturaCompra
+        $createFacturaCompra = permission::firstOrNew(array('name' => 'create_facturaCompra'));
+        $createFacturaCompra->name         = 'create_facturaCompra';
+        $createFacturaCompra->display_name = 'Crear Facturas de Compra';
+        $createFacturaCompra->description  = 'Crear nuevas facturas de compra';
+        $createFacturaCompra->save();
+
+        $editFacturaCompra = permission::firstOrNew(array('name' => 'edit_facturaCompra'));
+        $editFacturaCompra->name         = 'edit_facturaCompra';
+        $editFacturaCompra->display_name = 'Editar Facturas de Compra';
+        $editFacturaCompra->description  = 'Editar facturas de compra existentes';
+        $editFacturaCompra->save();
+
+        $viewFacturaCompra = permission::firstOrNew(array('name' => 'view_facturaCompra'));
+        $viewFacturaCompra->name         = 'view_facturaCompra';
+        $viewFacturaCompra->display_name = 'Ver Facturas de Compra';
+        $viewFacturaCompra->description  = 'Ver facturas de compra existentes';
+        $viewFacturaCompra->save();
+
+        $deleteFacturaCompra = permission::firstOrNew(array('name' => 'delete_facturaCompra'));
+        $deleteFacturaCompra->name         = 'delete_facturaCompra';
+        $deleteFacturaCompra->display_name = 'Borrar Facturas de Compra';
+        $deleteFacturaCompra->description  = 'Borrar facturas de compra existentes';
+        $deleteFacturaCompra->save();
     }
 }
