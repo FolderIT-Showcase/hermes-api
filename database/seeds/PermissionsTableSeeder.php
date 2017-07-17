@@ -393,5 +393,30 @@ class PermissionsTableSeeder extends Seeder
         $deletePeriodoFiscal->display_name = 'Borrar Periodo Fiscal';
         $deletePeriodoFiscal->description  = 'Borrar periodo fiscal existente';
         $deletePeriodoFiscal->save();
+
+        //Permisos TipoRetenciones
+        $createTipoRetencion = permission::firstOrNew(array('name' => 'create_tipoRetencion'));
+        $createTipoRetencion->name         = 'create_tipoRetencion';
+        $createTipoRetencion->display_name = 'Crear tipoRetencion';
+        $createTipoRetencion->description  = 'Crear nuevo tipo de retencion';
+        $createTipoRetencion->save();
+
+        $editTipoRetencion = permission::firstOrNew(array('name' => 'edit_tipoRetencion'));
+        $editTipoRetencion->name         = 'edit_tipoRetencion';
+        $editTipoRetencion->display_name = 'Editar tipoRetencion';
+        $editTipoRetencion->description  = 'Editar tipo de retencion existente';
+        $editTipoRetencion->save();
+
+        $viewTipoRetencion = permission::firstOrNew(array('name' => 'view_tipoRetencion'));
+        $viewTipoRetencion->name         = 'view_tipoRetencion';
+        $viewTipoRetencion->display_name = 'Ver tipoRetencion';
+        $viewTipoRetencion->description  = 'Ver tipos de retencion existentes';
+        $viewTipoRetencion->save();
+
+        $deleteTipoRetencion = permission::firstOrNew(array('name' => 'delete_tipoRetencion'));
+        $deleteTipoRetencion->name         = 'delete_tipoRetencion';
+        $deleteTipoRetencion->display_name = 'Borrar tipoRetencion';
+        $deleteTipoRetencion->description  = 'Borrar tipo de retencion existente';
+        $deleteTipoRetencion->save();
     }
 }
