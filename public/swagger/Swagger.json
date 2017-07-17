@@ -88,6 +88,9 @@
         },
         {
             "name": "Usuarios"
+        },
+        {
+            "name": "Regimen de informacion de ventas"
         }
     ],
     "paths": {
@@ -838,6 +841,89 @@
                 }
             }
         },
+        "/comprobantes/buscar": {
+            "get": {
+                "tags": [
+                    "Comprobantes"
+                ],
+                "summary": "Comprobantes filtrados por los parámetros",
+                "description": "Devuelve los comprobantes filtrados por el tipo de comprobante y por la fecha pasadas como parámetro. Se requiere contar con permiso para ver comprobantes.\n",
+                "parameters": [
+                    {
+                        "name": "tipo_comprobante",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fecha_inicio",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "fecha_fin",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array de artículos",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Articulo"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/comprobantes/imprimir/{comprobante_id}": {
+            "get": {
+                "tags": [
+                    "Comprobantes"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "summary": "Comprobante como pdf",
+                "description": "Devuelve un reporte en pdf con el comprobante que corresponde al id pasado como parámetro, ya sea una factura, nota de crédito/débito o presupuesto. Se requiere contar con permiso para ver el tipo de comprobante que se desea imprimir.\n",
+                "parameters": [
+                    {
+                        "name": "comprobante_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
         "/comprobantes/presupuestos": {
             "get": {
                 "tags": [
@@ -856,41 +942,6 @@
                         }
                     },
                     "default": {
-                        "description": "Error inesperado",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                }
-            }
-        },
-        "/comprobantes/presupuestos/imprimir/{comprobante_id}": {
-            "get": {
-                "tags": [
-                    "Comprobantes"
-                ],
-                "produces": [
-                    "application/pdf"
-                ],
-                "summary": "Reporte del presupuesto como pdf",
-                "description": "Devuelve un reporte en pdf con el presupuesto que corresponde al id pasado como parámetro. Se requiere contar con permiso para ver presupuestos.\n",
-                "parameters": [
-                    {
-                        "name": "comprobante_id",
-                        "in": "path",
-                        "required": true,
-                        "type": "number",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "PDF",
-                        "schema": {
-                            "type": "file"
-                        }
-                    },
-                    "500": {
                         "description": "Error inesperado",
                         "schema": {
                             "$ref": "#/definitions/Error"
@@ -1525,6 +1576,80 @@
                         "description": "Marca",
                         "schema": {
                             "$ref": "#/definitions/Marca"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/reginfoventas/comprobantes": {
+            "get": {
+                "tags": [
+                    "Regimen de informacion de ventas"
+                ],
+                "summary": "Cuenta corriente del cliente",
+                "description": "Devuelve un archivo de texto de comprobantes del regimen de informacion de ventas correspondientes al periodo pasado como parametro.\n",
+                "parameters": [
+                    {
+                        "name": "mes",
+                        "in": "query",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "año",
+                        "in": "query",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "TXT",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/reginfoventas/alicuotas": {
+            "get": {
+                "tags": [
+                    "Regimen de informacion de ventas"
+                ],
+                "summary": "Cuenta corriente del cliente",
+                "description": "Devuelve un archivo de texto de alicuotas del regimen de informacion de ventas correspondientes al periodo pasado como parametro.\n",
+                "parameters": [
+                    {
+                        "name": "mes",
+                        "in": "query",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "año",
+                        "in": "query",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "TXT",
+                        "schema": {
+                            "type": "file"
                         }
                     },
                     "500": {

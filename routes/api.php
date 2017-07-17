@@ -17,9 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::post("/login", 'Auth\LoginController@login');
-Route::post("/register", 'Auth\RegisterController@register');
 
 Route::group(['middleware' => 'jwt.auth'], function () {
 
@@ -74,9 +72,8 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('contadores/{punto_venta}/{tipo_comprobante_id}', 'ContadorController@showByPuntoVentaTipoComprobante');
 
     Route::get('comprobantes/presupuestos', 'ComprobanteController@indexPresupuestos');
-    Route::get('comprobantes/presupuestos/imprimir/{comprobante_id}', 'ComprobanteController@imprimirPresupuesto');
     Route::get('comprobantes/presupuestos/mail/{comprobante_id}', 'ComprobanteController@enviarMailPresupuesto');
-    Route::get('comprobantes/facturas/imprimir/{comprobante_id}', 'ComprobanteController@imprimirFactura');
+    Route::get('comprobantes/imprimir/{comprobante_id}', 'ComprobanteController@imprimir');
     Route::get('comprobantes/buscar', 'ComprobanteController@showByTypeDate');
     Route::resource('comprobantes', 'ComprobanteController',
         ['only' => ['store', 'show', 'update', 'destroy']]);
@@ -102,6 +99,9 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('periodosfiscales', 'PeriodoFiscalController',
         ['only' => ['index', 'show', 'store', 'update', 'destroy'],
             'parameters' => ['periodosfiscales' => 'periodofiscal']]);
+
+    Route::get('reginfoventas/comprobantes', 'RegimenInformativoVentasController@reginfo_comprobantes');
+    Route::get('reginfoventas/alicuotas', 'RegimenInformativoVentasController@reginfo_alicuotas');
 
     Route::resource('tiporetenciones', 'TipoRetencionController',
         ['only' => ['index', 'show', 'store', 'update', 'destroy'],

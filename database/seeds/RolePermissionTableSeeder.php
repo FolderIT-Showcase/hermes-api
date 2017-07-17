@@ -78,10 +78,10 @@ class RolePermissionTableSeeder extends Seeder
         $deleteZona =           Permission::where('name', 'delete_zona')->first();
 */
 
-        $dev = Role::where('name', 'dev')->first();
+        $admin = Role::where('name', 'admin')->first();
         //Un desarrollador tiene todos los permisos
-        $permisosDev = Permission::all();
-        $dev->detachPermissions($permisosDev);
-        $dev->attachPermissions($permisosDev);
+        $permisosAdmin = Permission::all();
+        $admin->detachPermissions($permisosAdmin);
+        $admin->attachPermissions($permisosAdmin);
     }
 }
