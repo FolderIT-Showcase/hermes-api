@@ -85,6 +85,9 @@
         },
         {
             "name": "Usuarios"
+        },
+        {
+            "name": "Regimen de informacion de ventas"
         }
     ],
     "paths": {
@@ -1570,6 +1573,80 @@
                         "description": "Marca",
                         "schema": {
                             "$ref": "#/definitions/Marca"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/reginfoventas/comprobantes": {
+            "get": {
+                "tags": [
+                    "Regimen de informacion de ventas"
+                ],
+                "summary": "Cuenta corriente del cliente",
+                "description": "Devuelve un archivo de texto de comprobantes del regimen de informacion de ventas correspondientes al periodo pasado como parametro.\n",
+                "parameters": [
+                    {
+                        "name": "mes",
+                        "in": "query",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "año",
+                        "in": "query",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "TXT",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/reginfoventas/alicuotas": {
+            "get": {
+                "tags": [
+                    "Regimen de informacion de ventas"
+                ],
+                "summary": "Cuenta corriente del cliente",
+                "description": "Devuelve un archivo de texto de alicuotas del regimen de informacion de ventas correspondientes al periodo pasado como parametro.\n",
+                "parameters": [
+                    {
+                        "name": "mes",
+                        "in": "query",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "año",
+                        "in": "query",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "TXT",
+                        "schema": {
+                            "type": "file"
                         }
                     },
                     "500": {

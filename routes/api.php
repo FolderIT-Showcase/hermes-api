@@ -101,6 +101,9 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         ['only' => ['index', 'show', 'store', 'update', 'destroy'],
             'parameters' => ['periodosfiscales' => 'periodofiscal']]);
 
+    Route::get('reginfoventas/comprobantes', 'RegimenInformativoVentasController@reginfo_comprobantes');
+    Route::get('reginfoventas/alicuotas', 'RegimenInformativoVentasController@reginfo_alicuotas');
+
     Route::resource('tiporetenciones', 'TipoRetencionController',
         ['only' => ['index', 'show', 'store', 'update', 'destroy'],
             'parameters' => ['tiporetenciones' => 'tiporetencion']]);
