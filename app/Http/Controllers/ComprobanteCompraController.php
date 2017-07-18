@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\ComprobanteCompra;
 use App\ComprobanteCompraImportes;
+use App\ComprobanteCompraRetenciones;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -299,16 +300,24 @@ class ComprobanteCompraController extends Controller
     public function update(ComprobanteCompra $comprobantecompra)
     {
         $data = json_decode(file_get_contents('php://input'), true);
-        $comprobantecompra->fill($data);
-        $importes = $data['comprobante_compra_importes'];
-        $retenciones = $data['comprobante_compra_retenciones'];
 
-        DB::transaction(function () use ($comprobantecompra, $importes, $retenciones) {
-            $comprobantecompra->save();
+        DB::transaction(function () use ($data, $comprobantecompra) {
+            $comprobantecompra->fill($data)->save();
+
+            $importes = $data['comprobante_compra_importes'];
             $comprobantecompra->comprobante_compra_importes()->update($importes);
-            $comprobantecompra->comprobante_compra_retenciones()->delete();
-            foreach ($retenciones as $ret) {
-                $comprobantecompra->comprobante_compra_retenciones()->create($ret);
+
+            $comprobantecompra->load('comprobante_compra_retenciones');
+            $viejasretenciones = $comprobantecompra['comprobante_compra_retenciones'];
+            $nuevasretenciones = $data['comprobante_compra_retenciones'];
+
+            //Se borran las retenciones que no vinieron en el request
+            $retencionesABorrar = $viejasretenciones->whereNotIn('id', array_column($nuevasretenciones, 'id'))->all();
+            ComprobanteCompraRetenciones::destroy(array_column($retencionesABorrar, 'id'));
+
+            //de las que quedaron, se crean o actualizan segun si ya tienen id
+            foreach ($nuevasretenciones as $ret){
+                $comprobantecompra->comprobante_compra_retenciones()->updateOrCreate(['id'=>(isset($ret['id'])? $ret['id'] : 0)], $ret);
             }
         });
 
