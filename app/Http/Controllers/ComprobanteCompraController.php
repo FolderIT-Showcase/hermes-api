@@ -117,146 +117,37 @@ class ComprobanteCompraController extends Controller
      */
     public function showByAll(Request $request)
     {
-        // filtrar por estos 3 parametros
+        // filtrar por estos parametros
         $proveedor = $request->input('proveedor', '0');
         $tipo = $request->input('tipo', '0');
         $periodo = $request->input('periodo', '0');
+        $montomax = $request->input('montomax', '-1');
+        $montomin = $request->input('montomin', '-1');
 
-        // si los tres parametros son no-nulos, hago la query completa
-        if($proveedor != 0 && $tipo != 0 && $periodo != 0) {
-            $comprobantes = ComprobanteCompra::whereHas(
-                'tipo_comp_compras', function ($q) use ($tipo) {
-                $q->where('id', '=', $tipo);
-            }
-            )
-                ->whereHas('proveedor', function ($q) use ($proveedor) {
-                    $q->where('id', '=',$proveedor);
-                })
-                ->whereHas('periodo', function ($q) use ($periodo) {
-                    $q->where('id', '=', $periodo);
-                })
-                ->with('comprobante_compra_importes')
-                ->with('comprobante_compra_retenciones')
-                ->get()->load('proveedor')->load('periodo')->load('tipo_comp_compras')->load('comprobante_compra_importes')->load('comprobante_compra_retenciones');
+        $query = 'SELECT *
+                  FROM `comprobantes_compras`
+                  WHERE id = id ';
 
-            if($comprobantes === null){
-                return response()->json('', 204);
-            }
-            else return response()->json($comprobantes);
+        if($proveedor != '0'){
+            $query .= ' AND proveedor_id = ' . $proveedor;
         }
-        else {
-            //algun filtro es nulo
-            if($proveedor != 0) {
-                if($tipo != 0) {
-                    // filtro por proveedor y tipo (periodo es nulo)
-                    $comprobantes = ComprobanteCompra::whereHas(
-                        'tipo_comp_compras', function ($q) use ($tipo) {
-                        $q->where('id', '=', $tipo);
-                    }
-                    )
-                        ->whereHas('proveedor', function ($q) use ($proveedor) {
-                            $q->where('id', '=',$proveedor);
-                        })
-                        ->with('comprobante_compra_importes')
-                        ->with('comprobante_compra_retenciones')
-                        ->get()->load('proveedor')->load('periodo')->load('tipo_comp_compras')->load('comprobante_compra_importes')->load('comprobante_compra_retenciones');
-
-                    if($comprobantes === null){
-                        return response()->json('', 204);
-                    }
-                    else return response()->json($comprobantes);
-                }
-                else {
-                    if($periodo != 0){
-                        // filtro por proveedor y periodo (tipo es nulo)
-                        $comprobantes = ComprobanteCompra::whereHas(
-                            'periodo', function ($q) use ($periodo) {
-                            $q->where('id', '=', $periodo);
-                        }
-                        )
-                            ->whereHas('proveedor', function ($q) use ($proveedor) {
-                                $q->where('id', '=',$proveedor);
-                            })
-                            ->with('comprobante_compra_importes')
-                            ->with('comprobante_compra_retenciones')
-                            ->get()->load('proveedor')->load('periodo')->load('tipo_comp_compras')->load('comprobante_compra_importes')->load('comprobante_compra_retenciones');
-
-                        if($comprobantes === null){
-                            return response()->json('', 204);
-                        }
-                        else return response()->json($comprobantes);
-                    }
-                    else {
-                        // filtro solo por proveedor (los otros dos son nulos)
-                        $comprobantes =ComprobanteCompra::whereHas(
-                            'proveedor', function ($query) use ($proveedor) {
-                            $query->where('id', '=', $proveedor);
-                        }
-                        )->get()->load('proveedor')->load('tipo_comp_compras')->load('periodo')->load('comprobante_compra_importes')->load('comprobante_compra_retenciones');
-
-                        if($comprobantes === null){
-                            return response()->json('', 204);
-                        }
-                        else {
-                            return response()->json($comprobantes);
-                        }
-                    }
-                }
-            }
-            else {
-                if($periodo != 0){
-                    if($tipo != 0){
-                        //filtro por tipo y por periodo (proveedor es nulo)
-                        $comprobantes = ComprobanteCompra::whereHas(
-                            'tipo_comp_compras', function ($q) use ($tipo) {
-                            $q->where('id', '=', $tipo);
-                        }
-                        )
-                            ->whereHas('periodo', function ($q) use ($periodo) {
-                                $q->where('id', '=',$periodo);
-                            })
-                            ->with('comprobante_compra_importes')
-                            ->with('comprobante_compra_retenciones')
-                            ->get()->load('proveedor')->load('periodo')->load('tipo_comp_compras')->load('comprobante_compra_importes')->load('comprobante_compra_retenciones');
-
-                        if($comprobantes === null){
-                            return response()->json('', 204);
-                        }
-                        else return response()->json($comprobantes);
-                    }
-                    else{
-                        // filtro solo por periodo (proveedor y tipo son nulos)
-                        $comprobantes = ComprobanteCompra::whereHas('periodo', function ($q) use ($periodo) {
-                                $q->where('id', '=', $periodo);
-                            })
-                            ->with('comprobante_compra_importes')
-                            ->with('comprobante_compra_retenciones')
-                            ->get()->load('proveedor')->load('periodo')->load('tipo_comp_compras')->load('comprobante_compra_importes')->load('comprobante_compra_retenciones');
-
-                        if($comprobantes === null){
-                            return response()->json('', 204);
-                        }
-                        else return response()->json($comprobantes);
-                    }
-                }
-                else{
-                    // filtro solo por tipo (proveedor y periodo son nulos)
-                    $comprobantes = ComprobanteCompra::whereHas(
-                        'tipo_comp_compras', function ($q) use ($tipo) {
-                        $q->where('id', '=', $tipo);
-                    }
-                    )
-                        ->with('comprobante_compra_importes')
-                        ->with('comprobante_compra_retenciones')
-                        ->get()->load('proveedor')->load('periodo')->load('tipo_comp_compras')->load('comprobante_compra_importes')->load('comprobante_compra_retenciones');
-
-                    if($comprobantes === null){
-                        return response()->json('', 204);
-                    }
-                    else return response()->json($comprobantes);
-                }
-            }
+        if($tipo != '0'){
+            $query .= ' AND tipo_comp_compras_id = ' . $tipo;
         }
+        if($periodo != '0'){
+            $query .= ' AND periodo_id = ' . $periodo;
+        }
+        if($montomin != -1){
+            $query .= ' AND importe_total >= ' . $montomin;
+        }
+        if($montomax != -1){
+            $query .= ' AND importe_total <= ' . $montomax;
+        }
+
+        $resultquery = ComprobanteCompra::hydrate(DB::select($query))
+            ->load('proveedor')->load('tipo_comp_compras')->load('periodo')->load('comprobante_compra_importes')->load('comprobante_compra_retenciones');
+
+        return response()->json($resultquery);
     }
 
     /**
