@@ -124,30 +124,30 @@ class ComprobanteCompraController extends Controller
         $montomax = $request->input('montomax', '-1');
         $montomin = $request->input('montomin', '-1');
 
-        $query = 'SELECT *
-                  FROM `comprobantes_compras`
-                  WHERE id = id ';
+        $compr = ComprobanteCompra::orderBy('id', 'ASC');
 
         if($proveedor != '0'){
-            $query .= ' AND proveedor_id = ' . $proveedor;
+            $compr = $compr->where('proveedor_id', '=', $proveedor);
         }
         if($tipo != '0'){
-            $query .= ' AND tipo_comp_compras_id = ' . $tipo;
+            $compr = $compr->where('tipo_id', '=', $tipo);
         }
         if($periodo != '0'){
-            $query .= ' AND periodo_id = ' . $periodo;
+            $compr = $compr->where('periodo_id', '=', $periodo);
         }
         if($montomin != -1){
-            $query .= ' AND importe_total >= ' . $montomin;
+            $compr = $compr->where('importe_total', '>=', $montomin);
         }
         if($montomax != -1){
-            $query .= ' AND importe_total <= ' . $montomax;
+            $compr = $compr->where('importe_total', '<=', $montomax);
         }
 
-        $resultquery = ComprobanteCompra::hydrate(DB::select($query))
-            ->load('proveedor')->load('tipo_comp_compras')->load('periodo')->load('comprobante_compra_importes')->load('comprobante_compra_retenciones');
+        $result = $compr->get()->load('proveedor')->load('tipo_comp_compras')->load('periodo')->load('comprobante_compra_importes')->load('comprobante_compra_retenciones');
 
-        return response()->json($resultquery);
+        if($result === null){
+            return response()->json('', 204);
+        }
+        else return response()->json($result);
     }
 
     /**
