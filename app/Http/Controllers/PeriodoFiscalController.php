@@ -22,7 +22,11 @@ class PeriodoFiscalController extends Controller
      */
     public function index()
     {
-        return response()->json(PeriodoFiscal::all());
+        // los devuelvo ordenados "cronologicamente" del mas reciente al mas antiguo
+        return response()->json(PeriodoFiscal::orderBy('mes', 'DESC')
+                                    ->orderBy('anio', 'DESC')
+                                    ->get()
+        );
     }
 
     /**
@@ -34,6 +38,22 @@ class PeriodoFiscalController extends Controller
     public function show(PeriodoFiscal $periodofiscal)
     {
         return response()->json($periodofiscal);
+    }
+
+    /**
+     * Display the specified resources.
+     *
+     * @param @boo
+     * @return \Illuminate\Http\Response
+     */
+    public function showActive($boo)
+    {
+        // los devuelvo ordenados "cronologicamente" del mas reciente al mas antiguo
+        return response()->json(PeriodoFiscal::where('abierto', $boo)
+            ->orderBy('mes', 'DESC')
+            ->orderBy('anio', 'DESC')
+            ->get()
+        );
     }
 
     /**

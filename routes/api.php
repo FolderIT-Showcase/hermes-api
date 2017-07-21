@@ -95,6 +95,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('usuarios', 'UserController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
+    Route::get('periodosfiscales/abierto/{boo}', 'PeriodoFiscalController@showActive');
     Route::resource('periodosfiscales', 'PeriodoFiscalController',
         ['only' => ['index', 'show', 'store', 'update', 'destroy'],
             'parameters' => ['periodosfiscales' => 'periodofiscal']]);
@@ -105,4 +106,15 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('tiporetenciones', 'TipoRetencionController',
         ['only' => ['index', 'show', 'store', 'update', 'destroy'],
             'parameters' => ['tiporetenciones' => 'tiporetencion']]);
+
+    Route::resource('tipocomprobantescompra', 'TipoComprobanteCompraController',
+        ['only' => ['index']]);
+
+    Route::get('comprobantescompra/tipocomp/{tipocomp}', 'ComprobanteCompraController@showByTipoComprobante');
+    Route::get('comprobantescompra/proveedor/{prov}', 'ComprobanteCompraController@showByProveedor');
+    Route::get('comprobantescompra/periodofiscal/{per}', 'ComprobanteCompraController@showByPeriodo');
+    Route::get('comprobantescompra/filtrar', 'ComprobanteCompraController@showByAll');
+    Route::resource('comprobantescompra', 'ComprobanteCompraController',
+        ['only' => ['index', 'showByTipoComprobante', 'store', 'show', 'update', 'destroy'],
+            'parameters' => ['comprobantescompra' => 'comprobantecompra']]);
 });

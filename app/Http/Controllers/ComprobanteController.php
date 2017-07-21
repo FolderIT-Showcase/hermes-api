@@ -49,8 +49,8 @@ class ComprobanteController extends Controller
     {
         return response()->json(Comprobante::whereHas(
             'tipo_comprobante', function ($query) {
-            $query->where('codigo', 'like', 'PR_');
-        }
+                $query->where('codigo', 'like', 'PR_');
+            }
         )
             ->get()->load('cliente')
         );
