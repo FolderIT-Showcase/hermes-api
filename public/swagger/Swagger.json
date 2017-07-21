@@ -18,6 +18,7 @@
     ],
     "securityDefinitions": {
         "ApiKeyAuth": {
+            "description": "Token de acceso JWT. Prefijo = Bearer",
             "type": "apiKey",
             "in": "header",
             "name": "Authorization"
@@ -30,7 +31,7 @@
     ],
     "tags": [
         {
-            "name": "Login"
+            "name": "Autenticacion"
         },
         {
             "name": "Articulos"
@@ -97,11 +98,11 @@
         "/login": {
             "post": {
                 "tags": [
-                    "Login"
+                    "Autenticacion"
                 ],
                 "security": [],
-                "summary": "Inicio de sesión",
-                "description": "El endpoint login es utilizado para el inicio de sesión de los usuarios  con su email y contraseña. La respuesta devuelve un token que es requerido en las llamadas a la API, además devuelve la información del usuario. \n",
+                "summary": "Inicio de sesión user+password",
+                "description": "El endpoint login es utilizado para el inicio de sesión de los usuarios  con su username y contraseña. La respuesta devuelve un token válido por 60 mins, que es requerido en las llamadas a la API, además devuelve la información del usuario. El token puede ser refrescado durante un período de 2 semanas siempre y cuando no haya expirado y no haya sido invalidado.\n",
                 "parameters": [
                     {
                         "name": "user",
@@ -111,9 +112,9 @@
                         "schema": {
                             "type": "object",
                             "properties": {
-                                "email": {
+                                "name": {
                                     "type": "string",
-                                    "description": "email del usuario a autenticar"
+                                    "description": "username del usuario a autenticar"
                                 },
                                 "password": {
                                     "type": "string",
@@ -126,16 +127,16 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Token y usuario autenticado",
+                        "description": "Operación exitosa",
                         "schema": {
                             "type": "object",
                             "properties": {
                                 "token": {
                                     "type": "string",
-                                    "description": "asd"
+                                    "description": "token necesario a enviar en las llamadas a la API mediante el header Authorization, con 'Bearer ' + token"
                                 },
                                 "user": {
-                                    "$ref": "#/definitions/Articulo"
+                                    "$ref": "#/definitions/Usuario"
                                 }
                             }
                         }
@@ -145,6 +146,58 @@
                     },
                     "500": {
                         "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/refreshToken": {
+            "post": {
+                "tags": [
+                    "Autenticacion"
+                ],
+                "summary": "Refrescar token",
+                "description": "El endpoint refreshToken es utilizado para refrescar el token, aumentando su periodo de validez. El token que se usó para llamar al método será invalidado, con un período de gracia de 30 segundos. La respuesta devuelve un token válido por 60 mins. Se puede refrescar el token mientras el período de refresco de 2 semanas del token original no haya vencido y el token sea válido.\n",
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                    "type": "string",
+                                    "description": "token"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Autenticacion"
+                ],
+                "summary": "Invalidar token",
+                "description": "El endpoint logout es utilizado para invalidar el token, haciendo que se denieguen las siguientes peticiones que se realizen con el mismo, con un periodo de gracia de 30 segundos. Se requiere que el token sea válido antes de anularlo.\n",
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
                     }
                 }
             }

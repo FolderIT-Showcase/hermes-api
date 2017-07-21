@@ -36,7 +36,7 @@ class TokenEntrustPermission
             $permissions = explode(self::DELIMITER, $permissions);
         }
 
-        if (!JWTAuth::toUser($request->header('Authorization'))->can($permissions)) {
+        if (!JWTAuth::user()->can($permissions)) {
             abort(403);
         }
 
