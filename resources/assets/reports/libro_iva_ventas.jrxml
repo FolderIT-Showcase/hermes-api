@@ -42,7 +42,7 @@
 	</parameter>
 	<parameter name="PERIODO_MES" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[]]></parameterDescription>
-		<defaultValueExpression><![CDATA["6"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["8"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="PERIODO_ANIO" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[]]></parameterDescription>
@@ -69,35 +69,35 @@ AND YEAR(c.fecha) = $P{PERIODO_ANIO};]]>
 	<field name="codigo" class="java.lang.String"/>
 	<variable name="Total" class="java.lang.Double" resetType="Page" calculation="Sum">
 		<variableExpression><![CDATA[$F{importe_total}]]></variableExpression>
-		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+		<initialValueExpression><![CDATA[0.00]]></initialValueExpression>
 	</variable>
 	<variable name="credito_iva" class="java.lang.Double" resetType="Page" calculation="Sum">
 		<variableExpression><![CDATA[IF(LEFT($F{codigo}, 2).equals("NC"),
 	$F{importe_iva},
 	0
 	)]]></variableExpression>
-		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+		<initialValueExpression><![CDATA[0.00]]></initialValueExpression>
 	</variable>
 	<variable name="credito_neto" class="java.lang.Double" resetType="Page" calculation="Sum">
 		<variableExpression><![CDATA[IF(LEFT($F{codigo}, 2).equals("NC"),
 	$F{importe_neto},
 	0
 	)]]></variableExpression>
-		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+		<initialValueExpression><![CDATA[0.00]]></initialValueExpression>
 	</variable>
 	<variable name="debito_neto" class="java.lang.Double" resetType="Page" calculation="Sum">
 		<variableExpression><![CDATA[IF(OR(LEFT($F{codigo}, 2).equals("FC"),  LEFT($F{codigo}, 2).equals("ND")),
 	$F{importe_neto},
 	0
 	)]]></variableExpression>
-		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+		<initialValueExpression><![CDATA[0.00]]></initialValueExpression>
 	</variable>
 	<variable name="debito_iva" class="java.lang.Double" resetType="Page" calculation="Sum">
 		<variableExpression><![CDATA[IF(OR(LEFT($F{codigo}, 2).equals("FC"),  LEFT($F{codigo}, 2).equals("ND")),
 	$F{importe_iva},
 	0
 	)]]></variableExpression>
-		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+		<initialValueExpression><![CDATA[0.00]]></initialValueExpression>
 	</variable>
 	<pageHeader>
 		<band height="75">
