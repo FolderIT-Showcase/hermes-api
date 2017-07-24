@@ -443,5 +443,55 @@ class PermissionsTableSeeder extends Seeder
         $deleteFacturaCompra->display_name = 'Borrar Facturas de Compra';
         $deleteFacturaCompra->description  = 'Borrar facturas de compra existentes';
         $deleteFacturaCompra->save();
+
+        //Permisos NotaCreditoCompra
+        $createNotaCreditoCompra = permission::firstOrNew(array('name' => 'create_notaCreditoCompra'));
+        $createNotaCreditoCompra->name         = 'create_notaCreditoCompra';
+        $createNotaCreditoCompra->display_name = 'Crear Notas de Credito de Compra';
+        $createNotaCreditoCompra->description  = 'Crear nuevas notas de credito de compra';
+        $createNotaCreditoCompra->save();
+
+        $editNotaCreditoCompra = permission::firstOrNew(array('name' => 'edit_notaCreditoCompra'));
+        $editNotaCreditoCompra->name         = 'edit_notaCreditoCompra';
+        $editNotaCreditoCompra->display_name = 'Editar Notas de Credito de Compra';
+        $editNotaCreditoCompra->description  = 'Editar notas de credito de compra existentes';
+        $editNotaCreditoCompra->save();
+
+        $viewNotaCreditoCompra = permission::firstOrNew(array('name' => 'view_notaCreditoCompra'));
+        $viewNotaCreditoCompra->name         = 'view_notaCreditoCompra';
+        $viewNotaCreditoCompra->display_name = 'Ver Notas de Credito de Compra';
+        $viewNotaCreditoCompra->description  = 'Ver notas de credito de compra existentes';
+        $viewNotaCreditoCompra->save();
+
+        $deleteNotaCreditoCompra = permission::firstOrNew(array('name' => 'delete_notaCreditoCompra'));
+        $deleteNotaCreditoCompra->name         = 'delete_notaCreditoCompra';
+        $deleteNotaCreditoCompra->display_name = 'Borrar Notas de Credito de Compra';
+        $deleteNotaCreditoCompra->description  = 'Borrar notas de credito de compra existentes';
+        $deleteNotaCreditoCompra->save();
+
+        //Permisos NotaDebitoCompra
+        $createNotaDebitoCompra = permission::firstOrNew(array('name' => 'create_notaDebitoCompra'));
+        $createNotaDebitoCompra->name         = 'create_notaDebitoCompra';
+        $createNotaDebitoCompra->display_name = 'Crear Notas de Debito de Compra';
+        $createNotaDebitoCompra->description  = 'Crear nuevas notas de debito de compra';
+        $createNotaDebitoCompra->save();
+
+        $editNotaDebitoCompra = permission::firstOrNew(array('name' => 'edit_notaDebitoCompra'));
+        $editNotaDebitoCompra->name         = 'edit_notaDebitoCompra';
+        $editNotaDebitoCompra->display_name = 'Editar Notas de Debito de Compra';
+        $editNotaDebitoCompra->description  = 'Editar notas de debito de compra existentes';
+        $editNotaDebitoCompra->save();
+
+        $viewNotaDebitoCompra = permission::firstOrNew(array('name' => 'view_notaDebitoCompra'));
+        $viewNotaDebitoCompra->name         = 'view_notaDebitoCompra';
+        $viewNotaDebitoCompra->display_name = 'Ver Notas de Debito de Compra';
+        $viewNotaDebitoCompra->description  = 'Ver notas de debito de compra existentes';
+        $viewNotaDebitoCompra->save();
+
+        $deleteNotaDebitoCompra = permission::firstOrNew(array('name' => 'delete_notaDebitoCompra'));
+        $deleteNotaDebitoCompra->name         = 'delete_notaDebitoCompra';
+        $deleteNotaDebitoCompra->display_name = 'Borrar Notas de Debito de Compra';
+        $deleteNotaDebitoCompra->description  = 'Borrar notas de debito de compra existentes';
+        $deleteNotaDebitoCompra->save();
     }
 }
