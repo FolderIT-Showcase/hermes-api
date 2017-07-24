@@ -59,7 +59,7 @@ class LibroIvaController extends Controller
         $EMPRESA_DIRECCION = '"' . Parametro::where('nombre', 'EMPRESA_DOMICILIO')->first()->valor . '"';
         $EMPRESA_CUIT = '"' . Parametro::where('nombre', 'EMPRESA_CUIT')->first()->valor . '"';
         $EMPRESA_TIPORESPONSABLE = '"' . Parametro::where('nombre', 'EMPRESA_TIPO_RESP')->first()->valor . '"';
-        $EMPRESA_TELEFONO = '455066';
+        $EMPRESA_TELEFONO = '"' . Parametro::where('nombre', 'EMPRESA_TELEFONO')->first()->valor . '"';
         $INIT_PAGE = $page_init;
         $PERIODOFISCAL = $periodofiscal_str;
         $PERIODO_ID = $periodofiscal->id;
@@ -93,7 +93,7 @@ class LibroIvaController extends Controller
         $EMPRESA_DIRECCION = '"' . Parametro::where('nombre', 'EMPRESA_DOMICILIO')->first()->valor . '"';
         $EMPRESA_CUIT = '"' . Parametro::where('nombre', 'EMPRESA_CUIT')->first()->valor . '"';
         $EMPRESA_TIPORESPONSABLE = '"' . Parametro::where('nombre', 'EMPRESA_TIPO_RESP')->first()->valor . '"';
-        $EMPRESA_TELEFONO = '455066';
+        $EMPRESA_TELEFONO = '"' . Parametro::where('nombre', 'EMPRESA_TELEFONO')->first()->valor . '"';
         $INIT_PAGE = $page_init;
         $PERIODO_MES = $periodo_mes;
         $PERIODO_ANIO = $periodo_anio;

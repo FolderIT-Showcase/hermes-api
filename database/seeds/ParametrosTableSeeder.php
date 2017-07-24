@@ -25,7 +25,7 @@ class ParametrosTableSeeder extends Seeder
             'modulo' => 'GENERAL',
             'nombre' => 'EMPRESA_CUIT',
             'descripcion' => 'CUIT de la Empresa',
-            'valor' => '30111111115',
+            'valor' => '30-11111111-5',
             'data_type' => 'STR'
         ];
         $parametros[] = [
@@ -40,6 +40,13 @@ class ParametrosTableSeeder extends Seeder
             'nombre' => 'EMPRESA_DOMICILIO',
             'descripcion' => 'Domicilio de la Empresa',
             'valor' => 'Gral. San Martin 1523 - Santa Fe - Argentina',
+            'data_type' => 'STR'
+        ];
+        $parametros[] = [
+            'modulo' => 'GENERAL',
+            'nombre' => 'EMPRESA_TELEFONO',
+            'descripcion' => 'Telefono de la Empresa',
+            'valor' => '(0342) 455066',
             'data_type' => 'STR'
         ];
         $parametros[] = [
