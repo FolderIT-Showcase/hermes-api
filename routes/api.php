@@ -119,4 +119,6 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('comprobantescompra', 'ComprobanteCompraController',
         ['only' => ['index', 'showByTipoComprobante', 'store', 'show', 'update', 'destroy'],
             'parameters' => ['comprobantescompra' => 'comprobantecompra']]);
+
+    Route::get('libroiva', 'LibroIvaController@generarLibroIva');
 });
