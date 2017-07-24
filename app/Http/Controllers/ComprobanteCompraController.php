@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 
 use App\ComprobanteCompra;
-use App\ComprobanteCompraImportes;
 use App\ComprobanteCompraRetenciones;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
