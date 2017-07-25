@@ -42,7 +42,7 @@
 	</parameter>
 	<parameter name="PERIODO_MES" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[]]></parameterDescription>
-		<defaultValueExpression><![CDATA["8"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["7"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="PERIODO_ANIO" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[]]></parameterDescription>
@@ -54,7 +54,8 @@ FROM comprobantes c, tipo_comprobantes tc
 WHERE c.tipo_comprobante_id = tc.id
 AND tc.codigo NOT LIKE 'PR_'
 AND MONTH(c.fecha) = $P{PERIODO_MES}
-AND YEAR(c.fecha) = $P{PERIODO_ANIO};]]>
+AND YEAR(c.fecha) = $P{PERIODO_ANIO}
+ORDER BY  c.fecha, c.updated_at ASC]]>
 	</queryString>
 	<field name="fecha" class="java.sql.Date"/>
 	<field name="cliente_tipo_resp" class="java.lang.String"/>
@@ -121,7 +122,7 @@ AND YEAR(c.fecha) = $P{PERIODO_ANIO};]]>
 				<textFieldExpression><![CDATA[$P{EMPRESA_DIRECCION}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="60" y="45" width="90" height="15" uuid="d4873cbf-e494-42e6-9391-72d4f18dc7bd">
+				<reportElement x="62" y="45" width="77" height="15" uuid="d4873cbf-e494-42e6-9391-72d4f18dc7bd">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -133,14 +134,14 @@ AND YEAR(c.fecha) = $P{PERIODO_ANIO};]]>
 )]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="20" y="45" width="40" height="15" uuid="e1829c04-8857-45e1-89c2-ec8b87bab997">
+				<reportElement x="20" y="45" width="42" height="15" uuid="e1829c04-8857-45e1-89c2-ec8b87bab997">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<text><![CDATA[ C.U.I.T.: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="150" y="45" width="10" height="15" uuid="905d6cc5-859d-471e-93d0-9f80cf7606eb">
+				<reportElement x="139" y="45" width="10" height="15" uuid="905d6cc5-859d-471e-93d0-9f80cf7606eb">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
@@ -148,13 +149,13 @@ AND YEAR(c.fecha) = $P{PERIODO_ANIO};]]>
 				<text><![CDATA[-]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="160" y="45" width="190" height="15" uuid="c61eaf7b-c379-41f4-a473-d94650290fb6">
+				<reportElement x="149" y="45" width="190" height="15" uuid="c61eaf7b-c379-41f4-a473-d94650290fb6">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
 					<paragraph leftIndent="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA[CONCATENATE($P{PERIODO_MES}, "/", $P{PERIODO_ANIO})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{EMPRESA_TIPORESPONSABLE}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="20" y="60" width="150" height="15" uuid="9df39083-5a13-4571-90d0-f7258e0ff4b7">
@@ -173,7 +174,7 @@ AND YEAR(c.fecha) = $P{PERIODO_ANIO};]]>
 					<font isBold="true"/>
 					<paragraph leftIndent="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{PERIODOFISCAL}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[CONCATENATE($P{PERIODO_MES}, "/", $P{PERIODO_ANIO})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement x="754" y="0" width="48" height="30" uuid="f22f82b2-b9d8-4a08-b487-c295da5a9836"/>
@@ -614,7 +615,7 @@ AND YEAR(c.fecha) = $P{PERIODO_ANIO};]]>
 				</textElement>
 				<textFieldExpression><![CDATA[IF(OR(LEFT($F{codigo}, 2).equals("FC"),  LEFT($F{codigo}, 2).equals("ND")),
 	new java.text.DecimalFormat("#,##0.00").format($F{importe_iva}),
-	""
+	"0,00"
 	)]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -696,7 +697,7 @@ AND YEAR(c.fecha) = $P{PERIODO_ANIO};]]>
 				<reportElement x="0" y="0" width="802" height="1" uuid="dfd49be6-af7f-42ba-a671-2e8e4e37f2ea"/>
 			</line>
 			<textField>
-				<reportElement mode="Opaque" x="673" y="1" width="53" height="19" backcolor="#FFFFFF" uuid="0f14c405-62b3-44c1-87a4-e021fd325d71"/>
+				<reportElement mode="Transparent" x="673" y="1" width="53" height="19" backcolor="#FFFFFF" uuid="0f14c405-62b3-44c1-87a4-e021fd325d71"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -710,7 +711,7 @@ AND YEAR(c.fecha) = $P{PERIODO_ANIO};]]>
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{credito_iva})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="726" y="1" width="76" height="19" backcolor="#FFFFFF" uuid="1ac51456-ffaf-476b-8d6b-65ab204b577a"/>
+				<reportElement mode="Transparent" x="726" y="1" width="76" height="19" backcolor="#FFFFFF" uuid="1ac51456-ffaf-476b-8d6b-65ab204b577a"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -724,7 +725,7 @@ AND YEAR(c.fecha) = $P{PERIODO_ANIO};]]>
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{Total})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="560" y="1" width="53" height="19" backcolor="#FFFFFF" uuid="35fda0a7-b801-42a4-962a-6cdcda009c9a"/>
+				<reportElement mode="Transparent" x="560" y="1" width="53" height="19" backcolor="#FFFFFF" uuid="35fda0a7-b801-42a4-962a-6cdcda009c9a"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -738,7 +739,7 @@ AND YEAR(c.fecha) = $P{PERIODO_ANIO};]]>
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{credito_neto})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="613" y="1" width="60" height="19" backcolor="#FFFFFF" uuid="54ce3dae-26c2-40b8-bf02-3694d629a41b"/>
+				<reportElement mode="Transparent" x="613" y="1" width="60" height="19" backcolor="#FFFFFF" uuid="54ce3dae-26c2-40b8-bf02-3694d629a41b"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -752,7 +753,7 @@ AND YEAR(c.fecha) = $P{PERIODO_ANIO};]]>
 				<textFieldExpression><![CDATA["0,00"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="447" y="1" width="60" height="19" backcolor="#FFFFFF" uuid="983c90ff-6581-4c93-8bd1-9fe739f0b4bb"/>
+				<reportElement mode="Transparent" x="447" y="1" width="60" height="19" backcolor="#FFFFFF" uuid="983c90ff-6581-4c93-8bd1-9fe739f0b4bb"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -766,7 +767,7 @@ AND YEAR(c.fecha) = $P{PERIODO_ANIO};]]>
 				<textFieldExpression><![CDATA["0,00"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="395" y="1" width="52" height="19" backcolor="#FFFFFF" uuid="2688f85c-d61e-4d01-b6b9-8386a67b0436"/>
+				<reportElement mode="Transparent" x="395" y="1" width="52" height="19" backcolor="#FFFFFF" uuid="2688f85c-d61e-4d01-b6b9-8386a67b0436"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -780,7 +781,7 @@ AND YEAR(c.fecha) = $P{PERIODO_ANIO};]]>
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{debito_neto})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="507" y="1" width="53" height="19" backcolor="#FFFFFF" uuid="0aef9774-d161-43a4-943f-c2992964039c"/>
+				<reportElement mode="Transparent" x="507" y="1" width="53" height="19" backcolor="#FFFFFF" uuid="0aef9774-d161-43a4-943f-c2992964039c"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
