@@ -164,7 +164,7 @@ ORDER BY  c.fecha, c.updated_at ASC]]>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Libro de IVA Ventas: - Período:]]></text>
+				<text><![CDATA[Libro de IVA Ventas - Período:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="170" y="60" width="160" height="15" uuid="6c49d5f9-d663-431e-8bbe-793ff0397bd1">

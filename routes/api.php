@@ -18,6 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post("/login", 'Auth\AuthController@login');
+Route::post("/password/forgot", 'Auth\ForgotPasswordController@sendResetLinkEmail');
+Route::post("/password/reset", 'Auth\ResetPasswordController@reset');
 
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::post("/logout", 'Auth\AuthController@logout');
