@@ -7,7 +7,6 @@ use App\User;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;

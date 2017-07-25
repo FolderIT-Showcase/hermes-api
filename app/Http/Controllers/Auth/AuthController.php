@@ -21,7 +21,11 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->json()->all();
+        if(isset($request->json()->all()['username']) && isset($request->json()->all()['password'])) {
+            $credentials = ['username' => $request->json()->all()['username'], 'password' => $request->json()->all()['password']];
+        } else {
+            return response()->json(['error' => 'Parámetros incorrectos'], 401);
+        }
 
         try {
             if (! $token = $this->guard()->attempt($credentials)) {

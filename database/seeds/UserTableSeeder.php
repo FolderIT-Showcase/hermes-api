@@ -12,8 +12,10 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::firstOrNew(array('name' => 'admin'));
+        $user = User::firstOrNew(array('username' => 'admin'));
         $user->email = 'admin@folderit.net';
+        $user->username = 'admin';
+        $user->name = 'Administrador';
         $user->password = bcrypt('admin');
         $user->save();
     }
