@@ -17,6 +17,16 @@ class ComprobanteCompraController extends Controller
         $this->middleware('permission:create_facturaCompra', ['only' => ['store']]);
         $this->middleware('permission:edit_facturaCompra', ['only' => ['update']]);
         $this->middleware('permission:delete_facturaCompra', ['only' => ['destroy']]);
+
+        $this->middleware('permission:view_notaCreditoCompra', ['only' => ['show']]);
+        $this->middleware('permission:create_notaCreditoCompra', ['only' => ['store']]);
+        $this->middleware('permission:edit_notaCreditoCompra', ['only' => ['update']]);
+        $this->middleware('permission:delete_notaCreditoCompra', ['only' => ['destroy']]);
+
+        $this->middleware('permission:view_notaDebitoCompra', ['only' => ['show']]);
+        $this->middleware('permission:create_notaDebitoCompra', ['only' => ['store']]);
+        $this->middleware('permission:edit_notaDebitoCompra', ['only' => ['update']]);
+        $this->middleware('permission:delete_notaDebitoCompra', ['only' => ['destroy']]);
     }
 
 
