@@ -49,10 +49,22 @@
             "name": "Cuenta Corriente"
         },
         {
+            "name": "Libro Iva"
+        },
+        {
             "name": "Lista de Precios"
         },
         {
             "name": "Localidades"
+        },
+        {
+            "name": "Marcas"
+        },
+        {
+            "name": "Parametros"
+        },
+        {
+            "name": "Periodos Fiscales"
         },
         {
             "name": "Proveedores"
@@ -61,19 +73,13 @@
             "name": "Provincias"
         },
         {
-            "name": "Marcas"
+            "name": "Regimen de informacion de ventas"
         },
         {
             "name": "Rubros"
         },
         {
             "name": "Subrubros"
-        },
-        {
-            "name": "Parametros"
-        },
-        {
-            "name": "Periodos Fiscales"
         },
         {
             "name": "Tipo Categoria Clientes"
@@ -85,13 +91,10 @@
             "name": "Tipo Retenciones"
         },
         {
-            "name": "Zonas"
-        },
-        {
             "name": "Usuarios"
         },
         {
-            "name": "Regimen de informacion de ventas"
+            "name": "Zonas"
         }
     ],
     "paths": {
@@ -189,6 +192,104 @@
                 "responses": {
                     "200": {
                         "description": "Operación exitosa",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/password/forgot": {
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Enviar código de recuperación de contraseña",
+                "description": "El endpoint es utilizado para enviar un código necesario para reestablecer la contraseña del usuario correspondiente al email pasado como parámetro. El email debe pertenecer a un usuario registrado en el sistema.\n",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "description": "email del usuario",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error en el email recibido",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/password/reset": {
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Establecer una nueva contraseña",
+                "description": "El endpoint es utilizado para reestablecer la contraseña del usuario que se la ha olvidado.\n",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                    "description": "codigo recibido por mail para la operación",
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "description": "email del usuario a reestablecer la contraseña",
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "description": "nueva contraseña del usuario",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error en el email recibido",
                         "schema": {
                             "type": "string"
                         }
@@ -3218,20 +3319,91 @@
                 "description": "Devuelve los comprobantes de compra que contiene el string de búsqueda segun  proveedor, periodo y/o tipo de comprobante. Se requiere contar con permiso para ver comprobantes de compra.\n",
                 "parameters": [
                     {
-                        "name": "filtrar",
-                        "in": "path",
+                        "in": "query",
+                        "name": "proveedor",
                         "required": true,
-                        "type": "string"
+                        "type": "integer"
+                    },
+                    {
+                        "in": "query",
+                        "name": "tipo",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "query",
+                        "name": "periodo",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "query",
+                        "name": "montomin",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "query",
+                        "name": "montomax",
+                        "required": true,
+                        "type": "integer"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "Array de comprobantes de compra",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ComprobanteCompra"
-                            }
+                            "$ref": "#/definitions/ComprobanteCompra"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/libroiva": {
+            "get": {
+                "tags": [
+                    "Libro Iva"
+                ],
+                "summary": "Libro de Iva de Compras/Ventas",
+                "description": "Devuelve un archivo en formato .pdf, en el cual se listan (en formato de tabla) todos los comprobantes (de Compras para \"Libro Iva Compra\", de Ventas para \"Libro Iva Ventas\") de un Período Fiscal determinado.\n",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page_init",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "query",
+                        "name": "tipo_libro_iva",
+                        "required": true,
+                        "type": "string",
+                        "description": "\\'compras\\' para generar Libro Iva Compras, \\'ventas\\' para generar Libro Iva Ventas"
+                    },
+                    {
+                        "in": "query",
+                        "name": "periodo_month",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "periodo_year",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF",
+                        "schema": {
+                            "type": "file"
                         }
                     },
                     "500": {
