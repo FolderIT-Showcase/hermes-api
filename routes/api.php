@@ -34,6 +34,8 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         ['only'       => ['index', 'store', 'show', 'update', 'destroy'],
          'parameters' => ['vendedores' => 'vendedor']]);
 
+    Route::get('proveedores/cuentacorriente', 'CtaCteProveedorController@showByProvDate');
+
     Route::get('proveedores/codigo/{cod}', 'ProveedorController@showByCode');
     Route::resource('proveedores', 'ProveedorController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy'],
@@ -92,6 +94,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
     Route::get('cuentacorriente/buscar', 'CtaCteClienteController@showByClientDate');
     Route::get('cuentacorriente/reporte', 'CtaCteClienteController@report');
+
 
     Route::get('roles', 'UserController@indexRoles');
     Route::resource('usuarios', 'UserController',

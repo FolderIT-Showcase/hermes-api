@@ -16,11 +16,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\ComprobanteCreated' => [
             'App\Listeners\RegistrarEnCtaCteCliente',
         ],
-        /*
         'App\Events\ComprobanteCompraCreated' => [
-            'App\Listeners\RegistrarEnCtaCteCliente', // TODO crear el Listener que corresponde a ComprobanteCompra!
-        ],
-        */
+            'App\Listeners\RegistrarEnCtaCteProveedor',
+        ]
     ];
 
     /**

@@ -3,6 +3,7 @@
 namespace App;
 
 
+use App\Events\ComprobanteCompraCreated;
 use Illuminate\Database\Eloquent\Model;
 
 class ComprobanteCompra extends Model
@@ -48,5 +49,9 @@ class ComprobanteCompra extends Model
         'importe_total',
         'saldo',
         'anulado'
+    ];
+
+    protected $events = [
+        'created' => ComprobanteCompraCreated::class,
     ];
 }
