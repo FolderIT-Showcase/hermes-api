@@ -37,6 +37,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('proveedores/cuentacorriente', 'CtaCteProveedorController@showByProvDate');
 
     Route::get('proveedores/codigo/{cod}', 'ProveedorController@showByCode');
+    Route::get('proveedores/nombre/{nom}', 'ProveedorController@showByName');
     Route::resource('proveedores', 'ProveedorController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy'],
             'parameters' => ['proveedores' => 'proveedor']]);
