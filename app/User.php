@@ -2,15 +2,19 @@
 
 namespace App;
 
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
+use App\Notifications\ResetPassword as ResetPasswordNotification;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject, CanResetPasswordContract
 {
     use Notifiable;
     use EntrustUserTrait;
+    use CanResetPassword;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +22,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'username',
     ];
 
     /**
@@ -48,5 +52,9 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function sendPasswordResetNotification($token) {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }
