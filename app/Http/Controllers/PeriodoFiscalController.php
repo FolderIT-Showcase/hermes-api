@@ -57,6 +57,35 @@ class PeriodoFiscalController extends Controller
     }
 
     /**
+     * Display the specified resources.
+     *
+     * @param \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function showByAll(Request $request)
+    {
+        // filtrar por estos parametros
+        $anio = $request->input('anio', '0');
+        $abierto = $request->input('abierto', '-1');
+
+        $per = PeriodoFiscal::orderBy('id', 'ASC');
+
+        if($anio != '0'){
+            $per = $per->where('anio', '=', $anio);
+        }
+        if($abierto != '-1'){
+            $per = $per->where('abierto', '=', $abierto);
+        }
+
+        $result = $per->get();
+
+        if($result === null){
+            return response()->json('', 204);
+        }
+        else return response()->json($result);
+    }
+
+    /**
      * Store a newly created resource in storage.
      * @param  \Illuminate\Http\Request $request.
      * @return \Illuminate\Http\Response

@@ -139,7 +139,7 @@ class ComprobanteCompraController extends Controller
             $compr = $compr->where('proveedor_id', '=', $proveedor);
         }
         if($tipo != '0'){
-            $compr = $compr->where('tipo_id', '=', $tipo);
+            $compr = $compr->where('tipo_comp_compras_id', '=', $tipo);
         }
         if($periodo != '0'){
             $compr = $compr->where('periodo_id', '=', $periodo);

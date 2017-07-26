@@ -99,6 +99,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('usuarios', 'UserController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
+    Route::get('periodosfiscales/filtrar', 'PeriodoFiscalController@showByAll');
     Route::get('periodosfiscales/abierto/{boo}', 'PeriodoFiscalController@showActive');
     Route::resource('periodosfiscales', 'PeriodoFiscalController',
         ['only' => ['index', 'show', 'store', 'update', 'destroy'],

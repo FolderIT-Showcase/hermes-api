@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-07-24T15:49:39 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Libro_Iva_Compras" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8a465670-cc4a-4270-965f-8efb86e33b71">
+<!-- 2017-07-25T12:09:06 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Libro_Iva_Compras" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="8a465670-cc4a-4270-965f-8efb86e33b71">
 	<property name="template.engine" value="tabular_template"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Hermes"/>
@@ -71,7 +71,8 @@ WHERE
 	AND tcc.id = cc.tipo_comp_compras_id
     AND per.id = cc.periodo_id
     AND cci.comprobante_id = cc.id
-    AND ccr.comprobante_id = cc.id]]>
+    AND ccr.comprobante_id = cc.id
+ORDER BY fecha ASC]]>
 	</queryString>
 	<field name="fecha" class="java.lang.String"/>
 	<field name="tcc_codigo" class="java.lang.String"/>
@@ -105,11 +106,36 @@ WHERE
 	)]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
-	<variable name="TOTAL_IMPORTE_PERC" class="java.lang.Double" resetType="Page" calculation="Sum">
+	<variable name="TOTAL_NETO_GRAV_DEB" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[IF(LEFT($F{tcc_codigo}, 2).equals("NC"),
+	$F{importe_neto_gravado},
+	0
+)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="TOTAL_NETO_NO_GRAV_DEB" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[IF(LEFT($F{tcc_codigo}, 2).equals("NC"),
+	$F{importe_neto_no_gravado},
+	0
+)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="TOTAL_NETO_GRAV_CRED" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[IF(OR(LEFT($F{tcc_codigo}, 2).equals("FC"),  LEFT($F{tcc_codigo}, 2).equals("ND")),
+	$F{importe_neto_gravado},
+	0
+	)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="TOTAL_NETO_NO_GRAV_CRED" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[IF(OR(LEFT($F{tcc_codigo}, 2).equals("FC"),  LEFT($F{tcc_codigo}, 2).equals("ND")),
+	$F{importe_neto_no_gravado},
+	0
+	)]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<pageHeader>
-		<band height="75">
+		<band height="78">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField>
 				<reportElement x="20" y="0" width="260" height="15" uuid="5b817bac-9d5e-4620-87fc-40f6d62d14aa">
@@ -130,7 +156,7 @@ WHERE
 				<textFieldExpression><![CDATA[$P{EMPRESA_DIRECCION}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="66" y="45" width="309" height="13" uuid="d4873cbf-e494-42e6-9391-72d4f18dc7bd">
+				<reportElement stretchType="RelativeToTallestObject" x="66" y="45" width="309" height="15" uuid="d4873cbf-e494-42e6-9391-72d4f18dc7bd">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -139,7 +165,7 @@ WHERE
 				<textFieldExpression><![CDATA[CONCATENATE($P{EMPRESA_CUIT},"  -  ",$P{EMPRESA_TIPORESPONSABLE})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="280" y="56" width="155" height="15" uuid="9df39083-5a13-4571-90d0-f7258e0ff4b7">
+				<reportElement x="20" y="60" width="158" height="18" uuid="9df39083-5a13-4571-90d0-f7258e0ff4b7">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
@@ -147,11 +173,12 @@ WHERE
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Libro de IVA Compras - Período:]]></text>
+				<text><![CDATA[ Libro de IVA Compras - Período:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="435" y="56" width="160" height="15" uuid="6c49d5f9-d663-431e-8bbe-793ff0397bd1">
+				<reportElement x="178" y="60" width="197" height="18" uuid="6c49d5f9-d663-431e-8bbe-793ff0397bd1">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement>
 					<font isBold="true"/>
@@ -160,7 +187,7 @@ WHERE
 				<textFieldExpression><![CDATA[$P{PERIODOFISCAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement x="780" y="0" width="20" height="30" uuid="f22f82b2-b9d8-4a08-b487-c295da5a9836"/>
+				<reportElement x="770" y="0" width="20" height="30" uuid="f22f82b2-b9d8-4a08-b487-c295da5a9836"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#0").format(SUM(INTEGER_VALUE( $P{INIT_PAGE}),  $V{PAGE_NUMBER}, new Integer("-1")))]]></textFieldExpression>
 			</textField>
@@ -174,45 +201,52 @@ WHERE
 				<textFieldExpression><![CDATA[$P{EMPRESA_TELEFONO}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="740" y="0" width="40" height="30" uuid="30f884da-f0d2-4d51-9115-5a873fc430ae"/>
+				<reportElement x="735" y="0" width="35" height="30" uuid="30f884da-f0d2-4d51-9115-5a873fc430ae">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Página:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="20" y="45" width="46" height="15" uuid="86bd65b1-ce30-4476-9483-bf202d7bd0c9">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[" C.U.I.T.: "]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="44">
+		<band height="40">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<staticText>
-				<reportElement key="" x="0" y="0" width="370" height="15" backcolor="#FFFFFF" uuid="a921f8a3-52c0-48f7-a1f2-593227b663d6">
+				<reportElement key="" x="0" y="0" width="355" height="15" backcolor="#FFFFFF" uuid="a921f8a3-52c0-48f7-a1f2-593227b663d6">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.3"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
 				<text><![CDATA[DATOS DEL COMPROBANTE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="" x="370" y="0" width="111" height="15" backcolor="#FFFFFF" uuid="af610b8e-b8cc-4499-9f61-461f5c64ac1f">
+				<reportElement key="" x="355" y="0" width="117" height="15" backcolor="#FFFFFF" uuid="af610b8e-b8cc-4499-9f61-461f5c64ac1f">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.3"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
 				<text><![CDATA[DEBITO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="" x="481" y="0" width="111" height="15" backcolor="#FFFFFF" uuid="e3d38ea2-c87e-4e09-b5a9-dd594b9d9cf3">
+				<reportElement key="" x="472" y="0" width="117" height="15" backcolor="#FFFFFF" uuid="e3d38ea2-c87e-4e09-b5a9-dd594b9d9cf3">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
@@ -220,22 +254,26 @@ WHERE
 				<box>
 					<pen lineWidth="0.3"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
 				<text><![CDATA[CREDITO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="" x="592" y="0" width="148" height="15" backcolor="#FFFFFF" uuid="5c6c9af1-e26e-49b1-80e5-58fc2beb6925">
+				<reportElement key="" x="589" y="0" width="154" height="15" backcolor="#FFFFFF" uuid="5c6c9af1-e26e-49b1-80e5-58fc2beb6925">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.3"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
 				<text><![CDATA[PERCEPCION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="740" y="0" width="50" height="40" uuid="4233ac80-3fbc-40e5-a234-10ec29b1ab3d">
+				<reportElement x="743" y="0" width="47" height="40" uuid="4233ac80-3fbc-40e5-a234-10ec29b1ab3d">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -244,11 +282,15 @@ WHERE
 				<box>
 					<pen lineWidth="0.3"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
 				<text><![CDATA[TOTAL]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="0" y="15" width="50" height="25" uuid="2c650d0b-b7cd-40a8-901a-18d9c2e3f396"/>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="15" width="45" height="25" uuid="2c650d0b-b7cd-40a8-901a-18d9c2e3f396">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box>
 					<pen lineWidth="0.3"/>
 					<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
@@ -257,104 +299,112 @@ WHERE
 					<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Fecha"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="481" y="15" width="37" height="25" uuid="53e55464-188d-453e-ab64-363c127a23db"/>
-				<box>
-					<pen lineWidth="0.3"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Neto Grav."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="370" y="15" width="37" height="25" uuid="e754ec91-3761-459e-8965-0cb57a2c0908"/>
-				<box>
-					<pen lineWidth="0.3"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Neto Grav."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="555" y="15" width="37" height="25" uuid="f69acf67-768f-48e6-b082-85b7335f0673"/>
-				<box>
-					<pen lineWidth="0.3"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[" Imp.  IVA"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="150" y="15" width="105" height="25" uuid="c12bdc6a-5533-4c59-b4d4-f1771f31f9c5"/>
-				<box>
-					<pen lineWidth="0.3"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Razón Social"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="407" y="15" width="37" height="25" uuid="be3d4668-dfe6-4619-85c6-1debdc60f3a6"/>
-				<box>
-					<pen lineWidth="0.3"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[" Neto No Grav."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="518" y="15" width="37" height="25" uuid="2e4896a6-fe5c-4e62-b896-569c05a40e29"/>
-				<box>
-					<pen lineWidth="0.3"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[" Neto No Grav."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="275" y="15" width="65" height="25" uuid="b6707fa2-5d09-44ca-8590-8614aedada10">
+				<reportElement stretchType="RelativeToTallestObject" x="472" y="15" width="40" height="25" uuid="53e55464-188d-453e-ab64-363c127a23db">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.3"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Neto Grav."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="355" y="15" width="40" height="25" uuid="e754ec91-3761-459e-8965-0cb57a2c0908">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Neto Grav."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="549" y="15" width="40" height="25" uuid="f69acf67-768f-48e6-b082-85b7335f0673">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["  Imp.   IVA"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="135" y="15" width="105" height="25" uuid="c12bdc6a-5533-4c59-b4d4-f1771f31f9c5"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Razón Social"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="395" y="15" width="37" height="25" uuid="be3d4668-dfe6-4619-85c6-1debdc60f3a6"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" Neto No  Grav."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="512" y="15" width="37" height="25" uuid="2e4896a6-fe5c-4e62-b896-569c05a40e29"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" Neto No  Grav."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="260" y="15" width="65" height="25" uuid="b6707fa2-5d09-44ca-8590-8614aedada10">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA["C.U.I.T."]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="255" y="15" width="20" height="25" uuid="f8c3e455-ebf0-43a7-8037-495f8b3c4cb5"/>
+				<reportElement stretchType="RelativeToTallestObject" x="240" y="15" width="20" height="25" uuid="f8c3e455-ebf0-43a7-8037-495f8b3c4cb5"/>
 				<box>
 					<pen lineWidth="0.3"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA["R."]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="80" y="15" width="70" height="25" uuid="e71cecf2-77cb-4d0a-b7e1-904a9a0d01c0"/>
+				<reportElement stretchType="RelativeToTallestObject" x="70" y="15" width="65" height="25" uuid="e71cecf2-77cb-4d0a-b7e1-904a9a0d01c0"/>
 				<box>
 					<pen lineWidth="0.3"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Nro. Compr"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="50" y="15" width="30" height="25" uuid="6960780a-daa5-419e-8be3-bdc73d2b4230"/>
+				<reportElement stretchType="RelativeToTallestObject" x="45" y="15" width="25" height="25" uuid="6960780a-daa5-419e-8be3-bdc73d2b4230">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box>
 					<pen lineWidth="0.3"/>
 					<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
@@ -363,37 +413,39 @@ WHERE
 					<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Tipo"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="444" y="15" width="37" height="25" uuid="f9f6100a-3779-4c24-90e8-881bd1c0dc70"/>
+				<reportElement stretchType="RelativeToTallestObject" x="432" y="15" width="40" height="25" uuid="f9f6100a-3779-4c24-90e8-881bd1c0dc70">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box>
 					<pen lineWidth="0.3"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[" Imp.  IVA"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["  Imp.   IVA"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="340" y="15" width="30" height="25" uuid="afb41bc7-ff31-45d9-a95c-dc883455c16b"/>
+				<reportElement stretchType="RelativeToTallestObject" x="325" y="15" width="30" height="25" uuid="afb41bc7-ff31-45d9-a95c-dc883455c16b"/>
 				<box>
 					<pen lineWidth="0.3"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA["%IVA"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="703" y="15" width="37" height="25" uuid="98792c6b-0c19-4189-88fa-a95a19668a2e"/>
+				<reportElement x="703" y="15" width="40" height="25" uuid="98792c6b-0c19-4189-88fa-a95a19668a2e"/>
 				<box>
 					<pen lineWidth="0.3"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Arial" size="9"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Importe IIBB"]]></textFieldExpression>
@@ -404,37 +456,39 @@ WHERE
 					<pen lineWidth="0.3"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Alíc. IIBB"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[" Alíc.  IIBB"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="629" y="15" width="37" height="25" uuid="1f56a761-834a-4e74-9bf1-748d6d9424bc"/>
+				<reportElement x="626" y="15" width="40" height="25" uuid="1f56a761-834a-4e74-9bf1-748d6d9424bc"/>
 				<box>
 					<pen lineWidth="0.3"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Importe IVA"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="592" y="15" width="37" height="25" uuid="ce92ae46-bb12-451d-82ce-7052d666312c"/>
+				<reportElement x="589" y="15" width="37" height="25" uuid="ce92ae46-bb12-451d-82ce-7052d666312c"/>
 				<box>
 					<pen lineWidth="0.3"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" Alíc.  IVA"]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="14">
+		<band height="15">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField>
-				<reportElement x="0" y="-5" width="50" height="19" uuid="2e06c68f-ff06-4bfc-950b-3758064c6353"/>
+				<reportElement x="0" y="0" width="45" height="15" uuid="2e06c68f-ff06-4bfc-950b-3758064c6353">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -448,7 +502,10 @@ WHERE
 				<textFieldExpression><![CDATA[CONCATENATE($F{fecha}.substring(8,10), "/", $F{fecha}.substring(5,7), "/", $F{fecha}.substring(0,4))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="50" y="-5" width="30" height="19" uuid="b1ea62e2-6c61-4a87-8c28-68aa01480dd0"/>
+				<reportElement x="45" y="0" width="25" height="15" uuid="b1ea62e2-6c61-4a87-8c28-68aa01480dd0">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -462,7 +519,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{tcc_codigo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="80" y="-5" width="70" height="19" uuid="fa6e7248-dd80-443f-b586-f2bbc466be6d"/>
+				<reportElement x="70" y="0" width="65" height="15" uuid="fa6e7248-dd80-443f-b586-f2bbc466be6d"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -479,7 +536,7 @@ WHERE
 )]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="150" y="-5" width="105" height="19" uuid="911fe3cc-94ba-4bb5-a97d-0c17125289f7">
+				<reportElement x="135" y="0" width="105" height="15" uuid="911fe3cc-94ba-4bb5-a97d-0c17125289f7">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
@@ -495,7 +552,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{proveedor_nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="255" y="-5" width="20" height="19" uuid="9da10d6e-e188-4fad-9c7a-ac7889685149"/>
+				<reportElement x="240" y="0" width="20" height="15" uuid="9da10d6e-e188-4fad-9c7a-ac7889685149"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -509,7 +566,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{proveedor_tipo_resp}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="275" y="-5" width="65" height="19" uuid="ea43e080-f5a3-40f9-a3f0-50aaed696ba7">
+				<reportElement x="260" y="0" width="65" height="15" uuid="ea43e080-f5a3-40f9-a3f0-50aaed696ba7">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
@@ -522,10 +579,10 @@ WHERE
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[SUBSTITUTE($F{proveedor_cuit},"-","")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{proveedor_cuit}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="340" y="-5" width="30" height="19" uuid="aed0ffbc-ebbc-462b-aca8-9f9e81a85bb4"/>
+				<reportElement x="325" y="0" width="30" height="15" uuid="aed0ffbc-ebbc-462b-aca8-9f9e81a85bb4"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -535,11 +592,12 @@ WHERE
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="1"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($F{alicuota_iva})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="370" y="-5" width="37" height="19" uuid="baec2d9d-e6ef-4c20-9c28-b9550429c364"/>
+				<reportElement x="355" y="0" width="40" height="15" uuid="baec2d9d-e6ef-4c20-9c28-b9550429c364"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -549,6 +607,7 @@ WHERE
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="1"/>
 				</textElement>
 				<textFieldExpression><![CDATA[IF(LEFT($F{tcc_codigo}, 2).equals("NC"),
 	new java.text.DecimalFormat("#,##0.00").format($F{importe_neto_gravado}),
@@ -556,7 +615,7 @@ WHERE
 )]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="407" y="-5" width="37" height="19" uuid="4c350fcc-10c7-45f0-929e-2fb85af2351a"/>
+				<reportElement x="395" y="0" width="37" height="15" uuid="4c350fcc-10c7-45f0-929e-2fb85af2351a"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -566,6 +625,7 @@ WHERE
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="1"/>
 				</textElement>
 				<textFieldExpression><![CDATA[IF(LEFT($F{tcc_codigo}, 2).equals("NC"),
 	new java.text.DecimalFormat("#,##0.00").format($F{importe_neto_no_gravado}),
@@ -573,58 +633,7 @@ WHERE
 )]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="444" y="-5" width="37" height="16" uuid="0fade20e-763e-4955-b515-9dd1fc6e0b16"/>
-				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
-					<pen lineColor="#ABABAB"/>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[IF(LEFT($F{tcc_codigo}, 2).equals("NC"),
-	new java.text.DecimalFormat("#,##0.00").format($F{importe_iva}),
-	"0,00"
-)]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="481" y="-5" width="37" height="16" uuid="517b5b33-fa0c-4c47-96f4-9e44d8836674"/>
-				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
-					<pen lineColor="#ABABAB"/>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[IF(OR(LEFT($F{tcc_codigo},2).equals("FC"),  LEFT($F{tcc_codigo}, 2).equals("ND")),
-	new java.text.DecimalFormat("#,##0.00").format($F{importe_neto_gravado}),
-	"0,00"
-	)]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="518" y="-5" width="37" height="16" uuid="649c6f9d-45db-4cf6-84aa-d33626756851"/>
-				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
-					<pen lineColor="#ABABAB"/>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[IF(OR(LEFT($F{tcc_codigo}, 2).equals("FC"),  LEFT($F{tcc_codigo}, 2).equals("ND")),
-	new java.text.DecimalFormat("#,##0.00").format($F{importe_neto_no_gravado}),
-	"0,00"
-	)]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="555" y="-5" width="37" height="16" uuid="700e3e98-d33a-4c01-a2eb-ad05317987b1">
+				<reportElement x="432" y="0" width="40" height="15" uuid="0fade20e-763e-4955-b515-9dd1fc6e0b16">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
@@ -636,6 +645,64 @@ WHERE
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[IF(LEFT($F{tcc_codigo}, 2).equals("NC"),
+	new java.text.DecimalFormat("#,##0.00").format($F{importe_iva}),
+	"0,00"
+)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="472" y="0" width="40" height="15" uuid="517b5b33-fa0c-4c47-96f4-9e44d8836674"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineColor="#ABABAB"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[IF(OR(LEFT($F{tcc_codigo},2).equals("FC"),  LEFT($F{tcc_codigo}, 2).equals("ND")),
+	new java.text.DecimalFormat("#,##0.00").format($F{importe_neto_gravado}),
+	"0,00"
+	)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="512" y="0" width="37" height="15" uuid="649c6f9d-45db-4cf6-84aa-d33626756851"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineColor="#ABABAB"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[IF(OR(LEFT($F{tcc_codigo}, 2).equals("FC"),  LEFT($F{tcc_codigo}, 2).equals("ND")),
+	new java.text.DecimalFormat("#,##0.00").format($F{importe_neto_no_gravado}),
+	"0,00"
+	)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="549" y="0" width="40" height="15" uuid="700e3e98-d33a-4c01-a2eb-ad05317987b1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineColor="#ABABAB"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="1"/>
 				</textElement>
 				<textFieldExpression><![CDATA[IF(OR(LEFT($F{tcc_codigo}, 2).equals("FC"),  LEFT($F{tcc_codigo}, 2).equals("ND")),
 	new java.text.DecimalFormat("#,##0.00").format($F{importe_iva}),
@@ -643,7 +710,7 @@ WHERE
 	)]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="592" y="-5" width="37" height="16" uuid="6dca2031-493b-4fdd-a53c-a7e8b37f4955"/>
+				<reportElement x="589" y="0" width="37" height="15" uuid="6dca2031-493b-4fdd-a53c-a7e8b37f4955"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -653,10 +720,11 @@ WHERE
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="1"/>
 				</textElement>
 			</textField>
 			<textField>
-				<reportElement x="629" y="-5" width="37" height="16" uuid="86a5872d-2d24-4565-a69c-6764ea812761"/>
+				<reportElement x="626" y="0" width="40" height="15" uuid="86a5872d-2d24-4565-a69c-6764ea812761"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -666,10 +734,14 @@ WHERE
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="1"/>
 				</textElement>
 			</textField>
 			<textField>
-				<reportElement x="666" y="-5" width="37" height="16" uuid="2fcf4617-bd1d-4ea9-8736-fd9d338cab98"/>
+				<reportElement x="666" y="0" width="37" height="15" uuid="2fcf4617-bd1d-4ea9-8736-fd9d338cab98">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -679,10 +751,11 @@ WHERE
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="1"/>
 				</textElement>
 			</textField>
 			<textField>
-				<reportElement x="703" y="-5" width="37" height="16" uuid="71621872-7d3d-4a3c-8239-22c52df3381b">
+				<reportElement x="703" y="0" width="40" height="15" uuid="71621872-7d3d-4a3c-8239-22c52df3381b">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
@@ -694,10 +767,14 @@ WHERE
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
+					<paragraph leftIndent="1"/>
 				</textElement>
 			</textField>
 			<textField>
-				<reportElement x="740" y="-5" width="50" height="16" uuid="c9599669-6a3c-4f95-9a87-12bb754829a9"/>
+				<reportElement x="743" y="0" width="47" height="15" uuid="c9599669-6a3c-4f95-9a87-12bb754829a9">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -706,115 +783,171 @@ WHERE
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="9"/>
+					<font fontName="Arial" size="8"/>
+					<paragraph rightIndent="1"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($F{importe_total})]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
-	<lastPageFooter>
-		<band height="30">
+	<columnFooter>
+		<band height="24">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<line>
-				<reportElement x="0" y="0" width="790" height="1" uuid="b787262f-3fd6-41d1-b69a-009fd1f624ea"/>
+				<reportElement x="0" y="1" width="790" height="1" uuid="b787262f-3fd6-41d1-b69a-009fd1f624ea">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="1.0" lineColor="#000000"/>
+				</graphicElement>
 			</line>
 			<textField>
-				<reportElement mode="Opaque" x="730" y="5" width="60" height="25" backcolor="#E8E8E8" uuid="4f9e38e4-08b9-4489-929d-079537c15177"/>
+				<reportElement mode="Transparent" x="743" y="2" width="47" height="22" backcolor="#FFFFFF" uuid="4f9e38e4-08b9-4489-929d-079537c15177">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.3" lineColor="#000000"/>
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{TOTAL})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="537" y="5" width="55" height="25" backcolor="#E8E8E8" uuid="6289fef6-79d0-40c9-8901-85b998dbd6fd">
+				<reportElement mode="Transparent" x="549" y="2" width="40" height="22" backcolor="#FFFFFF" uuid="6289fef6-79d0-40c9-8901-85b998dbd6fd">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.3" lineColor="#000000"/>
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{TOTAL_IMPORTE_CRED})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="638" y="5" width="47" height="25" backcolor="#E8E8E8" uuid="f58d739e-4e5a-4525-a042-db9e75045704"/>
+				<reportElement mode="Transparent" x="703" y="2" width="40" height="22" backcolor="#FFFFFF" uuid="f58d739e-4e5a-4525-a042-db9e75045704">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
-					<pen lineColor="#ABABAB"/>
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
+					<pen lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["0.00"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="426" y="5" width="55" height="25" backcolor="#E8E8E8" uuid="d07c40e8-a8e4-4c92-8bac-098816b252b7">
+				<reportElement mode="Transparent" x="432" y="2" width="40" height="22" backcolor="#FFFFFF" uuid="d07c40e8-a8e4-4c92-8bac-098816b252b7">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.3" lineColor="#000000"/>
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#ABABAB"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{TOTAL_IMPORTE_DEB})]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="370" y="5" width="56" height="25" uuid="b0579e9e-9fd4-439a-9c3a-9307a64162dd"/>
-				<box>
-					<pen lineWidth="0.3" lineColor="#ABABAB"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
+			<textField>
+				<reportElement mode="Transparent" x="395" y="2" width="37" height="22" backcolor="#FFFFFF" uuid="c39abbaa-695d-4600-89e3-e2d51b9a316d">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.3" lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Total IVA Débito"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{TOTAL_NETO_NO_GRAV_DEB})]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="481" y="5" width="56" height="25" uuid="0187bb34-ceb8-46fd-9ec0-e49383ed3feb"/>
-				<box>
-					<pen lineWidth="1.3" lineStyle="Solid" lineColor="#ABABAB"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Total IVA Crédito"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="592" y="5" width="46" height="25" uuid="701e9575-b918-4f9c-82ab-752fcb898dfe">
+			<textField>
+				<reportElement mode="Transparent" x="355" y="2" width="40" height="22" backcolor="#FFFFFF" uuid="fc02e735-3a37-4854-93ce-ebac7f87be75">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
-				<box>
-					<pen lineWidth="1.3" lineStyle="Solid" lineColor="#ABABAB"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.3" lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Total Percep"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{TOTAL_NETO_GRAV_DEB})]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="685" y="5" width="45" height="25" uuid="75301b6d-d237-45dc-8944-841b9d429f6a">
+			<textField>
+				<reportElement mode="Transparent" x="472" y="2" width="40" height="22" backcolor="#FFFFFF" uuid="1b089214-61df-417a-9af8-4fd5d7ab490b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.3" lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{TOTAL_NETO_GRAV_CRED})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="512" y="2" width="37" height="22" backcolor="#FFFFFF" uuid="ddc93ced-7ce4-48f4-9dc2-e8737a3e5bda">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
-				<box>
-					<pen lineWidth="1.3" lineStyle="Solid" lineColor="#ABABAB"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.3" lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["TOTAL"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{TOTAL_NETO_NO_GRAV_CRED})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="626" y="2" width="40" height="22" backcolor="#FFFFFF" uuid="2122499d-3157-4fa3-b2b0-f9beb8b79642">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["0.00"]]></textFieldExpression>
 			</textField>
 		</band>
-	</lastPageFooter>
+	</columnFooter>
 </jasperReport>
