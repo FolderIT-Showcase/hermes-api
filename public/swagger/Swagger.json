@@ -108,17 +108,17 @@
                 ],
                 "security": [],
                 "summary": "Inicio de sesión user+password",
-                "description": "El endpoint login es utilizado para el inicio de sesión de los usuarios  con su username y contraseña. La respuesta devuelve un token válido por 60 mins, que es requerido en las llamadas a la API, además devuelve la información del usuario. El token puede ser refrescado durante un período de 2 semanas siempre y cuando no haya expirado y no haya sido invalidado.\n",
+                "description": "El endpoint login es utilizado para el inicio de sesión de los usuarios  con su username, contraseña y empresa. La respuesta devuelve un token válido por 60 mins, que es requerido en las llamadas a la API, además devuelve la información del usuario. El token puede ser refrescado durante un período de 2 semanas siempre y cuando no haya expirado y no haya sido invalidado.\n",
                 "parameters": [
                     {
                         "name": "user",
                         "in": "body",
-                        "description": "Email y constraseña del usuario a autenticar",
+                        "description": "Usuario, constraseña y empresa del usuario a autenticar",
                         "required": true,
                         "schema": {
                             "type": "object",
                             "properties": {
-                                "name": {
+                                "username": {
                                     "type": "string",
                                     "description": "username del usuario a autenticar"
                                 },
@@ -126,6 +126,10 @@
                                     "type": "string",
                                     "format": "password",
                                     "description": "contraseña del usuario a autenticar"
+                                },
+                                "tenant": {
+                                    "type": "string",
+                                    "description": "nombre de la empresa del usuario a autenticar"
                                 }
                             }
                         }
@@ -195,6 +199,112 @@
                 "responses": {
                     "200": {
                         "description": "Operación exitosa",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/password/forgot": {
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Enviar código de recuperación de contraseña",
+                "description": "El endpoint es utilizado para enviar un código necesario para reestablecer la contraseña del usuario correspondiente al email y empresa pasados como parámetro. El email debe pertenecer a un usuario registrado en el sistema en esa empresa.\n",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "description": "email del usuario",
+                                    "type": "string"
+                                },
+                                "tenant": {
+                                    "description": "empresa del usuario",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error en el email recibido",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/password/reset": {
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Establecer una nueva contraseña",
+                "description": "El endpoint es utilizado para reestablecer la contraseña del usuario. Se debe proveer el token recibido por mail, el email, la nueva contraseña y la empresa.\n",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                    "description": "codigo recibido por mail para la operación",
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "description": "email del usuario a reestablecer la contraseña",
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "description": "nueva contraseña del usuario",
+                                    "type": "string"
+                                },
+                                "tenant": {
+                                    "description": "empresa del usuario",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error en el email recibido",
                         "schema": {
                             "type": "string"
                         }
