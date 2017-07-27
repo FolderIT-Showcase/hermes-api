@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckTenantByKeyInParam;
+use App\Http\Middleware\CheckTenantByKeyJWT;
 use App\Http\Middleware\TokenEntrustAbility;
 use App\Http\Middleware\TokenEntrustPermission;
 use App\Http\Middleware\TokenEntrustRole;
@@ -64,5 +66,7 @@ class Kernel extends HttpKernel
         'role' => TokenEntrustRole::class,
         'permission' => TokenEntrustPermission::class,
         'ability' => TokenEntrustAbility::class,
+        'tenant.param' => CheckTenantByKeyInParam::class,
+        'tenant.jwt' => CheckTenantByKeyJWT::class,
     ];
 }

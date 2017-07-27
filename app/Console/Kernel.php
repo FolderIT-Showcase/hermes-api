@@ -13,7 +13,11 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \Protosofia\Ben10ant\Commands\TenantCreate::class,
+        \Protosofia\Ben10ant\Commands\TenantMigrate::class,
+        \Protosofia\Ben10ant\Commands\TenantMigrateRefresh::class,
+        \Protosofia\Ben10ant\Commands\TenantMigrateRollback::class,
+        \Protosofia\Ben10ant\Commands\TenantSeed::class,
     ];
 
     /**

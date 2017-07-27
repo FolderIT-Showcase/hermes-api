@@ -52,7 +52,7 @@ class ForgotPasswordController extends Controller
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
         $response = $this->broker()->sendResetLink(
-            $request->json()->all()
+            ['email' => $request->json()->all()['email']]
         );
 
         switch ($response) {

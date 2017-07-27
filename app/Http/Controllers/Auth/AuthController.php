@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
@@ -21,18 +22,21 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        if(isset($request->json()->all()['username']) && isset($request->json()->all()['password'])) {
+        if(isset($request->json()->all()['username'])
+            && isset($request->json()->all()['password'])
+            && isset($request->json()->all()['tenant'])) {
             $credentials = ['username' => $request->json()->all()['username'], 'password' => $request->json()->all()['password']];
+            $tenant = ['ten' => $request->json()->all()['tenant']];
         } else {
             return response()->json(['error' => 'Parámetros incorrectos'], 401);
         }
 
         try {
-            if (! $token = $this->guard()->attempt($credentials)) {
+            if (! $token = JWTAuth::customClaims($tenant)->attempt($credentials)) {
                 return response()->json(['error' => 'Usuario o contraseña inválido'], 401);
             }
         } catch (JWTException $e) {
-            return response()->json(['error' => 'Ha ocurrido un error'], 500);
+            return response()->json($e->getMessage(), 500);
         }
         $user = $this->guard()->user();
 

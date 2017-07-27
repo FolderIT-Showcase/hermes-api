@@ -14048,6 +14048,8 @@ namespace {
     class JWTAuth extends \Tymon\JWTAuth\Facades\JWTAuth {}
     
     class JWTFactory extends \Tymon\JWTAuth\Facades\JWTFactory {}
-    
+
+    class Tenant extends \Protosofia\ben10ant\Facades\TenantFacade {}
+
 }
 
