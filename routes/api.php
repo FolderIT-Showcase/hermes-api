@@ -23,7 +23,7 @@ Route::group(['middleware' => 'tenant.param'], function () {
     Route::post("/password/reset", 'Auth\ResetPasswordController@reset');
 });
 
-Route::group(['middleware' => ['tenant.jwt', 'jwt.auth']], function () {
+Route::group(['middleware' => ['jwt.auth']], function () {
     Route::post("/logout", 'Auth\AuthController@logout');
     Route::post("/refreshToken", 'Auth\AuthController@refresh');
 
