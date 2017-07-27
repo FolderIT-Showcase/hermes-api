@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Exception;
 use Tenant;
 
 class CheckTenantByKeyInParam
@@ -21,7 +22,12 @@ class CheckTenantByKeyInParam
         } else {
             return response()->json(['error' => 'Parámetros incorrectos'], 401);
         }
-        $tenant = Tenant::setTenantByKey($ten);
+
+        try {
+            $tenant = Tenant::setTenantByKey($ten);
+        } catch(Exception $e){
+            return response()->json(['error' => 'Empresa incorrecta.'], 401);
+        }
 
         if (!$tenant) {
             return response()->json(['error' => 'Empresa incorrecta.'], 401);

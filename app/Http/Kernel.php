@@ -44,6 +44,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             'throttle:240,1',
+            'tenant.jwt',
             'bindings',
         ],
     ];

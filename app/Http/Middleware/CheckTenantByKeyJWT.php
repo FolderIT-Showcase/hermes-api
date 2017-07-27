@@ -17,11 +17,19 @@ class CheckTenantByKeyJWT
      */
     public function handle($request, Closure $next)
     {
-        JWTAuth::setToken(str_replace('Bearer ', '', $request->header('Authorization')));
-        $ten = JWTAuth::getPayload()->get('ten');
-        $tenant = Tenant::setTenantByKey($ten);
-        if (!$tenant) {
-            return response()->json(['error' => 'El token es inválido.'], 401);
+        if($request->header('Authorization') !== null ) {
+            try{
+                JWTAuth::setToken(str_replace('Bearer ', '', $request->header('Authorization')));
+                $ten = JWTAuth::getPayload()->get('ten');
+            } catch (\Exception $e){
+                return response()->json(['error' => 'El token es inválido.'], 401);
+            }
+
+            $tenant = Tenant::setTenantByKey($ten);
+
+            if (!$tenant) {
+                return response()->json(['error' => 'Empresa incorrecta.'], 401);
+            }
         }
 
         return $next($request);

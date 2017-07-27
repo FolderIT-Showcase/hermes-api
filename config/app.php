@@ -179,7 +179,7 @@ return [
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
-        \Protosofia\Ben10ant\Providers\TenantServiceProvider::class,
+        \App\Providers\MyTenantServiceProvider::class,
 
     ],
 
