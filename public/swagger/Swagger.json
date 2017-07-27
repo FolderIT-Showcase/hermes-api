@@ -208,104 +208,6 @@
                 }
             }
         },
-        "/password/forgot": {
-            "post": {
-                "tags": [
-                    "Usuarios"
-                ],
-                "summary": "Enviar código de recuperación de contraseña",
-                "description": "El endpoint es utilizado para enviar un código necesario para reestablecer la contraseña del usuario correspondiente al email pasado como parámetro. El email debe pertenecer a un usuario registrado en el sistema.\n",
-                "parameters": [
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "email": {
-                                    "description": "email del usuario",
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operación exitosa",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Error en el email recibido",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "default": {
-                        "description": "Error inesperado",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                }
-            }
-        },
-        "/password/reset": {
-            "post": {
-                "tags": [
-                    "Usuarios"
-                ],
-                "summary": "Establecer una nueva contraseña",
-                "description": "El endpoint es utilizado para reestablecer la contraseña del usuario que se la ha olvidado.\n",
-                "parameters": [
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "token": {
-                                    "description": "codigo recibido por mail para la operación",
-                                    "type": "string"
-                                },
-                                "email": {
-                                    "description": "email del usuario a reestablecer la contraseña",
-                                    "type": "string"
-                                },
-                                "password": {
-                                    "description": "nueva contraseña del usuario",
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operación exitosa",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Error en el email recibido",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "default": {
-                        "description": "Error inesperado",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                }
-            }
-        },
         "/articulos": {
             "get": {
                 "tags": [
@@ -1215,6 +1117,51 @@
                             "items": {
                                 "$ref": "#/definitions/CuentaCorrienteProveedor"
                             }
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/proveedores/cuentacorriente/reporte": {
+            "get": {
+                "tags": [
+                    "Cuenta Corriente Proveedor"
+                ],
+                "summary": "Reporte de Cuenta Corriente del proveedor",
+                "description": "Devuelve un pdf con el detalle de la Cuenta Corriente del proveedor cuya id corresponde con la id pasada como parámetro, y entre las fechas de inicio y fin también pasadas como parámetros. Se requiere contar con permiso para ver Cuenta Corriente de proveedores.\n",
+                "parameters": [
+                    {
+                        "name": "proveedor_id",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fecha_inicio",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "fecha_fin",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF",
+                        "schema": {
+                            "type": "file"
                         }
                     },
                     "500": {
