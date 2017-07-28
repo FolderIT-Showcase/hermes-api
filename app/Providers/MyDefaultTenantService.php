@@ -9,8 +9,8 @@ class MyDefaultTenantService extends TenantServiceAbstract {
 
     public function setTenant(TenantModelInterface $tenant)
     {
-        $dbConn = env('TENANT_DB_CONNECTION', 'mysql');
-        $storageConn = env('TENANT_STORAGE_CONNECTION', 'mysql');
+        $dbConn = config('tenant_db_connection', 'mysql');
+        $storageConn = config('tenant_storage_connection', 'mysql');
 
         $dbConfig = json_decode($tenant->database, true);
         $storageConfig = json_decode($tenant->storage, true);
