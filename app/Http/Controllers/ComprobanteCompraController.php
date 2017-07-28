@@ -224,12 +224,7 @@ class ComprobanteCompraController extends Controller
             }
 
             //Actualizo tambien la referencia al ComprobanteCompra que hay en CuentaCorrienteProveedor
-            $ctaCte = CtaCteProveedor::where('comprobante_compras_id', $comprobantecompra->id)->first();
-
-            $ctaCte->proveedor_id = $comprobantecompra->proveedor_id;
-            $ctaCte->comprobante_compras_id = $comprobantecompra->id;
-            $ctaCte->tipo_comp_compras_id = $comprobantecompra->tipo_comp_compras_id;
-
+            $ctaCte = $this->updateCtaCteProv($comprobantecompra);
             $ctaCte->save();
         });
 
@@ -250,5 +245,28 @@ class ComprobanteCompraController extends Controller
             $comprobantecompra->delete();
         });
         return response()->json('ok', 200);
+    }
+
+    private function updateCtaCteProv(ComprobanteCompra $comprobantecompra){
+        $ctaCte = CtaCteProveedor::where('comprobante_compras_id', $comprobantecompra->id)->first();
+
+        $ctaCte->proveedor_id = $comprobantecompra->proveedor_id;
+        $ctaCte->comprobante_compras_id = $comprobantecompra->id;
+        $ctaCte->tipo_comp_compras_id = $comprobantecompra->tipo_comp_compras_id;
+        $ctaCte->descripcion = $comprobantecompra->tipo_comp_compras->codigo . '-';
+
+        switch (substr($comprobantecompra->tipo_comp_compras->codigo, 0, 2)) {
+            case 'FC':case 'ND':
+            $ctaCte->debe = $comprobantecompra->importe_total;
+            $ctaCte->haber = 0.00;
+            break;
+            case 'NC':
+                $ctaCte->debe = 0.00;
+                $ctaCte->haber = $comprobantecompra->importe_total;
+                break;
+            default:
+        }
+
+        return $ctaCte;
     }
 }
