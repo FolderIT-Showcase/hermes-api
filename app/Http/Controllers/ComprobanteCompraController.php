@@ -247,12 +247,14 @@ class ComprobanteCompraController extends Controller
         return response()->json('ok', 200);
     }
 
-    private function updateCtaCteProv(ComprobanteCompra $comprobantecompra){
+    private function updateCtaCteProv(ComprobanteCompra $comprobantecompra): CtaCteProveedor
+    {
         $ctaCte = CtaCteProveedor::where('comprobante_compras_id', $comprobantecompra->id)->first();
 
         $ctaCte->proveedor_id = $comprobantecompra->proveedor_id;
         $ctaCte->comprobante_compras_id = $comprobantecompra->id;
         $ctaCte->tipo_comp_compras_id = $comprobantecompra->tipo_comp_compras_id;
+        $ctaCte->fecha = $comprobantecompra->fecha;
         $ctaCte->descripcion = $comprobantecompra->tipo_comp_compras->codigo . '-';
 
         switch (substr($comprobantecompra->tipo_comp_compras->codigo, 0, 2)) {
