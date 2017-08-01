@@ -28,6 +28,8 @@ class ResumenVentasController extends Controller
         $tipoReporte = $request->input('tipo', '');
         $fechaInicio = $request->input('fecha_inicio', '0');
         $fechaFin = $request->input('fecha_fin', '0');
+        $fechaInicio = str_replace("-", "/", $fechaInicio);
+        $fechaFin = str_replace("-", "/", $fechaFin);
         $csvcodigos = $request->input('codigos', '');
         $arraycodigos = explode(',', $csvcodigos);
         $codigos = '(';

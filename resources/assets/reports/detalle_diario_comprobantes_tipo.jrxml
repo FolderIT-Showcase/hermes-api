@@ -92,7 +92,7 @@ ORDER BY  tc.codigo, c.fecha, c.updated_at ASC]]>
 		<groupExpression><![CDATA[$F{codigo}]]></groupExpression>
 		<groupHeader>
 			<band height="24">
-				<textField pattern="dd/MM/yyyy">
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 					<reportElement x="6" y="4" width="94" height="14" uuid="edce0fe2-8aee-4c84-91b4-2d0278121824">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>

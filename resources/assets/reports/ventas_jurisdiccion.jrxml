@@ -126,7 +126,7 @@ ORDER BY p.nombre, l.nombre]]>
 		<groupExpression><![CDATA[$F{p_nombre}]]></groupExpression>
 		<groupHeader>
 			<band height="20">
-				<textField pattern="dd/MM/yyyy">
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 					<reportElement x="0" y="3" width="190" height="14" uuid="291954a0-8c04-4d6b-b7f8-34700bad7040">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
@@ -146,7 +146,7 @@ ORDER BY p.nombre, l.nombre]]>
 		</groupHeader>
 		<groupFooter>
 			<band height="23">
-				<textField pattern="dd/MM/yyyy">
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 					<reportElement x="0" y="1" width="190" height="14" uuid="338651ad-ab68-41fb-8473-0e8f8be023ed">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
@@ -154,7 +154,10 @@ ORDER BY p.nombre, l.nombre]]>
 						<font size="8" isBold="true"/>
 						<paragraph leftIndent="4"/>
 					</textElement>
-					<textFieldExpression><![CDATA[CONCATENATE( "Subtotal ", UPPER($F{p_nombre}), ":")]]></textFieldExpression>
+					<textFieldExpression><![CDATA[IF($F{nombre} != null, 
+	CONCATENATE( "Subtotal ", UPPER($F{p_nombre}), ":")
+	 , "Subtotal:"
+)]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="0" y="14" width="771" height="1" uuid="73334169-7999-46b3-a6d6-a56deaedda54">
@@ -225,7 +228,7 @@ ORDER BY p.nombre, l.nombre]]>
 						<pen lineWidth="0.7" lineColor="#D6D6D6"/>
 					</graphicElement>
 				</line>
-				<textField pattern="dd/MM/yyyy">
+				<textField pattern="" isBlankWhenNull="true">
 					<reportElement x="0" y="0" width="190" height="14" uuid="35b65469-f84b-4fc3-a3e6-6239a0996846">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
@@ -233,7 +236,10 @@ ORDER BY p.nombre, l.nombre]]>
 						<font size="8" isBold="false"/>
 						<paragraph leftIndent="4"/>
 					</textElement>
-					<textFieldExpression><![CDATA[CONCATENATE(UPPER( $F{nombre}), " (", $F{cp}, ")")]]></textFieldExpression>
+					<textFieldExpression><![CDATA[IF($F{nombre} != null, 
+	CONCATENATE(UPPER( $F{nombre}), " (", $F{cp}, ")"),
+	""
+)]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="190" y="0" width="80" height="14" uuid="0b12dc38-822d-45eb-a370-88743386a573"/>
