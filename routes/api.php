@@ -131,4 +131,6 @@ Route::group(['middleware' => ['jwt.auth']], function () {
             'parameters' => ['comprobantescompra' => 'comprobantecompra']]);
 
     Route::get('libroiva', 'LibroIvaController@generarLibroIva');
+
+    Route::get('resumenventas', 'ResumenVentasController@report');
 });
