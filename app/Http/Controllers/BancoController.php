@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class BancoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_banco', ['only' => ['index', 'show']]);
+        $this->middleware('permission:create_banco', ['only' => ['store']]);
+        $this->middleware('permission:edit_banco', ['only' => ['update']]);
+        $this->middleware('permission:delete_banco', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

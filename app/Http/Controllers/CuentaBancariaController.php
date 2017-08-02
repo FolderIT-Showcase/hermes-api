@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class CuentaBancariaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_cuenta_bancaria', ['only' => ['index', 'show']]);
+        $this->middleware('permission:create_cuenta_bancaria', ['only' => ['store']]);
+        $this->middleware('permission:edit_cuenta_bancaria', ['only' => ['update']]);
+        $this->middleware('permission:delete_cuenta_bancaria', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

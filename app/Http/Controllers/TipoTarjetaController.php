@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class TipoTarjetaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_tipo_tarjeta', ['only' => ['index', 'show']]);
+        $this->middleware('permission:create_tipo_tarjeta', ['only' => ['store']]);
+        $this->middleware('permission:edit_tipo_tarjeta', ['only' => ['update']]);
+        $this->middleware('permission:delete_tipo_tarjeta', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
