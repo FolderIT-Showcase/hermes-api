@@ -101,7 +101,6 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('cuentacorriente/buscar', 'CtaCteClienteController@showByClientDate');
     Route::get('cuentacorriente/reporte', 'CtaCteClienteController@report');
 
-
     Route::get('roles', 'UserController@indexRoles');
     Route::resource('usuarios', 'UserController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
@@ -133,4 +132,15 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('libroiva', 'LibroIvaController@generarLibroIva');
 
     Route::get('resumenventas', 'ResumenVentasController@report');
+
+    Route::resource('bancos', 'BancoController',
+        ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+
+    Route::resource('cuentasbancarias', 'CuentaBancariaController',
+        ['only' => ['index', 'store', 'show', 'update', 'destroy'],
+         'parameters' => ['cuentasbancarias' => 'cuentabancaria']]);
+
+    Route::resource('tipostarjeta', 'TipoTarjetaController',
+        ['only' => ['index', 'store', 'show', 'update', 'destroy'],
+         'parameters' => ['tipostarjeta' => 'tipotarjeta']]);
 });
