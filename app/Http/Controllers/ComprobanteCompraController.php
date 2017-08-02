@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 
 use App\ComprobanteCompra;
 use App\ComprobanteCompraRetenciones;
+use App\CtaCteProveedor;
+use App\Proveedor;
+use App\TipoComprobanteCompra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -219,6 +222,10 @@ class ComprobanteCompraController extends Controller
             foreach ($nuevasretenciones as $ret){
                 $comprobantecompra->comprobante_compra_retenciones()->updateOrCreate(['id'=>(isset($ret['id'])? $ret['id'] : 0)], $ret);
             }
+
+            //Actualizo tambien la referencia al ComprobanteCompra que hay en CuentaCorrienteProveedor
+            $ctaCte = $this->updateCtaCteProv($comprobantecompra);
+            $ctaCte->save();
         });
 
         return response()->json($comprobantecompra->load('proveedor')->load('periodo')->load('tipo_comp_compras')->load('comprobante_compra_importes')->load('comprobante_compra_retenciones'));
@@ -238,5 +245,30 @@ class ComprobanteCompraController extends Controller
             $comprobantecompra->delete();
         });
         return response()->json('ok', 200);
+    }
+
+    private function updateCtaCteProv(ComprobanteCompra $comprobantecompra): CtaCteProveedor
+    {
+        $ctaCte = CtaCteProveedor::where('comprobante_compras_id', $comprobantecompra->id)->first();
+
+        $ctaCte->proveedor_id = $comprobantecompra->proveedor_id;
+        $ctaCte->comprobante_compras_id = $comprobantecompra->id;
+        $ctaCte->tipo_comp_compras_id = $comprobantecompra->tipo_comp_compras_id;
+        $ctaCte->fecha = $comprobantecompra->fecha;
+        $ctaCte->descripcion = $comprobantecompra->tipo_comp_compras->codigo . '-';
+
+        switch (substr($comprobantecompra->tipo_comp_compras->codigo, 0, 2)) {
+            case 'FC':case 'ND':
+            $ctaCte->debe = $comprobantecompra->importe_total;
+            $ctaCte->haber = 0.00;
+            break;
+            case 'NC':
+                $ctaCte->debe = 0.00;
+                $ctaCte->haber = $comprobantecompra->importe_total;
+                break;
+            default:
+        }
+
+        return $ctaCte;
     }
 }

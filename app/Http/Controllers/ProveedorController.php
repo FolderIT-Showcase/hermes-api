@@ -55,6 +55,21 @@ class ProveedorController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param $nom
+     * @return \Illuminate\Http\Response
+     */
+    public function showByName($nom)
+    {
+        $proveedores = Proveedor::where('nombre', 'like', '%' . $nom . '%')->get();
+        if($proveedores === null){
+            return response()->json('', 204);
+        }
+        else return response()->json($proveedores);
+    }
+
+    /**
      * Store a newly created resource in storage.
      * @param  \Illuminate\Http\Request $request.
      * @return \Illuminate\Http\Response
