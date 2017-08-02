@@ -154,6 +154,7 @@ return [
         'nbf',
         'sub',
         'jti',
+        'ten',
     ],
 
     /*
@@ -172,6 +173,7 @@ return [
     'persistent_claims' => [
         // 'foo',
         // 'bar',
+        'ten,'
     ],
 
     /*

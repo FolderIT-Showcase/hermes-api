@@ -30,8 +30,11 @@ Pasos para instalar HermesWeb - API:
 4. Copiar `.env.example` a `.env`
 5. Actualizar los datos en `.env` relacionados a la base de datos creada en el paso 3 (parametros DB_*).
 6. Actualizar los datos en `.env` relacionados al servidor smtp que se utilizará para enviar emails.
-7. Desde línea de comandos, pararse en el raiz del proyecto y ejecutar: `php artisan migrate --seed`.
-8. Crear un Virtual Host en el Apache para levantar el API:
+7. Desde línea de comandos, pararse en el raíz del proyecto y ejecutar `php artisan migrate --path=vendor/protosofia/ben10ant/src/Migrations`
+8. Ejecutar `php artisan tenant:create {name} {keyname}` con el nombre y el nombre clave del tenant a crear y seguir el wizard de creación.
+9. Ejecutar `php artisan tenant:migrate {keyname} --path database/migrations/tenant`
+10. Ejecutar `php artisan tenant:db:seed {keyname}`
+11. Crear un Virtual Host en el Apache para levantar el API:
 ```
 <VirtualHost hermes.api:80>
   DocumentRoot "C:\Folder\HermesWeb\hermes.api\public"
@@ -42,10 +45,10 @@ Pasos para instalar HermesWeb - API:
         Require all granted
   </Directory>
 </VirtualHost>
-``` 
-9. Crear una entrada en el archivo `hosts` del SO para que la URL del API apunte al local: `127.0.0.1  hermes.api`
-10. Crear la key con `php artisan key:generate`
-11. Para comprobar que el API levantó correctamente abrir `http://hermes.api`, la página de inicio de Laravel debe desplegarse.
+```
+12. Crear una entrada en el archivo `hosts` del SO para que la URL del API apunte al local: `127.0.0.1  hermes.api`
+13. Crear la key con `php artisan key:generate`
+14. Para comprobar que el API levantó correctamente abrir `http://hermes.api`, la página de inicio de Laravel debe desplegarse.
 
 
 ## Documentación

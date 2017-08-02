@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Laravel',
+    'name' => 'Hermes Web',
 
     /*
     |--------------------------------------------------------------------------
@@ -77,7 +77,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'es',
 
     /*
     |--------------------------------------------------------------------------
@@ -123,6 +123,17 @@ return [
     'log' => env('APP_LOG', 'single'),
 
     'log_level' => env('APP_LOG_LEVEL', 'debug'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tenant Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'tenant_db_connection' => env('TENANT_DB_CONNECTION', 'mysql'),
+
+    'tenant_storage_connection' => env('TENANT_STORAGE_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -179,6 +190,7 @@ return [
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
+        \App\Providers\MyTenantServiceProvider::class,
 
     ],
 
@@ -229,6 +241,7 @@ return [
         'Schema' => Illuminate\Support\Facades\Schema::class,
         'Session' => Illuminate\Support\Facades\Session::class,
         'Storage' => Illuminate\Support\Facades\Storage::class,
+        'Tenant' => Protosofia\Ben10ant\Facades\TenantFacade::class,
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
