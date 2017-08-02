@@ -37,6 +37,9 @@
             "name": "Articulos"
         },
         {
+            "name": "Bancos"
+        },
+        {
             "name": "Clientes"
         },
         {
@@ -44,6 +47,9 @@
         },
         {
             "name": "Comprobantes Compra"
+        },
+        {
+            "name": "Cuentas Bancarias"
         },
         {
             "name": "Cuenta Corriente Cliente"
@@ -95,6 +101,9 @@
         },
         {
             "name": "Tipo Retenciones"
+        },
+        {
+            "name": "Tipos de Tarjeta"
         },
         {
             "name": "Usuarios"
@@ -573,6 +582,150 @@
                                 "$ref": "#/definitions/Articulo"
                             }
                         }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/bancos": {
+            "get": {
+                "tags": [
+                    "Bancos"
+                ],
+                "summary": "Listar Bancos",
+                "description": "El endpoint bancos devuelve información sobre todos los bancos en el sistema. Se listan los bancos sin un orden específico. Se debe contar con permiso para ver bancos.\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de bancos",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Banco"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Bancos"
+                ],
+                "summary": "Crear nuevo banco",
+                "description": "Crea un nuevo banco y lo persiste en la base de datos. Se requiere contar con permiso para crear bancos.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nuevo banco creado",
+                        "schema": {
+                            "$ref": "#/definitions/Banco"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/bancos/{id}": {
+            "get": {
+                "tags": [
+                    "Bancos"
+                ],
+                "summary": "Banco con el id proporcionado",
+                "description": "Devuelve el banco que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver bancos.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Banco",
+                        "schema": {
+                            "$ref": "#/definitions/Banco"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Bancos"
+                ],
+                "summary": "Actualiza los datos del banco",
+                "description": "Edita el banco que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar bancos.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "banco",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Banco"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Banco con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/Banco"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Bancos"
+                ],
+                "summary": "Borra un banco",
+                "description": "Borra el banco que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar bancos.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
                     },
                     "500": {
                         "description": "Error inesperado",
@@ -1183,6 +1336,150 @@
                         "schema": {
                             "$ref": "#/definitions/Contador"
                         }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/cuentasbancarias": {
+            "get": {
+                "tags": [
+                    "Cuentas Bancarias"
+                ],
+                "summary": "Listar Cuentas Bancarias",
+                "description": "El endpoint cuentasbancarias devuelve información sobre todas las cuentas bancarias en el sistema. Se listan las cuentas bancarias sin un orden específico. Se debe contar con permiso para ver cuentas bancarias.\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de cuentas bancarias",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CuentaBancaria"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Cuentas Bancarias"
+                ],
+                "summary": "Crear nueva cuentabancaria",
+                "description": "Crea una nueva cuenta bancaria y la persiste en la base de datos. Se requiere contar con permiso para crear cuentas bancarias.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nueva cuenta bancaria creada",
+                        "schema": {
+                            "$ref": "#/definitions/CuentaBancaria"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/cuentasbancarias/{id}": {
+            "get": {
+                "tags": [
+                    "Cuentas Bancarias"
+                ],
+                "summary": "Cuenta Bancaria con el id proporcionado",
+                "description": "Devuelve la cuenta bancaria que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver cuentas bancarias.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cuenta Bancaria",
+                        "schema": {
+                            "$ref": "#/definitions/CuentaBancaria"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Cuentas Bancarias"
+                ],
+                "summary": "Actualiza los datos de la cuenta bancaria",
+                "description": "Edita la cuenta bancaria que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar cuentas bancarias.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "cuentabancaria",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CuentaBancaria"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cuenta Bancaria con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/CuentaBancaria"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Cuentas Bancarias"
+                ],
+                "summary": "Borra una cuenta bancaria",
+                "description": "Borra la cuenta bancaria que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar cuentas bancarias.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
                     },
                     "500": {
                         "description": "Error inesperado",
@@ -3331,6 +3628,150 @@
                 }
             }
         },
+        "/tipostarjeta": {
+            "get": {
+                "tags": [
+                    "Tipos de Tarjeta"
+                ],
+                "summary": "Listar Tipos Tarjeta",
+                "description": "El endpoint tipostarjeta devuelve información sobre todos los tipos de tarjeta en el sistema. Se listan los tipos de tarjeta sin un orden específico. Se debe contar con permiso para ver tipos de tarjeta.\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de tipos de tarjeta",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/TipoTarjeta"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tipos de Tarjeta"
+                ],
+                "summary": "Crear nuevo tipo de tarjeta",
+                "description": "Crea un nuevo tipo de tarjeta y lo persiste en la base de datos. Se requiere contar con permiso para crear tipos de tarjeta.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nuevo tipo de tarjeta creado",
+                        "schema": {
+                            "$ref": "#/definitions/TipoTarjeta"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/tipostarjeta/{id}": {
+            "get": {
+                "tags": [
+                    "Tipos de Tarjeta"
+                ],
+                "summary": "Tipo Tarjeta con el id proporcionado",
+                "description": "Devuelve el tipo de tarjeta que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver tipos de tarjeta.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tipo Tarjeta",
+                        "schema": {
+                            "$ref": "#/definitions/TipoTarjeta"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Tipos de Tarjeta"
+                ],
+                "summary": "Actualiza los datos del tipo de tarjeta",
+                "description": "Edita el tipo de tarjeta que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar tipos de tarjeta.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "tipotarjeta",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TipoTarjeta"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tipo Tarjeta con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/TipoTarjeta"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tipos de Tarjeta"
+                ],
+                "summary": "Borra un tipo de tarjeta",
+                "description": "Borra el tipo de tarjeta que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar tipos de tarjeta.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
         "/comprobantescompra": {
             "get": {
                 "tags": [
@@ -3629,6 +4070,37 @@
                     "type": "boolean"
                 },
                 "motivo": {
+                    "type": "string"
+                }
+            }
+        },
+        "Banco": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "nombre": {
+                    "type": "string"
+                }
+            }
+        },
+        "CuentaBancaria": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "banco_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "tipo": {
+                    "type": "string"
+                },
+                "numero": {
                     "type": "string"
                 }
             }
@@ -4289,6 +4761,21 @@
                 "alicuota": {
                     "type": "number",
                     "format": "double"
+                }
+            }
+        },
+        "TipoTarjeta": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "tipo": {
+                    "type": "string"
                 }
             }
         },
