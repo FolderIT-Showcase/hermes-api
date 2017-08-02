@@ -188,7 +188,7 @@ ORDER BY  c.fecha, c.updated_at ASC]]>
 				<textElement>
 					<paragraph leftIndent="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA["(0342) 4551234"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{EMPRESA_TELEFONO}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="714" y="0" width="40" height="30" uuid="aad7eda9-d5a2-46f3-88c3-2cec402a138c"/>

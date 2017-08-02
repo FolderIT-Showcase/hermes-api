@@ -79,6 +79,9 @@
             "name": "Regimen de informacion de ventas"
         },
         {
+            "name": "Resumen de ventas"
+        },
+        {
             "name": "Rubros"
         },
         {
@@ -1910,6 +1913,60 @@
                 "responses": {
                     "200": {
                         "description": "TXT",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/resumenventas": {
+            "get": {
+                "tags": [
+                    "Resumen de ventas"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "summary": "Reporte con resumen de ventas",
+                "description": "Devuelve un reporte en pdf con un reporte con el tipo especificado como parámetro, con la información de los comprobantes generados entre las fechas solicitadas.\n",
+                "parameters": [
+                    {
+                        "name": "tipo",
+                        "in": "query",
+                        "required": true,
+                        "type": "string",
+                        "description": "fecha, tipo, resumen, jurisdiccion"
+                    },
+                    {
+                        "name": "fecha_inicio",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fecha_fin",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "codigos",
+                        "in": "query",
+                        "required": true,
+                        "type": "string",
+                        "description": "csv de los codigos de tipos de comprobantes"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF",
                         "schema": {
                             "type": "file"
                         }

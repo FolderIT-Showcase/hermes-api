@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ventas_jurisdiccion" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="8a465670-cc4a-4270-965f-8efb86e33b71">
+	<property name="template.engine" value="tabular_template"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Hermes"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="382"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="607"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="438"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="548"/>
+	<style name="Table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<leftPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+			<rightPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="tableDataset" uuid="e91cee0c-6306-415d-91e2-64ef3632cdb7">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<parameter name="EMPRESA_DIRECCION" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Francisco Miguens 180 - Piso 10 - Santa Fe (Santa Fe)"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_NOMBRE" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["FOLDER IT"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_TELEFONO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["(0342) 4556006"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PERIODOFISCAL" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["01/2017"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_TIPORESPONSABLE" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Responsable Inscipto"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_CUIT" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["30-70772555-5"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="INIT_PAGE" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHA_INICIO" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["2017/06/01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHA_FIN" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["2017/07/31"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODIGOS" class="java.lang.String" nestedType="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["('FCA', 'FCB', 'FCC', 'NDA', 'NDB', 'NDC', 'NCA', 'NCB', 'NCC')"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT c.fecha, c.numero, c.punto_venta, c.cliente_nombre, c.importe_total, c.importe_neto, c.importe_iva, tc.codigo, l.nombre, l.cp, p.nombre as p_nombre
+FROM comprobantes c, tipo_comprobantes tc, clientes cl, domicilios d, localidades l, provincias p
+WHERE c.tipo_comprobante_id = tc.id
+AND c.cliente_id = cl.id
+AND d.cliente_id = cl.id
+AND d.localidad_id = l.id
+AND l.provincia_id = p.id
+AND tc.codigo IN $P!{CODIGOS}
+AND c.fecha BETWEEN $P{FECHA_INICIO} AND $P{FECHA_FIN}
+ORDER BY p.nombre, l.nombre]]>
+	</queryString>
+	<field name="fecha" class="java.sql.Date"/>
+	<field name="numero" class="java.math.BigDecimal"/>
+	<field name="punto_venta" class="java.math.BigDecimal"/>
+	<field name="cliente_nombre" class="java.lang.String"/>
+	<field name="importe_total" class="java.math.BigDecimal"/>
+	<field name="importe_neto" class="java.math.BigDecimal"/>
+	<field name="importe_iva" class="java.math.BigDecimal"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="cp" class="java.lang.String"/>
+	<field name="p_nombre" class="java.lang.String"/>
+	<variable name="neto_grav" class="java.lang.Double" resetType="Group" resetGroup="Group2" calculation="Sum">
+		<variableExpression><![CDATA[IF(OR(LEFT($F{codigo}, 2).equals("FC"),  LEFT($F{codigo}, 2).equals("ND")),
+	$F{importe_neto},
+	PRODUCT(INTEGER_VALUE("-1" ),$F{importe_neto})
+	)]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double("0")]]></initialValueExpression>
+	</variable>
+	<variable name="iva" class="java.lang.Double" resetType="Group" resetGroup="Group2" calculation="Sum">
+		<variableExpression><![CDATA[IF(OR(LEFT($F{codigo}, 2).equals("FC"),  LEFT($F{codigo}, 2).equals("ND")),
+	$F{importe_iva},
+	PRODUCT(INTEGER_VALUE("-1" ),$F{importe_iva})
+	)]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double("0")]]></initialValueExpression>
+	</variable>
+	<variable name="total" class="java.lang.Double" resetType="Group" resetGroup="Group2" calculation="Sum">
+		<variableExpression><![CDATA[IF(OR(LEFT($F{codigo}, 2).equals("FC"),  LEFT($F{codigo}, 2).equals("ND")),
+	$F{importe_total},
+	PRODUCT(INTEGER_VALUE("-1" ),$F{importe_total})
+	)]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double("0")]]></initialValueExpression>
+	</variable>
+	<variable name="subtotal_neto_grav" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[IF(OR(LEFT($F{codigo}, 2).equals("FC"),  LEFT($F{codigo}, 2).equals("ND")),
+	$F{importe_neto},
+	PRODUCT(INTEGER_VALUE("-1" ),$F{importe_neto})
+	)]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double("0")]]></initialValueExpression>
+	</variable>
+	<variable name="subtotal_iva" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[IF(OR(LEFT($F{codigo}, 2).equals("FC"),  LEFT($F{codigo}, 2).equals("ND")),
+	$F{importe_iva},
+	PRODUCT(INTEGER_VALUE("-1" ),$F{importe_iva})
+	)]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double("0")]]></initialValueExpression>
+	</variable>
+	<variable name="subtotal_total" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[IF(OR(LEFT($F{codigo}, 2).equals("FC"),  LEFT($F{codigo}, 2).equals("ND")),
+	$F{importe_total},
+	PRODUCT(INTEGER_VALUE("-1" ),$F{importe_total})
+	)]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double("0")]]></initialValueExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{p_nombre}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="0" y="3" width="190" height="14" uuid="291954a0-8c04-4d6b-b7f8-34700bad7040">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font size="8" isBold="true"/>
+						<paragraph leftIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[UPPER($F{p_nombre})]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="17" width="771" height="1" uuid="27742308-e2ba-40b8-b343-deaab96ccb3d"/>
+					<graphicElement>
+						<pen lineWidth="0.7" lineColor="#D6D6D6"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="23">
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="0" y="1" width="190" height="14" uuid="338651ad-ab68-41fb-8473-0e8f8be023ed">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+						<paragraph leftIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[IF($F{nombre} != null, 
+	CONCATENATE( "Subtotal ", UPPER($F{p_nombre}), ":")
+	 , "Subtotal:"
+)]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="14" width="771" height="1" uuid="73334169-7999-46b3-a6d6-a56deaedda54">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+				</line>
+				<textField>
+					<reportElement x="190" y="1" width="80" height="14" uuid="9c0c8218-9239-44f6-aa91-b180c2b02578"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{subtotal_neto_grav})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="270" y="1" width="80" height="14" uuid="e99c6b09-5a37-4a70-b010-67fdeb704d70"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["0,00"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="350" y="1" width="80" height="14" uuid="4e90ceda-be0e-4463-a310-b55521a4a8a0"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{subtotal_iva})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="430" y="1" width="80" height="14" uuid="845fe910-2314-41a2-b14a-b713fa37feba"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["0,00"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="510" y="1" width="80" height="14" uuid="4714350c-5172-4995-ad00-34d93f2d6ca6"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["0,00"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="590" y="1" width="80" height="14" uuid="fc809986-d3b2-4653-8442-4d0457304547"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["0,00"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="670" y="1" width="101" height="14" uuid="767a56ca-b482-4dfc-baaf-c57fb34bad49"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{subtotal_total})]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Group2" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{nombre}]]></groupExpression>
+		<groupFooter>
+			<band height="15">
+				<line>
+					<reportElement x="0" y="13" width="771" height="1" uuid="f96a39e9-1a55-4ee8-9d4c-6947f0e4a6b1">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.7" lineColor="#D6D6D6"/>
+					</graphicElement>
+				</line>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="0" y="0" width="190" height="14" uuid="35b65469-f84b-4fc3-a3e6-6239a0996846">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font size="8" isBold="false"/>
+						<paragraph leftIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[IF($F{nombre} != null, 
+	CONCATENATE(UPPER( $F{nombre}), " (", $F{cp}, ")"),
+	""
+)]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="190" y="0" width="80" height="14" uuid="0b12dc38-822d-45eb-a370-88743386a573"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{neto_grav})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="270" y="0" width="80" height="14" uuid="075cdec3-3102-44b1-9bf0-49dd3f22a423"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["0,00"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="350" y="0" width="80" height="14" uuid="3839f0d6-0d6f-4a28-88cc-2c2ab07d80fa"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{iva})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="430" y="0" width="80" height="14" uuid="0bdd5243-10bb-4fed-a071-ce35a895a30e"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["0,00"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="510" y="0" width="80" height="14" uuid="c8a763f1-b1aa-40d4-bd5f-db863b8a4df1"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["0,00"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="590" y="0" width="80" height="14" uuid="33108538-65a1-439b-9056-faad3db100d4"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["0,00"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="670" y="0" width="101" height="14" uuid="13d07a97-7fa7-4f36-96ba-dfebb21effc5"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{total})]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="88">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="20" y="0" width="260" height="15" uuid="5b817bac-9d5e-4620-87fc-40f6d62d14aa">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{EMPRESA_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="15" width="260" height="15" uuid="1473a676-a58b-4ec2-9b29-f2cb894544bf">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{EMPRESA_DIRECCION}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="340" y="50" width="123" height="15" uuid="9df39083-5a13-4571-90d0-f7258e0ff4b7">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ventas por Jurisdicción]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="20" y="30" width="260" height="15" uuid="4b975003-cdae-4a01-a50b-33d6a64f03e3">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{EMPRESA_TELEFONO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="281" y="67" width="73" height="16" uuid="2c4c0b91-4e2f-457e-a566-5eaccbe8172b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Periodo desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="414" y="67" width="30" height="16" uuid="6c9ffc61-e06b-4712-8ea9-e45c118b3304"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[hasta:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="354" y="67" width="59" height="16" uuid="cf199597-c8fe-4c63-98ab-567d054eefab">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(new SimpleDateFormat("yyyy/MM/dd")).parse($P{FECHA_INICIO})]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="444" y="67" width="59" height="16" uuid="44a01487-4796-45c5-82d4-b5dfddd59cca">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(new SimpleDateFormat("yyyy/MM/dd")).parse($P{FECHA_FIN})]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="14">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="350" y="0" width="80" height="14" uuid="95509d6d-aa0b-4873-a145-7a853ae34861"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<text><![CDATA[IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="590" y="0" width="80" height="14" uuid="5df9f122-59fe-4c6f-a8ea-a6f3bba07a74"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<text><![CDATA[Bonif]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="670" y="0" width="101" height="14" uuid="263a775a-2a97-4704-b41e-187a2a2edb5d"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="0" width="80" height="14" uuid="ecd4be2a-ff2d-4a3a-83a2-b8fd87364829">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<text><![CDATA[Neto Grav.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="0" width="80" height="14" uuid="f0ed4a4b-cade-4542-af43-9b990ee61d98">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<text><![CDATA[Otros]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="0" width="80" height="14" uuid="30af1b0d-9f18-46ae-bea1-5933997c9df2">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<text><![CDATA[Descuentos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="0" width="80" height="14" uuid="4ed36127-a2ad-4d38-b91f-ac50213edfdb"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<text><![CDATA[Neto No Grav.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<pageFooter>
+		<band height="41">
+			<staticText>
+				<reportElement x="6" y="14" width="178" height="15" uuid="1fcc6e00-e8f8-4d2c-b58e-61f66f6eaad1"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[FOLDER SISTEMAS      - Informe impreso el día:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="10" width="771" height="1" uuid="7befd775-1613-4440-9061-44594b2c1d6b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+			</line>
+			<textField pattern="dd/MM/yyyy &apos;a las&apos; hh:mm:ss &apos;hs&apos;">
+				<reportElement x="184" y="14" width="134" height="14" uuid="a7e47684-f782-47ce-b2ff-b83b9da702f9"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="665" y="14" width="60" height="18" uuid="259fc468-59dd-4788-ad9c-89c36994baaf"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CONCATENATE("Página ", $V{PAGE_NUMBER}.toString())]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="725" y="14" width="35" height="18" uuid="f9550a64-e247-4a3d-8d2f-21dc99c99d3d"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CONCATENATE(" de ", $V{PAGE_NUMBER}.toString())]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
