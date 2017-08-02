@@ -138,9 +138,9 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 
     Route::resource('cuentasbancarias', 'CuentaBancariaController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy'],
-         'parameters' => ['cuentasbancarias' => 'cuentabancaria']]);
+         'parameters' => ['cuentasbancarias' => 'cuentaBancaria']]);
 
     Route::resource('tipostarjeta', 'TipoTarjetaController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy'],
-         'parameters' => ['tipostarjeta' => 'tipotarjeta']]);
+         'parameters' => ['tipostarjeta' => 'tipoTarjeta']]);
 });
