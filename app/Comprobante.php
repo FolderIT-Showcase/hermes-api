@@ -32,6 +32,11 @@ class Comprobante extends Model
         return $this->hasOne(CtaCteCliente::class);
     }
 
+    public function forma_pago()
+    {
+        return $this->belongsTo(TipoFormaPago::class);
+    }
+
     protected $fillable  = ['cliente_id',
         'tipo_comprobante_id',
         'fecha',
@@ -49,7 +54,8 @@ class Comprobante extends Model
         'fecha_cae',
         'fecha_venc_cae',
         'anulado',
-        'lista_id'];
+        'lista_id',
+        'forma_pago_id'];
 
     protected $events = [
         'created' => ComprobanteCreated::class,
