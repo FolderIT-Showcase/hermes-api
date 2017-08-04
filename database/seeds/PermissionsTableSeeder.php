@@ -568,5 +568,80 @@ class PermissionsTableSeeder extends Seeder
         $deleteCuentaBancaria->display_name = 'Borrar Cuentas Bancarias';
         $deleteCuentaBancaria->description  = 'Borrar cuentas bancarias existentes';
         $deleteCuentaBancaria->save();
+
+        //Permisos Tarjeta
+        $createTarjeta = permission::firstOrNew(array('name' => 'create_tarjeta'));
+        $createTarjeta->name         = 'create_tarjeta';
+        $createTarjeta->display_name = 'Crear Tarjetas';
+        $createTarjeta->description  = 'Crear nuevos tarjetas';
+        $createTarjeta->save();
+
+        $editTarjeta = permission::firstOrNew(array('name' => 'edit_tarjeta'));
+        $editTarjeta->name         = 'edit_tarjeta';
+        $editTarjeta->display_name = 'Editar Tarjetas';
+        $editTarjeta->description  = 'Editar tarjetas existentes';
+        $editTarjeta->save();
+
+        $viewTarjeta = permission::firstOrNew(array('name' => 'view_tarjeta'));
+        $viewTarjeta->name         = 'view_tarjeta';
+        $viewTarjeta->display_name = 'Ver Tarjetas';
+        $viewTarjeta->description  = 'Ver tarjetas existentes';
+        $viewTarjeta->save();
+
+        $deleteTarjeta = permission::firstOrNew(array('name' => 'delete_tarjeta'));
+        $deleteTarjeta->name         = 'delete_tarjeta';
+        $deleteTarjeta->display_name = 'Borrar Tarjetas';
+        $deleteTarjeta->description  = 'Borrar tarjetas existentes';
+        $deleteTarjeta->save();
+
+        //Permisos Deposito
+        $createDeposito = permission::firstOrNew(array('name' => 'create_deposito'));
+        $createDeposito->name         = 'create_deposito';
+        $createDeposito->display_name = 'Crear Depositos';
+        $createDeposito->description  = 'Crear nuevos depositos';
+        $createDeposito->save();
+
+        $editDeposito = permission::firstOrNew(array('name' => 'edit_deposito'));
+        $editDeposito->name         = 'edit_deposito';
+        $editDeposito->display_name = 'Editar Depositos';
+        $editDeposito->description  = 'Editar depositos existentes';
+        $editDeposito->save();
+
+        $viewDeposito = permission::firstOrNew(array('name' => 'view_deposito'));
+        $viewDeposito->name         = 'view_deposito';
+        $viewDeposito->display_name = 'Ver Depositos';
+        $viewDeposito->description  = 'Ver depositos existentes';
+        $viewDeposito->save();
+
+        $deleteDeposito = permission::firstOrNew(array('name' => 'delete_deposito'));
+        $deleteDeposito->name         = 'delete_deposito';
+        $deleteDeposito->display_name = 'Borrar Depositos';
+        $deleteDeposito->description  = 'Borrar depositos existentes';
+        $deleteDeposito->save();
+
+        //Permisos Cheque Terceros
+        $createChequeTercero = permission::firstOrNew(array('name' => 'create_cheque_tercero'));
+        $createChequeTercero->name         = 'create_cheque_tercero';
+        $createChequeTercero->display_name = 'Crear Cheques de Terceros';
+        $createChequeTercero->description  = 'Crear nuevos cheques de terceros';
+        $createChequeTercero->save();
+
+        $editChequeTercero = permission::firstOrNew(array('name' => 'edit_cheque_tercero'));
+        $editChequeTercero->name         = 'edit_cheque_tercero';
+        $editChequeTercero->display_name = 'Editar Cheques de Terceros';
+        $editChequeTercero->description  = 'Editar cheques de terceros existentes';
+        $editChequeTercero->save();
+
+        $viewChequeTercero = permission::firstOrNew(array('name' => 'view_cheque_tercero'));
+        $viewChequeTercero->name         = 'view_cheque_tercero';
+        $viewChequeTercero->display_name = 'Ver Cheque de Terceros';
+        $viewChequeTercero->description  = 'Ver cheques de terceros existentes';
+        $viewChequeTercero->save();
+
+        $deleteChequeTercero = permission::firstOrNew(array('name' => 'delete_cheque_tercero'));
+        $deleteChequeTercero->name         = 'delete_cheque_tercero';
+        $deleteChequeTercero->display_name = 'Borrar Cheques de Terceros';
+        $deleteChequeTercero->description  = 'Borrar cheques de terceros existentes';
+        $deleteChequeTercero->save();
     }
 }

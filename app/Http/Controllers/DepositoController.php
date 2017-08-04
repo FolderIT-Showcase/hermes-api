@@ -9,10 +9,10 @@ class DepositoController extends Controller
 {
     public function __construct()
     {
-//        $this->middleware('permission:view_deposito', ['only' => ['index', 'show']]);
-//        $this->middleware('permission:create_deposito', ['only' => ['store']]);
-//        $this->middleware('permission:edit_deposito', ['only' => ['update']]);
-//        $this->middleware('permission:delete_deposito', ['only' => ['destroy']]);
+        $this->middleware('permission:view_deposito', ['only' => ['index', 'show', 'showByAll']]);
+        $this->middleware('permission:create_deposito', ['only' => ['store']]);
+        $this->middleware('permission:edit_deposito', ['only' => ['update']]);
+        $this->middleware('permission:delete_deposito', ['only' => ['destroy']]);
     }
 
     /**

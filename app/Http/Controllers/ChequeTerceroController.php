@@ -9,10 +9,10 @@ class ChequeTerceroController extends Controller
 {
     public function __construct()
     {
-//        $this->middleware('permission:view_chequeTercero', ['only' => ['index', 'show']]);
-//        $this->middleware('permission:create_chequeTercero', ['only' => ['store']]);
-//        $this->middleware('permission:edit_chequeTercero', ['only' => ['update']]);
-//        $this->middleware('permission:delete_chequeTercero', ['only' => ['destroy']]);
+        $this->middleware('permission:view_cheque_tercero', ['only' => ['index', 'show', 'showByAll']]);
+        $this->middleware('permission:create_cheque_tercero', ['only' => ['store']]);
+        $this->middleware('permission:edit_cheque_tercero', ['only' => ['update']]);
+        $this->middleware('permission:delete_cheque_tercero', ['only' => ['destroy']]);
     }
 
     /**

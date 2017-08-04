@@ -9,10 +9,10 @@ class TarjetaController extends Controller
 {
     public function __construct()
     {
-//        $this->middleware('permission:view_tarjeta', ['only' => ['index', 'show']]);
-//        $this->middleware('permission:create_tarjeta', ['only' => ['store']]);
-//        $this->middleware('permission:edit_tarjeta', ['only' => ['update']]);
-//        $this->middleware('permission:delete_tarjeta', ['only' => ['destroy']]);
+        $this->middleware('permission:view_tarjeta', ['only' => ['index', 'show', 'showByAll']]);
+        $this->middleware('permission:create_tarjeta', ['only' => ['store']]);
+        $this->middleware('permission:edit_tarjeta', ['only' => ['update']]);
+        $this->middleware('permission:delete_tarjeta', ['only' => ['destroy']]);
     }
 
     /**
