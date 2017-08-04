@@ -19,7 +19,7 @@ class Deposito extends Model
     protected $fillable  = ['cliente_id',
         'cuenta_id',
         'numero',
-        'impoorte',
+        'importe',
         'fecha',
         'fecha_acreditacion',
         'tipo',
