@@ -83,13 +83,13 @@ class DepositoController extends Controller
     public function showByAll(Request $request)
     {
         $cliente = $request->input('cliente', '0');
-        $fecha_inicio = $request->input('fecha_inicio', '0');
-        $fecha_fin = $request->input('fecha_fin', '0');
+        $fecha_inicio = $request->input('fecha_ingreso_inicio', '0');
+        $fecha_fin = $request->input('fecha_ingreso_fin', '0');
 
         $tarjetas = Deposito::when($cliente !== '0',  function ($query) use ($cliente) {
                 return $query->where('cliente_id', $cliente);})
             ->when($fecha_inicio !== '0' && $fecha_fin !== '0',  function ($query) use ($fecha_inicio, $fecha_fin) {
-                return $query->whereBetween('fecha', [$fecha_inicio, $fecha_fin]);})
+                return $query->whereBetween('fecha_ingreso', [$fecha_inicio, $fecha_fin]);})
             ->get();
 
         if($tarjetas === null){

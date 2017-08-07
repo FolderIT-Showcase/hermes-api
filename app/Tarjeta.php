@@ -19,7 +19,7 @@ class Tarjeta extends Model
     protected $fillable  = ['cliente_id',
         'tarjeta_id',
         'importe',
-        'fecha',
+        'fecha_ingreso',
         'fecha_acreditacion',
         'estado',
         'descripcion'];

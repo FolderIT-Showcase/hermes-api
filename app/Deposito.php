@@ -20,8 +20,9 @@ class Deposito extends Model
         'cuenta_id',
         'numero',
         'importe',
-        'fecha',
+        'fecha_ingreso',
         'fecha_acreditacion',
+        'fecha_deposito',
         'tipo',
         'descripcion'];
 }
