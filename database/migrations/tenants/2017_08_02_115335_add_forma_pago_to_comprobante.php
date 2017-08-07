@@ -30,7 +30,7 @@ class AddFormaPagoToComprobante extends Migration
     public function down()
     {
         Schema::table('comprobantes', function(Blueprint $table) {
-            $table->dropForeign('forma_pago_id');
+            $table->dropForeign('comprobantes_forma_pago_id_foreign');
             $table->dropColumn('forma_pago_id');
         });
     }

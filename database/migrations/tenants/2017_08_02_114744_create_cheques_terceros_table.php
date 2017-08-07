@@ -15,20 +15,20 @@ class CreateChequesTercerosTable extends Migration
     {
         Schema::create('cheques_terceros', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('cliente_id')->unsigned();
+            $table->integer('cliente_id')->unsigned()->nullable();
             $table->integer('banco_id')->unsigned();
-            $table->string('sucursal', 50);
-            $table->string('numero', 20);
-            $table->string('nro_interno', 10);
+            $table->string('sucursal', 50)->nullable();
+            $table->string('numero', 20)->nullable();
+            $table->string('nro_interno', 10)->nullable();
             $table->decimal('importe', 15, 2);
-            $table->date('fecha_emision');
+            $table->date('fecha_emision')->nullable();
             $table->date('fecha_ingreso');
-            $table->date('fecha_vencimiento');
-            $table->date('fecha_cobro');
-            $table->string('origen', 100);
-            $table->string('destinatario', 100);
+            $table->date('fecha_vencimiento')->nullable();
+            $table->date('fecha_cobro')->nullable();
+            $table->string('origen', 100)->nullable();
+            $table->string('destinatario', 100)->nullable();
             $table->string('estado', 1);
-            $table->string('descripcion', 500);
+            $table->string('descripcion', 500)->nullable();
             $table->timestamps();
 
             //relación con cliente
