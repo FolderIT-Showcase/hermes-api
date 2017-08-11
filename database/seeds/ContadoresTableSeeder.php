@@ -22,6 +22,7 @@ class ContadoresTableSeeder extends Seeder
         $contadores[] = ['codigo' => 'NCA', 'punto_venta' => 1, 'ultimo_generado' => 0];
         $contadores[] = ['codigo' => 'NCB', 'punto_venta' => 1, 'ultimo_generado' => 0];
         $contadores[] = ['codigo' => 'NCC', 'punto_venta' => 1, 'ultimo_generado' => 0];
+        $contadores[] = ['codigo' => 'REC', 'punto_venta' => 1, 'ultimo_generado' => 0];
 
         foreach ($contadores as $contador) {
             $contadorDB = \App\Contador::whereHas('tipo_comprobante', function ($query) use ($contador) {
