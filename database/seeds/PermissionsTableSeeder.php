@@ -493,5 +493,80 @@ class PermissionsTableSeeder extends Seeder
         $deleteNotaDebitoCompra->display_name = 'Borrar Notas de Debito de Compra';
         $deleteNotaDebitoCompra->description  = 'Borrar notas de debito de compra existentes';
         $deleteNotaDebitoCompra->save();
+
+        //Permisos banco
+        $createBanco = Permission::firstOrNew(array('name' => 'create_banco'));
+        $createBanco->name         = 'create_banco';
+        $createBanco->display_name = 'Crear Bancos';
+        $createBanco->description  = 'Crear nuevos bancos';
+        $createBanco->save();
+
+        $editBanco = permission::firstOrNew(array('name' => 'edit_banco'));
+        $editBanco->name         = 'edit_banco';
+        $editBanco->display_name = 'Editar Bancos';
+        $editBanco->description  = 'Editar bancos existentes';
+        $editBanco->save();
+
+        $viewBanco = permission::firstOrNew(array('name' => 'view_banco'));
+        $viewBanco->name         = 'view_banco';
+        $viewBanco->display_name = 'Ver Bancos';
+        $viewBanco->description  = 'Ver bancos existentes';
+        $viewBanco->save();
+
+        $deleteBanco = permission::firstOrNew(array('name' => 'delete_banco'));
+        $deleteBanco->name         = 'delete_banco';
+        $deleteBanco->display_name = 'Borrar Bancos';
+        $deleteBanco->description  = 'Borrar bancos existentes';
+        $deleteBanco->save();
+
+        //Permisos tipo tarjeta
+        $createTipoTarjeta = Permission::firstOrNew(array('name' => 'create_tipo_tarjeta'));
+        $createTipoTarjeta->name         = 'create_tipo_tarjeta';
+        $createTipoTarjeta->display_name = 'Crear Tipos de Tarjeta';
+        $createTipoTarjeta->description  = 'Crear nuevos tipos de tarjeta';
+        $createTipoTarjeta->save();
+
+        $editTipoTarjeta = permission::firstOrNew(array('name' => 'edit_tipo_tarjeta'));
+        $editTipoTarjeta->name         = 'edit_tipo_tarjeta';
+        $editTipoTarjeta->display_name = 'Editar Tipos Tarjeta';
+        $editTipoTarjeta->description  = 'Editar tipos de tarjeta existentes';
+        $editTipoTarjeta->save();
+
+        $viewTipoTarjeta = permission::firstOrNew(array('name' => 'view_tipo_tarjeta'));
+        $viewTipoTarjeta->name         = 'view_tipo_tarjeta';
+        $viewTipoTarjeta->display_name = 'Ver Tipos de Tarjeta';
+        $viewTipoTarjeta->description  = 'Ver tipos de tarjeta existentes';
+        $viewTipoTarjeta->save();
+
+        $deleteTipoTarjeta = permission::firstOrNew(array('name' => 'delete_tipo_tarjeta'));
+        $deleteTipoTarjeta->name         = 'delete_tipo_tarjeta';
+        $deleteTipoTarjeta->display_name = 'Borrar Tipos de Tarjeta';
+        $deleteTipoTarjeta->description  = 'Borrar tipos de tarjeta existentes';
+        $deleteTipoTarjeta->save();
+
+        //Permisos cuenta bancaria
+        $createCuentaBancaria = Permission::firstOrNew(array('name' => 'create_cuenta_bancaria'));
+        $createCuentaBancaria->name         = 'create_cuenta_bancaria';
+        $createCuentaBancaria->display_name = 'Crear Cuentas Bancarias';
+        $createCuentaBancaria->description  = 'Crear nuevas cuentas bancarias';
+        $createCuentaBancaria->save();
+
+        $editCuentaBancaria = permission::firstOrNew(array('name' => 'edit_cuenta_bancaria'));
+        $editCuentaBancaria->name         = 'edit_cuenta_bancaria';
+        $editCuentaBancaria->display_name = 'Editar Cuentas Bancaria';
+        $editCuentaBancaria->description  = 'Editar cuentas bancarias existentes';
+        $editCuentaBancaria->save();
+
+        $viewCuentaBancaria = permission::firstOrNew(array('name' => 'view_cuenta_bancaria'));
+        $viewCuentaBancaria->name         = 'view_cuenta_bancaria';
+        $viewCuentaBancaria->display_name = 'Ver Cuentas Bancarias';
+        $viewCuentaBancaria->description  = 'Ver cuentas bancarias existentes';
+        $viewCuentaBancaria->save();
+
+        $deleteCuentaBancaria = permission::firstOrNew(array('name' => 'delete_cuenta_bancaria'));
+        $deleteCuentaBancaria->name         = 'delete_cuenta_bancaria';
+        $deleteCuentaBancaria->display_name = 'Borrar Cuentas Bancarias';
+        $deleteCuentaBancaria->description  = 'Borrar cuentas bancarias existentes';
+        $deleteCuentaBancaria->save();
     }
 }
