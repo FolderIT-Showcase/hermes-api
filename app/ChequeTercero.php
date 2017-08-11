@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ChequeTercero extends Model
 {
+    protected $table = 'cheques_terceros';
+
     public function cliente()
     {
         return $this->belongsTo(Cliente::class);

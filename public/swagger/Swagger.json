@@ -40,6 +40,9 @@
             "name": "Bancos"
         },
         {
+            "name": "Cheques de Terceros"
+        },
+        {
             "name": "Clientes"
         },
         {
@@ -56,6 +59,9 @@
         },
         {
             "name": "Cuenta Corriente Proveedor"
+        },
+        {
+            "name": "Depositos"
         },
         {
             "name": "Libro Iva"
@@ -92,6 +98,9 @@
         },
         {
             "name": "Subrubros"
+        },
+        {
+            "name": "Tarjetas"
         },
         {
             "name": "Tipo Categoria Clientes"
@@ -714,6 +723,150 @@
                 ],
                 "summary": "Borra un banco",
                 "description": "Borra el banco que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar bancos.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/chequesterceros": {
+            "get": {
+                "tags": [
+                    "Cheques"
+                ],
+                "summary": "Listar Cheques",
+                "description": "El endpoint chequesterceros devuelve información sobre todos los cheques en el sistema, incluyendo todos los detalles de los mismos. Se listan los cheques sin un orden específico. Se debe contar con permiso para ver cheques\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de cheques",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ChequeTerceros"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Cheques"
+                ],
+                "summary": "Crear nuevo cheque",
+                "description": "Crea un nuevo cheque y lo persiste en la base de datos. Se requiere contar con permiso para crear cheques.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nuevo cheque creado",
+                        "schema": {
+                            "$ref": "#/definitions/ChequeTerceros"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/cheques/{id}": {
+            "get": {
+                "tags": [
+                    "Cheques"
+                ],
+                "summary": "Cheque con el id proporcionado",
+                "description": "Devuelve el cheque que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver cheques.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cheque",
+                        "schema": {
+                            "$ref": "#/definitions/ChequeTerceros"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Cheques"
+                ],
+                "summary": "Actualiza los datos del cheque",
+                "description": "Edita el cheque que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar cheques.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "cheque",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ChequeTerceros"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cheque con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/ChequeTerceros"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Cheques"
+                ],
+                "summary": "Borra un cheque",
+                "description": "Borra el cheque que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar cheques.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -1468,6 +1621,150 @@
                 ],
                 "summary": "Borra una cuenta bancaria",
                 "description": "Borra la cuenta bancaria que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar cuentas bancarias.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/depositos": {
+            "get": {
+                "tags": [
+                    "Depositos"
+                ],
+                "summary": "Listar Depositos",
+                "description": "El endpoint depositos devuelve información sobre todos los depositos en el sistema, incluyendo todos los detalles de los mismos. Se listan los depositos sin un orden específico. Se debe contar con permiso para ver depositos\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de depositos",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Deposito"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Depositos"
+                ],
+                "summary": "Crear nuevo deposito",
+                "description": "Crea un nuevo deposito y lo persiste en la base de datos. Se requiere contar con permiso para crear depositos.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nuevo deposito creado",
+                        "schema": {
+                            "$ref": "#/definitions/Deposito"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/depositos/{id}": {
+            "get": {
+                "tags": [
+                    "Depositos"
+                ],
+                "summary": "Deposito con el id proporcionado",
+                "description": "Devuelve el deposito que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver depositos.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deposito",
+                        "schema": {
+                            "$ref": "#/definitions/Deposito"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Depositos"
+                ],
+                "summary": "Actualiza los datos del deposito",
+                "description": "Edita el deposito que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar depositos.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "deposito",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Deposito"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deposito con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/Deposito"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Depositos"
+                ],
+                "summary": "Borra un deposito",
+                "description": "Borra el deposito que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar depositos.\n",
                 "parameters": [
                     {
                         "name": "id",
@@ -3484,6 +3781,150 @@
                 }
             }
         },
+        "/tarjetas": {
+            "get": {
+                "tags": [
+                    "Tarjetas"
+                ],
+                "summary": "Listar Tarjetas",
+                "description": "El endpoint tarjetas devuelve información sobre todas las tarjetas en el sistema, incluyendo todos los detalles de las mismas. Se listan las tarjetas sin un orden específico. Se debe contar con permiso para ver tarjetas\n",
+                "responses": {
+                    "200": {
+                        "description": "Un array de tarjetas",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Tarjeta"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tarjetas"
+                ],
+                "summary": "Crear nueva tarjeta",
+                "description": "Crea una nueva tarjeta y la persiste en la base de datos. Se requiere contar con permiso para crear tarjetas.\n",
+                "responses": {
+                    "200": {
+                        "description": "Nueva tarjeta creada",
+                        "schema": {
+                            "$ref": "#/definitions/Tarjeta"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/tarjetas/{id}": {
+            "get": {
+                "tags": [
+                    "Tarjetas"
+                ],
+                "summary": "Tarjeta con el id proporcionado",
+                "description": "Devuelve la tarjeta que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para ver tarjetas.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tarjeta",
+                        "schema": {
+                            "$ref": "#/definitions/Tarjeta"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Tarjetas"
+                ],
+                "summary": "Actualiza los datos de la tarjeta",
+                "description": "Edita la tarjeta que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar tarjetas.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "tarjeta",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Tarjeta"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tarjeta con los datos actualizados",
+                        "schema": {
+                            "$ref": "#/definitions/Tarjeta"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tarjetas"
+                ],
+                "summary": "Borra una tarjeta",
+                "description": "Borra la tarjeta que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para borrar tarjetas.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación realizada con éxito"
+                    },
+                    "500": {
+                        "description": "Error inesperado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
         "/tiporetenciones": {
             "get": {
                 "tags": [
@@ -4086,6 +4527,71 @@
                 }
             }
         },
+        "ChequeTerceros": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "cliente_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "banco_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "sucursal": {
+                    "type": "string"
+                },
+                "numero": {
+                    "type": "string"
+                },
+                "nro_interno": {
+                    "type": "string"
+                },
+                "importe": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "fecha_emision": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "fecha_ingreso": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "fecha_vencimiento": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "fecha_cobro": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "origen": {
+                    "type": "string"
+                },
+                "destinatario": {
+                    "type": "string"
+                },
+                "estado": {
+                    "type": "string",
+                    "enum": [
+                        "I",
+                        "D",
+                        "T",
+                        "R",
+                        "V"
+                    ]
+                },
+                "descripcion": {
+                    "type": "string"
+                }
+            }
+        },
         "CuentaBancaria": {
             "type": "object",
             "properties": {
@@ -4476,6 +4982,52 @@
                 }
             }
         },
+        "Deposito": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "cliente_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "cuenta_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "numero": {
+                    "type": "string"
+                },
+                "importe": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "fecha_ingreso": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "fecha_acreditacion": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "fecha_deposito": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "tipo": {
+                    "type": "string",
+                    "enum": [
+                        "D",
+                        "T"
+                    ]
+                },
+                "descripcion": {
+                    "type": "string"
+                }
+            }
+        },
         "ListaPrecios": {
             "type": "object",
             "properties": {
@@ -4717,6 +5269,46 @@
                     "type": "string"
                 },
                 "description": {
+                    "type": "string"
+                }
+            }
+        },
+        "Tarjeta": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "cliente_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "tarjeta_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "importe": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "fecha_ingreso": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "fecha_acreditacion": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "estado": {
+                    "type": "string",
+                    "enum": [
+                        "I",
+                        "A",
+                        "R"
+                    ]
+                },
+                "descripcion": {
                     "type": "string"
                 }
             }

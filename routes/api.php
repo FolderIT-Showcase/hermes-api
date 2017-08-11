@@ -143,4 +143,17 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::resource('tipostarjeta', 'TipoTarjetaController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy'],
          'parameters' => ['tipostarjeta' => 'tipoTarjeta']]);
+
+    Route::get('depositos/buscar', 'DepositoController@showByAll');
+    Route::resource('depositos', 'DepositoController',
+        ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+
+    Route::get('chequesterceros/buscar', 'ChequeTerceroController@showByAll');
+    Route::resource('chequesterceros', 'ChequeTerceroController',
+        ['only' => ['index', 'store', 'show', 'update', 'destroy'],
+         'parameters' => ['chequesterceros' => 'chequeTercero']]);
+
+    Route::get('tarjetas/buscar', 'TarjetaController@showByAll');
+    Route::resource('tarjetas', 'TarjetaController',
+        ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 });
