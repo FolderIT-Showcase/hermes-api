@@ -16,11 +16,17 @@ class Tarjeta extends Model
         return $this->belongsTo(TipoTarjeta::class, 'tarjeta_id');
     }
 
+    public function cobro_valor()
+    {
+        return $this->belongsTo(CobroValor::class);
+    }
+
     protected $fillable  = ['cliente_id',
         'tarjeta_id',
         'importe',
         'fecha_ingreso',
         'fecha_acreditacion',
         'estado',
-        'descripcion'];
+        'descripcion',
+        'cobro_valor_id'];
 }

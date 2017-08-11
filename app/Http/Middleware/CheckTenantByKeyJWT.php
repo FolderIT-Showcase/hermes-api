@@ -22,7 +22,7 @@ class CheckTenantByKeyJWT
                 JWTAuth::setToken(str_replace('Bearer ', '', $request->header('Authorization')));
                 $ten = JWTAuth::getPayload()->get('ten');
             } catch (\Exception $e){
-                return response()->json(['error' => 'El token es inválido.'], 401);
+                return response()->json(['error' => 'El token es inválido.', 'detail' => $e->getMessage()], 401);
             }
 
             $tenant = Tenant::setTenantByKey($ten);

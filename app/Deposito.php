@@ -16,6 +16,11 @@ class Deposito extends Model
         return $this->belongsTo(CuentaBancaria::class);
     }
 
+    public function cobro_valor()
+    {
+        return $this->belongsTo(CobroValor::class);
+    }
+
     protected $fillable  = ['cliente_id',
         'cuenta_id',
         'numero',
@@ -24,5 +29,6 @@ class Deposito extends Model
         'fecha_acreditacion',
         'fecha_deposito',
         'tipo',
-        'descripcion'];
+        'descripcion',
+        'cobro_valor_id'];
 }
