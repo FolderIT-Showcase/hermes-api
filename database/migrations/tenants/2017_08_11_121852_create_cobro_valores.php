@@ -16,7 +16,7 @@ class CreateCobroValores extends Migration
         Schema::create('cobro_valores', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('cobro_id')->unsigned();
-            $table->integer('medio_pago_id')->unsigned();
+            $table->integer('medios_pago_id')->unsigned();
             $table->decimal('importe', 15, 2);
             $table->timestamps();
 
@@ -37,6 +37,6 @@ class CreateCobroValores extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cobro_items');
+        Schema::dropIfExists('cobro_valores');
     }
 }

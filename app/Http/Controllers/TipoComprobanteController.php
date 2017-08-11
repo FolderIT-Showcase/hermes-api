@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Cobro;
 use App\Comprobante;
 use App\TipoComprobante;
 use Carbon\Carbon;
@@ -65,16 +66,23 @@ class TipoComprobanteController extends Controller
                     default: $codigo = 'NCC';
                 }
                 break;
+            case 'recibo':
+                $codigo = 'REC';
+                break;
             default:
                 $codigo = 'FCC';
         }
 
         $tipoComprobante = TipoComprobante::where('codigo', $codigo)->first();
+
         if($tipoComprobante === null){
             return response()->json('', 204);
-        }
-        else {
-            $ultimoComprobante = Comprobante::where('tipo_comprobante_id', $tipoComprobante->id)->orderBy('fecha', 'DESC')->first();
+        } else {
+            if($tipo_comprobante !== 'recibo'){
+                $ultimoComprobante = Comprobante::where('tipo_comprobante_id', $tipoComprobante->id)->orderBy('fecha', 'DESC')->first();
+            } else {
+                $ultimoComprobante = Cobro::orderBy('fecha', 'DESC')->first();
+            }
             if($ultimoComprobante === null){
                 $tipoComprobante->ultima_fecha = '1900-01-01';
             }
