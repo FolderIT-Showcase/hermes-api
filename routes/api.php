@@ -160,4 +160,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('cobros/comprobantes', 'CobroController@showComprobantes');
     Route::resource('cobros', 'CobroController',
         ['only' => ['store', 'show', 'update', 'destroy']]);
+
+    Route::resource('mediospago', 'MedioPagoController',
+        ['only' => ['index']]);
 });

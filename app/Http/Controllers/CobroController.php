@@ -65,17 +65,17 @@ class CobroController extends Controller
 
             foreach ($cobroValores as $cobroValor) {
                 $savedCobroValor = $newCobro->cobro_valores()->create($cobroValor);
-                if ($cobroValor['tarjetas'] !== null) {
+                if (array_key_exists('tarjetas', $cobroValor)) {
                     foreach ($cobroValor['tarjetas'] as $tarjeta) {
                         $savedCobroValor->tarjeta()->create($tarjeta);
                     }
                 } else {
-                    if ($cobroValor['cheques'] !== null) {
+                    if (array_key_exists('cheques', $cobroValor)) {
                         foreach ($cobroValor['cheques'] as $cheque) {
                             $savedCobroValor->cheque()->create($cheque);
                         }
                     } else {
-                        if ($cobroValor['depositos'] !== null) {
+                        if (array_key_exists('depositos', $cobroValor)) {
                             foreach ($cobroValor['depositos'] as $deposito) {
                                 $savedCobroValor->deposito()->create($deposito);
                             }
