@@ -21,9 +21,15 @@ class CtaCteCliente extends Model
         return $this->belongsTo(Comprobante::class);
     }
 
+    public function cobro()
+    {
+        return $this->belongsTo(Cobro::class);
+    }
+
     protected $fillable  = ['cliente_id',
         'tipo_comprobante_id',
         'comprobante_id',
+        'cobro_id',
         'fecha',
         'descripcion',
         'debe',

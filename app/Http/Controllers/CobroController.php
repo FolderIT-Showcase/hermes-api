@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Cobro;
+use App\CobroValor;
 use App\Comprobante;
+use App\Contador;
+use App\CtaCteCliente;
+use App\TipoComprobante;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CobroController extends Controller
 {
@@ -21,12 +27,73 @@ class CobroController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        //
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $newCobro = (new Cobro())->fill($data);
+        $items = $data['items'];
+        $cobroValores = $data['cobro_valores'];
+
+/*        $compr = Cobro::where('punto_venta', $newCobro->punto_venta)
+            ->where('numero', $newCobro->numero)
+            ->first();
+
+        if($compr !== null) {
+            return response()->json(['error' => 'No se puede volver a generar el mismo comprobante'],200);
+        }*/
+
+        DB::transaction(function () use ($cobroValores, $items, $newCobro) {
+            $newCobro->save();
+
+            foreach ($items as $item) {
+                $savedItem = $newCobro->cobro_items()->create($item);
+                $comprobante = $savedItem->comprobante()->first();
+                $comprobante->saldo -= $item['importe_total'];
+                $comprobante->save();
+            }
+
+            foreach ($cobroValores as $cobroValor) {
+                $savedCobroValor = $newCobro->cobro_valores()->create($cobroValor);
+                if ($cobroValor['tarjetas'] !== null) {
+                    foreach ($cobroValor['tarjetas'] as $tarjeta) {
+                        $savedCobroValor->tarjeta()->create($tarjeta);
+                    }
+                } else {
+                    if ($cobroValor['cheques'] !== null) {
+                        foreach ($cobroValor['cheques'] as $cheque) {
+                            $savedCobroValor->cheque()->create($cheque);
+                        }
+                    } else {
+                        if ($cobroValor['depositos'] !== null) {
+                            foreach ($cobroValor['depositos'] as $deposito) {
+                                $savedCobroValor->deposito()->create($deposito);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $ctaCteCliente = new CtaCteCliente();
+            $ctaCteCliente->cliente_id = $newCobro->cliente_id;
+            $ctaCteCliente->tipo_comprobante_id = TipoComprobante::where('codigo', 'REC')->first()->id;
+            $ctaCteCliente->fecha = $newCobro->fecha;
+            $ctaCteCliente->descripcion = 'Pago cliente';
+            $ctaCteCliente->debe = 0;
+            $ctaCteCliente->haber = $newCobro->importe;
+            $newCobro->ctaCteCliente()->save($ctaCteCliente);
+
+            $contador = Contador::where('punto_venta', $newCobro->punto_venta)
+                ->whereHas('tipo_comprobante', function ($query) {
+                    $query->where('codigo', 'REC');
+                })->first();
+            $contador->ultimo_generado = $newCobro->numero;
+            $contador->save();
+        });
+
+        return response()->json($newCobro);
     }
 
     /**

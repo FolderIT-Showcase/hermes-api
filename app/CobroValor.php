@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CobroValor extends Model
 {
-    protected $table = 'cobro_valor';
+    protected $table = 'cobro_valores';
 
     public function cobro()
     {
@@ -18,8 +18,23 @@ class CobroValor extends Model
         return $this->belongsTo(MedioPago::class);
     }
 
+    public function tarjeta()
+    {
+        return $this->hasOne(Tarjeta::class);
+    }
+
+    public function cheque()
+    {
+        return $this->hasOne(ChequeTercero::class);
+    }
+
+    public function deposito()
+    {
+        return $this->hasOne(Deposito::class);
+    }
+
     protected $fillable  = [ 'cobro_id',
-        'medio_pago_id',
+        'medios_pago_id',
         'importe',
     ];
 }
