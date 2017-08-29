@@ -11,36 +11,18 @@ class MediosPagoSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('medios_pago')->delete();
+        $medios_pago = [];
+        $medios_pago[] = ['id' => '1', 'nombre' => 'Efectivo','orden' => '1'];
+        $medios_pago[] = ['id' => '2', 'nombre' => 'Cheque','orden' => '2'];
+        $medios_pago[] = ['id' => '3', 'nombre' => 'Tarjeta','orden' => '3'];
+        $medios_pago[] = ['id' => '4', 'nombre' => 'Depósito','orden' => '4'];
+        $medios_pago[] = ['id' => '5', 'nombre' => 'Redondeo','orden' => '5'];
 
-        $medio_pago = [];
-        $medio_pago[] = [
-            'id' => '1',
-            'nombre' => 'Efectivo',
-            'orden' => '1'
-        ];
-        $medio_pago[] = [
-            'id' => '2',
-            'nombre' => 'Cheque',
-            'orden' => '2'
-        ];
-        $medio_pago[] = [
-            'id' => '3',
-            'nombre' => 'Tarjeta',
-            'orden' => '3'
-        ];
-        $medio_pago[] = [
-            'id' => '4',
-            'nombre' => 'Depósito',
-            'orden' => '4'
-        ];
-        $medio_pago[] = [
-            'id' => '5',
-            'nombre' => 'Redondeo',
-            'orden' => '5'
-        ];
-
-        DB::table('medios_pago')->insert($medio_pago);
-
+        foreach ($medios_pago as $medio_pago) {
+            $medioPagoDB = \App\MedioPago::firstOrNew(['id' => $medio_pago['id']]);
+            $medioPagoDB->nombre = $medio_pago['nombre'];
+            $medioPagoDB->orden = $medio_pago['orden'];
+            $medioPagoDB->save();
+        }
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Cobro;
-use App\CobroValor;
 use App\Comprobante;
 use App\Contador;
 use App\CtaCteCliente;
@@ -13,6 +12,15 @@ use Illuminate\Support\Facades\DB;
 
 class CobroController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:view_cobro', ['only' => ['index', 'show', 'showComprobantes']]);
+        $this->middleware('permission:create_cobro', ['only' => ['store']]);
+        $this->middleware('permission:edit_cobro', ['only' => ['update']]);
+        $this->middleware('permission:delete_cobro', ['only' => ['destroy']]);
+    }
+    
     /**
      * Display a listing of the resource.
      *
