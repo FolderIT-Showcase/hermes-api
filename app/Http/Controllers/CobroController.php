@@ -57,9 +57,11 @@ class CobroController extends Controller
 
             foreach ($items as $item) {
                 $savedItem = $newCobro->cobro_items()->create($item);
-                $comprobante = $savedItem->comprobante()->first();
-                $comprobante->saldo -= $item['importe_total'];
-                $comprobante->save();
+                if (!$item['anticipo']) {
+                    $comprobante = $savedItem->comprobante()->first();
+                    $comprobante->saldo -= $item['importe_total'];
+                    $comprobante->save();
+                }
             }
 
             foreach ($cobroValores as $cobroValor) {
