@@ -59,7 +59,7 @@ class CobroController extends Controller
                 $savedItem = $newCobro->cobro_items()->create($item);
                 if (!$item['anticipo']) {
                     $comprobante = $savedItem->comprobante()->first();
-                    $comprobante->saldo -= $item['importe_total'];
+                    $comprobante->saldo -= $item['importe'];
                     $comprobante->save();
                 }
             }
