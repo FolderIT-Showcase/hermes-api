@@ -20,10 +20,10 @@ class MyTenantServiceProvider extends TenantServiceProvider
         $this->app->bind('Protosofia\Ben10ant\Contracts\TenantModelInterface',
             'Protosofia\Ben10ant\Models\TenantModel');
 
-        $this->mergeConfigFrom(__DIR__.'\..\..\vendor\protosofia\ben10ant\src\Config\database.php',
+        $this->mergeConfigFrom(__DIR__.'/../../vendor/protosofia/ben10ant/src/Config/database.php',
             'database.connections');
 
-        $this->mergeConfigFrom(__DIR__.'\..\..\vendor\protosofia\ben10ant\src\Config\filesystems.php',
+        $this->mergeConfigFrom(__DIR__.'/../../vendor/protosofia/ben10ant/src/Config/filesystems.php',
             'filesystems.disks');
     }
 }

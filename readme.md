@@ -32,7 +32,7 @@ Pasos para instalar HermesWeb - API:
 6. Actualizar los datos en `.env` relacionados al servidor smtp que se utilizará para enviar emails.
 7. Desde línea de comandos, pararse en el raíz del proyecto y ejecutar `php artisan migrate --path=vendor/protosofia/ben10ant/src/Migrations`
 8. Ejecutar `php artisan tenant:create {name} {keyname}` con el nombre y el nombre clave del tenant a crear y seguir el wizard de creación.
-9. Ejecutar `php artisan tenant:migrate {keyname}`
+9. Ejecutar `php artisan tenant:migrate {keyname}
 10. Ejecutar `php artisan tenant:db:seed {keyname}`
 11. Crear un Virtual Host en el Apache para levantar el API:
 ```

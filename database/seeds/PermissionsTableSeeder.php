@@ -643,5 +643,30 @@ class PermissionsTableSeeder extends Seeder
         $deleteChequeTercero->display_name = 'Borrar Cheques de Terceros';
         $deleteChequeTercero->description  = 'Borrar cheques de terceros existentes';
         $deleteChequeTercero->save();
+
+        //Permisos Cobro
+        $createCobro = permission::firstOrNew(array('name' => 'create_cobro'));
+        $createCobro->name         = 'create_cobro';
+        $createCobro->display_name = 'Crear Cobros';
+        $createCobro->description  = 'Crear nuevos cobros';
+        $createCobro->save();
+
+        $editCobro = permission::firstOrNew(array('name' => 'edit_cobro'));
+        $editCobro->name         = 'edit_cobro';
+        $editCobro->display_name = 'Editar Cobros';
+        $editCobro->description  = 'Editar cobros existentes';
+        $editCobro->save();
+
+        $viewCobro = permission::firstOrNew(array('name' => 'view_cobro'));
+        $viewCobro->name         = 'view_cobro';
+        $viewCobro->display_name = 'Ver Cobros';
+        $viewCobro->description  = 'Ver cobros existentes';
+        $viewCobro->save();
+
+        $deleteCobro = permission::firstOrNew(array('name' => 'delete_cobro'));
+        $deleteCobro->name         = 'delete_cobro';
+        $deleteCobro->display_name = 'Borrar Cobros';
+        $deleteCobro->description  = 'Borrar cobros existentes';
+        $deleteCobro->save();
     }
 }

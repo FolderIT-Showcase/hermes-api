@@ -16,7 +16,7 @@ class AddFormaPagoToComprobante extends Migration
         Schema::table('comprobantes', function(Blueprint $table) {
             $table->integer('forma_pago_id')->unsigned()->nullable();
 
-            //relación con cliente
+            //relación con forma_pago
             $table->foreign('forma_pago_id')
                 ->references('id')->on('tipo_forma_pagos');
         });

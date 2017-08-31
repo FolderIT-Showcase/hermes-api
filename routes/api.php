@@ -156,4 +156,11 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('tarjetas/buscar', 'TarjetaController@showByAll');
     Route::resource('tarjetas', 'TarjetaController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+
+    Route::get('cobros/comprobantes', 'CobroController@showComprobantes');
+    Route::resource('cobros', 'CobroController',
+        ['only' => ['store', 'show', 'update', 'destroy']]);
+
+    Route::resource('mediospago', 'MedioPagoController',
+        ['only' => ['index']]);
 });
