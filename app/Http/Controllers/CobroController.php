@@ -18,7 +18,7 @@ class CobroController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:view_cobro', ['only' => ['index', 'show', 'showComprobantes']]);
+        $this->middleware('permission:view_cobro', ['only' => ['index', 'show', 'showComprobantes', 'imprimir']]);
         $this->middleware('permission:create_cobro', ['only' => ['store']]);
         $this->middleware('permission:edit_cobro', ['only' => ['update']]);
         $this->middleware('permission:delete_cobro', ['only' => ['destroy']]);

@@ -1,4 +1,4 @@
-swagger: '2.0'
+﻿swagger: '2.0'
 info:
   title: Hermes API
   description: API del Sistema de Gestión Comercial Hermes
@@ -875,6 +875,32 @@ paths:
           description: Nuevo cobro creado
           schema:
             $ref: '#/definitions/Cobro'
+        '500':
+          description: Error inesperado
+          schema:
+            $ref: '#/definitions/Error'
+  'cobros/imprimir/{cobro_id}':
+    get:
+      tags:
+        - Cobros
+      produces:
+        - application/pdf
+      summary: Recibo como pdf
+      description: >
+        Devuelve un reporte en pdf con el cobro que corresponde al id
+        pasado como parámetro. Se requiere contar con permiso para ver el tipo de
+        comprobante que se desea imprimir.
+      parameters:
+        - name: comprobante_id
+          in: path
+          required: true
+          type: number
+          format: int32
+      responses:
+        '200':
+          description: PDF
+          schema:
+            type: file
         '500':
           description: Error inesperado
           schema:
