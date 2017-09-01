@@ -6,8 +6,6 @@ namespace App\Http\Controllers;
 use App\ComprobanteCompra;
 use App\ComprobanteCompraRetenciones;
 use App\CtaCteProveedor;
-use App\Proveedor;
-use App\TipoComprobanteCompra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +13,6 @@ class ComprobanteCompraController extends Controller
 {
     public function __construct()
     {
-        // TODO cargar permisos
         $this->middleware('permission:view_facturaCompra', ['only' => ['show']]);
         $this->middleware('permission:create_facturaCompra', ['only' => ['store']]);
         $this->middleware('permission:edit_facturaCompra', ['only' => ['update']]);
