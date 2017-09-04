@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-09-01T13:01:55 -->
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Recibo" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" whenResourceMissingType="Empty" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="hermes-db"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Hermes"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="548"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="438"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -88,7 +87,7 @@
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="hermes-db"/>
 		<parameter name="COBRO_ID" class="java.lang.String">
 			<parameterDescription><![CDATA[]]></parameterDescription>
-			<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+			<defaultValueExpression><![CDATA[37]]></defaultValueExpression>
 		</parameter>
 		<queryString language="SQL">
 			<![CDATA[SELECT tc.codigo as tipo, comp.numero, comp.fecha, comp.punto_venta,
@@ -124,7 +123,7 @@ WHERE
 		<defaultValueExpression><![CDATA["www.hermesweb.com"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COBRO_ID" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[37]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IMAGE_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["../img/"]]></defaultValueExpression>
@@ -556,7 +555,7 @@ WHERE
 		</band>
 	</detail>
 	<lastPageFooter>
-		<band height="295" splitType="Prevent">
+		<band height="193" splitType="Prevent">
 			<staticText>
 				<reportElement x="434" y="30" width="45" height="14" uuid="e247ccf2-9d0f-458d-9867-8f8835053fb7"/>
 				<textElement>
@@ -730,8 +729,11 @@ WHERE
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 2_CH"/>
 					<property name="com.jaspersoft.studio.table.style.detail" value="Table 2_TD"/>
 				</reportElement>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Dataset1" uuid="95b5c532-fb39-4b47-9be3-2b3658ada1f8">
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="Dataset1" uuid="e5f536ea-e862-4aee-a960-9a12c40f266d">
+						<datasetParameter name="COBRO_ID">
+							<datasetParameterExpression><![CDATA[$P{COBRO_ID}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
 					<jr:column width="50" uuid="adcfff66-35dd-4fd9-bacf-a565bdc26b9d">
