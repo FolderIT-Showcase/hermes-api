@@ -346,7 +346,8 @@ class ComprobanteController extends Controller
             });
             $comprobantes = $comprobantes->merge($cobros)
                 ->sortBy('fecha')
-                ->sortBy('updated_at');
+                ->sortBy('updated_at')
+                ->flatten();
         }
 
         return response()->json($comprobantes);
