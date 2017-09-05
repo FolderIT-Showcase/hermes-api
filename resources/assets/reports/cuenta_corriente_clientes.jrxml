@@ -341,7 +341,7 @@ CONCATENATE(RIGHT(CONCATENATE("0000",$F{cob_punto_venta}.toString()),4), "-",RIG
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{debe}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($F{debe})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="355" y="0" width="100" height="19" uuid="21b04ea5-727a-4038-9e44-bd60ab3f7b60">
@@ -356,7 +356,7 @@ CONCATENATE(RIGHT(CONCATENATE("0000",$F{cob_punto_venta}.toString()),4), "-",RIG
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{haber}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($F{haber})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="455" y="0" width="100" height="19" uuid="644f953f-e95c-4911-aa45-34c5259cb480">
