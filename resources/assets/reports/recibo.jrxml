@@ -157,8 +157,8 @@ WHERE
 		<defaultValueExpression><![CDATA["RI"]]></defaultValueExpression>
 	</parameter>
 	<queryString language="SQL">
-		<![CDATA[SELECT c.fecha, cv.importe, mp.nombre as mediopago,
-	 mp.nombre, b.nombre as b_nombre, tt.nombre as tt_nombre,
+		<![CDATA[SELECT c.fecha, cv.importe, mp.nombre,
+	 b.nombre as b_nombre, tt.nombre as tt_nombre,
 	 ct.numero as ct_numero, d.numero as d_numero,
 	 ct.importe as ct_importe, t.importe as t_importe,
 	 d.importe as d_importe, ct.fecha_vencimiento
@@ -174,11 +174,11 @@ FROM cobros c,
 WHERE 
 	 c.id = $P!{COBRO_ID} 
 	AND c.id = cv.cobro_id 
-	AND cv.medios_pago_id = mp.id]]>
+	AND cv.medios_pago_id = mp.id
+ORDER BY mp.orden]]>
 	</queryString>
 	<field name="fecha" class="java.sql.Date"/>
 	<field name="importe" class="java.math.BigDecimal"/>
-	<field name="mediopago" class="java.lang.String"/>
 	<field name="nombre" class="java.lang.String"/>
 	<field name="b_nombre" class="java.lang.String"/>
 	<field name="tt_nombre" class="java.lang.String"/>

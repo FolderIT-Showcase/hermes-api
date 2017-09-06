@@ -111,12 +111,17 @@ class CobroController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Cobro $cobro
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Cobro $cobro)
     {
-        //
+        return response()->json($cobro->load('cobro_items.comprobante.tipo_comprobante',
+                'cobro_valores.medio_pago',
+                'cobro_valores.tarjetas.tipo_tarjeta',
+                'cobro_valores.cheques.banco',
+                'cobro_valores.depositos.cuenta.banco')
+        );
     }
 
     /**
