@@ -164,4 +164,6 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 
     Route::resource('mediospago', 'MedioPagoController',
         ['only' => ['index']]);
+
+    Route::get('composicionsaldo/imprimir', 'ComposicionSaldoController@imprimir');
 });
