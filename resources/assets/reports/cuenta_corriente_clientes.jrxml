@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-06-09T11:10:23 -->
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Presupuesto" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Hermes"/>
-	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="491"/>
-	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="495"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="603"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="383"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="399"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="590"/>
@@ -104,25 +103,31 @@ from parametros]]>
 		<defaultValueExpression><![CDATA["9999/6/6"]]></defaultValueExpression>
 	</parameter>
 	<queryString language="SQL">
-		<![CDATA[SELECT cc.fecha, tc.nombre, com.numero, cc.debe, cc.haber, cli.nombre as nombre_cliente, cc.updated_at
-FROM cta_cte_clientes cc,
+		<![CDATA[SELECT cc.fecha, tc.nombre, com.punto_venta as com_punto_venta, com.numero as com_numero,
+			 cc.debe, cc.haber, cli.nombre as nombre_cliente, cc.updated_at,
+			 cob.numero as cob_numero, cob.punto_venta as cob_punto_venta
+FROM cta_cte_clientes cc
+	LEFT JOIN cobros cob ON cc.cobro_id = cob.id
+	LEFT JOIN comprobantes com ON cc.comprobante_id = com.id,
 	clientes cli,
-	comprobantes com,
 	tipo_comprobantes tc
 WHERE
 	cli.id = $P!{CLIENTE_ID}
 	AND cc.cliente_id = cli.id
-	AND com.id = cc.comprobante_id
 	 AND tc.id = cc.tipo_comprobante_id
 	 AND cc.fecha BETWEEN $P{FECHA_INICIO} AND $P{FECHA_FIN}
 ORDER BY  cc.fecha, cc.updated_at ASC]]>
 	</queryString>
 	<field name="fecha" class="java.sql.Date"/>
 	<field name="nombre" class="java.lang.String"/>
-	<field name="numero" class="java.math.BigDecimal"/>
+	<field name="com_punto_venta" class="java.math.BigDecimal"/>
+	<field name="com_numero" class="java.math.BigDecimal"/>
 	<field name="debe" class="java.math.BigDecimal"/>
 	<field name="haber" class="java.math.BigDecimal"/>
 	<field name="nombre_cliente" class="java.lang.String"/>
+	<field name="updated_at" class="java.sql.Timestamp"/>
+	<field name="cob_numero" class="java.math.BigDecimal"/>
+	<field name="cob_punto_venta" class="java.math.BigDecimal"/>
 	<variable name="saldo" class="java.lang.Double">
 		<variableExpression><![CDATA[SUM($V{saldo},$F{debe},PRODUCT(-1,$F{haber}))]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double("0")]]></initialValueExpression>
@@ -211,7 +216,7 @@ ORDER BY  cc.fecha, cc.updated_at ASC]]>
 	<columnHeader>
 		<band height="20">
 			<staticText>
-				<reportElement mode="Opaque" x="70" y="0" width="110" height="20" backcolor="#D4D4D4" uuid="f1ee0d85-8866-4529-9db2-c4ec5706c27f"/>
+				<reportElement mode="Opaque" x="70" y="0" width="100" height="20" backcolor="#D4D4D4" uuid="f1ee0d85-8866-4529-9db2-c4ec5706c27f"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -233,20 +238,20 @@ ORDER BY  cc.fecha, cc.updated_at ASC]]>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="180" y="0" width="69" height="20" backcolor="#D4D4D4" uuid="014c0669-a9a3-4e1b-a416-0e362a5256f9"/>
+				<reportElement mode="Opaque" x="170" y="0" width="85" height="20" backcolor="#D4D4D4" uuid="014c0669-a9a3-4e1b-a416-0e362a5256f9"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<paragraph leftIndent="8"/>
 				</textElement>
 				<text><![CDATA[Nro.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="249" y="0" width="102" height="20" backcolor="#D4D4D4" uuid="533ba89a-379b-42d6-ac7e-4680a7e3e2ce"/>
+				<reportElement mode="Opaque" x="255" y="0" width="100" height="20" backcolor="#D4D4D4" uuid="533ba89a-379b-42d6-ac7e-4680a7e3e2ce"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -257,7 +262,9 @@ ORDER BY  cc.fecha, cc.updated_at ASC]]>
 				<text><![CDATA[Debe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="351" y="0" width="102" height="20" backcolor="#D4D4D4" uuid="41b0236a-99e1-4520-93d3-c60542674650"/>
+				<reportElement mode="Opaque" x="355" y="0" width="100" height="20" backcolor="#D4D4D4" uuid="41b0236a-99e1-4520-93d3-c60542674650">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -268,7 +275,9 @@ ORDER BY  cc.fecha, cc.updated_at ASC]]>
 				<text><![CDATA[Haber]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="453" y="0" width="102" height="20" backcolor="#D4D4D4" uuid="4263d30d-2611-4be2-8443-6a0c0e308cf2"/>
+				<reportElement mode="Opaque" x="455" y="0" width="100" height="20" backcolor="#D4D4D4" uuid="4263d30d-2611-4be2-8443-6a0c0e308cf2">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -283,7 +292,7 @@ ORDER BY  cc.fecha, cc.updated_at ASC]]>
 	<detail>
 		<band height="19" splitType="Prevent">
 			<textField>
-				<reportElement x="70" y="0" width="110" height="19" uuid="894b347c-beb7-4f51-8e0a-da525dbf32cc"/>
+				<reportElement x="70" y="0" width="100" height="19" uuid="894b347c-beb7-4f51-8e0a-da525dbf32cc"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineColor="#ABABAB"/>
 					<leftPen lineWidth="1.0" lineColor="#000000"/>
@@ -306,8 +315,8 @@ ORDER BY  cc.fecha, cc.updated_at ASC]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="180" y="0" width="69" height="19" uuid="cfe3551e-9df7-4e1a-9a6c-8c9440cfa7ff"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="170" y="0" width="85" height="19" uuid="cfe3551e-9df7-4e1a-9a6c-8c9440cfa7ff"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -317,39 +326,51 @@ ORDER BY  cc.fecha, cc.updated_at ASC]]>
 				<textElement verticalAlignment="Middle">
 					<paragraph leftIndent="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{numero}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cob_numero}==null?CONCATENATE(RIGHT(CONCATENATE("0000",$F{com_punto_venta}.toString()),4),
+"-",RIGHT(CONCATENATE("00000000",$F{com_numero}.toString()),8)):
+CONCATENATE(RIGHT(CONCATENATE("0000",$F{cob_punto_venta}.toString()),4), "-",RIGHT(CONCATENATE("00000000",$F{cob_numero}.toString()),8))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="249" y="0" width="102" height="19" uuid="8e158fe3-b9f9-48ab-aaf8-c84ed9a93597"/>
+				<reportElement x="255" y="0" width="100" height="19" uuid="8e158fe3-b9f9-48ab-aaf8-c84ed9a93597"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{debe}]]></textFieldExpression>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($F{debe})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="351" y="0" width="102" height="19" uuid="21b04ea5-727a-4038-9e44-bd60ab3f7b60"/>
+				<reportElement x="355" y="0" width="100" height="19" uuid="21b04ea5-727a-4038-9e44-bd60ab3f7b60">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box>
 					<pen lineColor="#000000"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0" lineColor="#666666"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{haber}]]></textFieldExpression>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($F{haber})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="453" y="0" width="102" height="19" uuid="644f953f-e95c-4911-aa45-34c5259cb480"/>
+				<reportElement x="455" y="0" width="100" height="19" uuid="644f953f-e95c-4911-aa45-34c5259cb480">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="4"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{saldo})]]></textFieldExpression>
 			</textField>
 		</band>
@@ -380,18 +401,24 @@ ORDER BY  cc.fecha, cc.updated_at ASC]]>
 				</reportElement>
 			</line>
 			<textField>
-				<reportElement mode="Opaque" x="453" y="0" width="102" height="19" backcolor="#9C9C9C" uuid="624a1d7e-281b-41c3-8535-45d8ae104e1d"/>
+				<reportElement mode="Opaque" x="455" y="0" width="100" height="19" backcolor="#9C9C9C" uuid="624a1d7e-281b-41c3-8535-45d8ae104e1d">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="4"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($V{saldo})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="351" y="0" width="102" height="19" backcolor="#9C9C9C" uuid="da60dac3-6da9-4d9f-abd2-5bc85679a84c"/>
+				<reportElement mode="Opaque" x="355" y="0" width="100" height="19" backcolor="#9C9C9C" uuid="da60dac3-6da9-4d9f-abd2-5bc85679a84c">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>

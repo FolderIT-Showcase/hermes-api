@@ -158,6 +158,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
     Route::get('cobros/comprobantes', 'CobroController@showComprobantes');
+    Route::get('cobros/imprimir/{cobro_id}', 'CobroController@imprimir');
     Route::resource('cobros', 'CobroController',
         ['only' => ['store', 'show', 'update', 'destroy']]);
 

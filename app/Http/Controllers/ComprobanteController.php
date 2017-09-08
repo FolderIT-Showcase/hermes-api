@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Cliente;
+use App\Cobro;
 use App\Comprobante;
 use App\ComproItem;
 use App\Contador;
 use App\Parametro;
+use App\TipoComprobante;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
@@ -315,18 +317,37 @@ class ComprobanteController extends Controller
         $fecha_fin = $request->input('fecha_fin', Carbon::today()->format('yyyy-MM-dd'));
 
         if($tipo !== '0') {
-            $comprobantes = Comprobante::where('tipo_comprobante_id', $tipo)
-                ->whereBetween('fecha', [$fecha_inicio, $fecha_fin])
-                ->orderBy('fecha', 'ASC')
-                ->orderBy('updated_at', 'ASC')
-                ->with('tipo_comprobante')
-                ->get();
+            $tipo_comprobante = TipoComprobante::where('id', $tipo)->first();
+            if ($tipo_comprobante->codigo === 'REC') {
+                $comprobantes = collect(Cobro::whereBetween('fecha', [$fecha_inicio, $fecha_fin])
+                    ->orderBy('fecha', 'ASC')
+                    ->orderBy('updated_at', 'ASC')
+                    ->get())->map(function ($cobro) use ($tipo_comprobante) {
+                    $cobro['tipo_comprobante'] = $tipo_comprobante;
+                    return $cobro;
+                });
+            } else {
+                $comprobantes = Comprobante::where('tipo_comprobante_id', $tipo)
+                    ->whereBetween('fecha', [$fecha_inicio, $fecha_fin])
+                    ->orderBy('fecha', 'ASC')
+                    ->orderBy('updated_at', 'ASC')
+                    ->with('tipo_comprobante')
+                    ->get();
+            }
         } else {
-            $comprobantes = Comprobante::whereBetween('fecha', [$fecha_inicio, $fecha_fin])
-                ->orderBy('fecha', 'ASC')
-                ->orderBy('updated_at', 'ASC')
+            $comprobantes = collect(Comprobante::whereBetween('fecha', [$fecha_inicio, $fecha_fin])
                 ->with('tipo_comprobante')
-                ->get();
+                ->get());
+            $tipo_comprobante = TipoComprobante::where('codigo', 'REC')->first();
+            $cobros = collect(Cobro::whereBetween('fecha', [$fecha_inicio, $fecha_fin])
+                ->get())->map(function ($cobro) use ($tipo_comprobante) {
+                    $cobro['tipo_comprobante'] = $tipo_comprobante;
+                return $cobro;
+            });
+            $comprobantes = $comprobantes->merge($cobros)
+                ->sortBy('fecha')
+                ->sortBy('updated_at')
+                ->flatten();
         }
 
         return response()->json($comprobantes);

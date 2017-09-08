@@ -6,16 +6,19 @@ use App\Cobro;
 use App\Comprobante;
 use App\Contador;
 use App\CtaCteCliente;
+use App\Parametro;
 use App\TipoComprobante;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use JasperPHP\JasperPHP as JasperPHP;
 
 class CobroController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('permission:view_cobro', ['only' => ['index', 'show', 'showComprobantes']]);
+        $this->middleware('permission:view_cobro', ['only' => ['index', 'show', 'showComprobantes', 'imprimir']]);
         $this->middleware('permission:create_cobro', ['only' => ['store']]);
         $this->middleware('permission:edit_cobro', ['only' => ['update']]);
         $this->middleware('permission:delete_cobro', ['only' => ['destroy']]);
@@ -57,9 +60,11 @@ class CobroController extends Controller
 
             foreach ($items as $item) {
                 $savedItem = $newCobro->cobro_items()->create($item);
-                $comprobante = $savedItem->comprobante()->first();
-                $comprobante->saldo -= $item['importe_total'];
-                $comprobante->save();
+                if (!$item['anticipo']) {
+                    $comprobante = $savedItem->comprobante()->first();
+                    $comprobante->saldo -= $item['importe'];
+                    $comprobante->save();
+                }
             }
 
             foreach ($cobroValores as $cobroValor) {
@@ -106,12 +111,17 @@ class CobroController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Cobro $cobro
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Cobro $cobro)
     {
-        //
+        return response()->json($cobro->load('cobro_items.comprobante.tipo_comprobante',
+                'cobro_valores.medio_pago',
+                'cobro_valores.tarjetas.tipo_tarjeta',
+                'cobro_valores.cheques.banco',
+                'cobro_valores.depositos.cuenta.banco')
+        );
     }
 
     /**
@@ -150,5 +160,45 @@ class CobroController extends Controller
             ->get()
             ->load('tipo_comprobante');
         return response()->json($comprobantes);
+    }
+
+    public function imprimir($cobro_id)
+    {
+        $output_path = $this->generarPDFCobro($cobro_id);
+
+        return response()->download($output_path . '.pdf', 'recibo' . $cobro_id . '.pdf')->deleteFileAfterSend(true);
+    }
+
+    private function generarPDFCobro($cobro_id)
+    {
+        $jasper = new JasperPHP;
+
+        $IMAGE_DIR = base_path() . "/resources/assets/img/";
+        $COBRO_ID = '"' . $cobro_id . '"';
+        $output_path = base_path() . '/resources/assets/reports/tmp/recibo' . $cobro_id . time();
+        $EMPRESA_NOMBRE = '"' . Parametro::where('nombre', 'EMPRESA_NOMBRE')->first()->valor . '"';
+        $EMPRESA_DOMICILIO = '"' . Parametro::where('nombre', 'EMPRESA_DOMICILIO')->first()->valor . '"';
+        $EMPRESA_CUIT = '"' . Parametro::where('nombre', 'EMPRESA_CUIT')->first()->valor . '"';
+        $EMPRESA_TIPO_RESP = '"' . Parametro::where('nombre', 'EMPRESA_TIPO_RESP')->first()->valor . '"';
+        $domicilioCliente = Cobro::where('id', $cobro_id)->first()->cliente->domicilios[0];
+        $CLIENTE_DOMICILIO = '"' . $domicilioCliente->direccion . ' - '
+            . $domicilioCliente->localidad->nombre . ' , '
+            . $domicilioCliente->localidad->provincia->nombre . '"';
+        $jasper->process(
+            base_path() . '/resources/assets/reports/recibo.jasper',
+            $output_path,
+            array("pdf"),
+            array("IMAGE_DIR" => $IMAGE_DIR,
+                "COBRO_ID" => $COBRO_ID,
+                "EMPRESA_NOMBRE" => $EMPRESA_NOMBRE,
+                "EMPRESA_DIRECCION" => $EMPRESA_DOMICILIO,
+                "EMPRESA_CUIT" => $EMPRESA_CUIT,
+                "EMPRESA_TIPO_RESP" => $EMPRESA_TIPO_RESP,
+                "CLIENTE_DOMICILIO" => $CLIENTE_DOMICILIO
+            ),
+            Config::get('database.connections.mysql')
+        )->execute();
+
+        return $output_path;
     }
 }

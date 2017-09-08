@@ -15,22 +15,22 @@ class CobroValor extends Model
 
     public function medio_pago()
     {
-        return $this->belongsTo(MedioPago::class);
+        return $this->belongsTo(MedioPago::class, 'medios_pago_id');
     }
 
-    public function tarjeta()
+    public function tarjetas()
     {
-        return $this->hasOne(Tarjeta::class);
+        return $this->hasMany(Tarjeta::class);
     }
 
-    public function cheque()
+    public function cheques()
     {
-        return $this->hasOne(ChequeTercero::class);
+        return $this->hasMany(ChequeTercero::class);
     }
 
-    public function deposito()
+    public function depositos()
     {
-        return $this->hasOne(Deposito::class);
+        return $this->hasMany(Deposito::class);
     }
 
     protected $fillable  = [ 'cobro_id',
