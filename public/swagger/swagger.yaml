@@ -1,4 +1,4 @@
-﻿swagger: '2.0'
+swagger: '2.0'
 info:
   title: Hermes API
   description: API del Sistema de Gestión Comercial Hermes
@@ -26,6 +26,7 @@ tags:
   - name: Cheques de Terceros
   - name: Clientes
   - name: Cobros
+  - name: Composición de Saldos
   - name: Comprobantes
   - name: Comprobantes Compra
   - name: Cuentas Bancarias
@@ -879,7 +880,7 @@ paths:
           description: Error inesperado
           schema:
             $ref: '#/definitions/Error'
-  'cobros/imprimir/{cobro_id}':
+  /cobros/imprimir/{cobro_id}:
     get:
       tags:
         - Cobros
@@ -891,9 +892,42 @@ paths:
         pasado como parámetro. Se requiere contar con permiso para ver el tipo de
         comprobante que se desea imprimir.
       parameters:
-        - name: comprobante_id
+        - name: cobro_id
           in: path
           required: true
+          type: number
+          format: int32
+      responses:
+        '200':
+          description: PDF
+          schema:
+            type: file
+        '500':
+          description: Error inesperado
+          schema:
+            $ref: '#/definitions/Error'
+  /composicionsaldo/imprimir:
+    get:
+      tags:
+        - Composición de Saldos
+      produces:
+        - application/pdf
+      summary: Reporte con la composición de saldos de los clientes
+      description: Devuelve un reporte en pdf con la composición de saldos de los clientes filtrados por los parámetros.
+      parameters:
+        - name: vendedor
+          in: query
+          required: false
+          type: number
+          format: int32
+        - name: zona
+          in: query
+          required: false
+          type: number
+          format: int32
+        - name: cliente
+          in: query
+          required: false
           type: number
           format: int32
       responses:
