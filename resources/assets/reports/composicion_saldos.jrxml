@@ -71,10 +71,6 @@ from parametros]]>
 		<parameterDescription><![CDATA[]]></parameterDescription>
 		<defaultValueExpression><![CDATA["Francisco Miguens 180"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="EMPRESA_WEBPAGE" class="java.lang.String" isForPrompting="false">
-		<parameterDescription><![CDATA[]]></parameterDescription>
-		<defaultValueExpression><![CDATA["www.hermesweb.com"]]></defaultValueExpression>
-	</parameter>
 	<parameter name="IMAGE_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["../img/"]]></defaultValueExpression>
 	</parameter>
@@ -137,7 +133,7 @@ WHERE
 	 AND tc.id = com.tipo_comprobante_id
 	 AND tc.codigo NOT LIKE 'PR_'
 	 AND saldo <> 0
-ORDER BY c.nombre, com.fecha, com.updated_at ASC]]>
+ORDER BY c.nombre, com.fecha, com.created_at ASC]]>
 	</queryString>
 	<field name="fecha" class="java.sql.Date"/>
 	<field name="punto_venta" class="java.math.BigDecimal"/>
@@ -162,12 +158,25 @@ ORDER BY c.nombre, com.fecha, com.updated_at ASC]]>
 					<reportElement x="2" y="2" width="36" height="14" uuid="40dc3aa2-7930-4a89-9311-ff4b05a96bec">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
 					<text><![CDATA[Cliente:]]></text>
 				</staticText>
 				<textField>
 					<reportElement x="38" y="2" width="298" height="14" uuid="4c76e9e6-e0a8-4b76-a792-5c6b9b8e1174"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
 					<textFieldExpression><![CDATA[CONCATENATE($F{codigo_cliente}, "  -  ",$F{nombre_cliente})]]></textFieldExpression>
 				</textField>
+				<line>
+					<reportElement x="0" y="17" width="555" height="1" uuid="4a905c5e-df01-41f2-a7a4-a0a1e4c883ca">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					</reportElement>
+				</line>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -215,32 +224,18 @@ ORDER BY c.nombre, com.fecha, com.updated_at ASC]]>
 	</group>
 	<title>
 		<band height="109" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="80" width="310" height="25" uuid="57aed2b1-4f4e-40a3-a6ad-54dae8dd4c5a">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement>
-					<font size="16" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Reporte Composición de Saldo]]></text>
-			</staticText>
 			<line>
-				<reportElement x="0" y="75" width="555" height="1" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246">
+				<reportElement x="0" y="71" width="555" height="1" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 			</line>
-			<staticText>
-				<reportElement x="454" y="0" width="46" height="20" uuid="0f86baff-6386-4f3f-b3fe-2388707babe8"/>
-				<box rightPadding="4"/>
-				<textElement textAlignment="Right"/>
-				<text><![CDATA[Fecha]]></text>
-			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="500" y="0" width="55" height="20" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979"/>
-				<textElement textAlignment="Right"/>
+				<reportElement x="260" y="80" width="140" height="25" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979"/>
+				<textElement textAlignment="Left">
+					<font size="16" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[NOW( )]]></textFieldExpression>
 			</textField>
 			<image hAlign="Center">
@@ -259,10 +254,6 @@ ORDER BY c.nombre, com.fecha, com.updated_at ASC]]>
 				<textFieldExpression><![CDATA[$P{EMPRESA_DIRECCION}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="95" y="55" width="224" height="15" uuid="fcd50171-9469-4c14-b248-98203a46522e"/>
-				<textFieldExpression><![CDATA[$P{EMPRESA_WEBPAGE}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="95" y="40" width="15" height="15" uuid="efbdeae8-4988-4de5-ad47-3518b8bb5353"/>
 				<textFieldExpression><![CDATA[$P{EMPRESA_TIPO_RESP}]]></textFieldExpression>
 			</textField>
@@ -276,12 +267,22 @@ ORDER BY c.nombre, com.fecha, com.updated_at ASC]]>
 )]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="106" width="555" height="1" uuid="a6821f2e-fa7f-4dd2-878d-c3efccc4cb87">
+				<reportElement x="0" y="107" width="555" height="1" uuid="a6821f2e-fa7f-4dd2-878d-c3efccc4cb87">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 			</line>
+			<textField>
+				<reportElement x="0" y="80" width="260" height="25" uuid="804a3d16-1e9a-4024-a054-3749b54ec843">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Reporte Composición de Saldo al"]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>
@@ -475,18 +476,30 @@ ORDER BY c.nombre, com.fecha, com.updated_at ASC]]>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="31">
-			<textField>
-				<reportElement mode="Transparent" x="530" y="7" width="25" height="20" uuid="6afeae97-56b5-4df5-abb1-ab5ee7350901"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement mode="Transparent" x="0" y="10" width="530" height="20" forecolor="#575757" uuid="400ec738-0a49-49f9-92f4-7fabbb9fdb55">
+		<band height="30">
+			<line>
+				<reportElement x="0" y="6" width="555" height="1" backcolor="#FFFFFF" uuid="639c8463-0f05-4428-9d3c-8f1987f4361a">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[CONCATENATE($P{EMPRESA_NOMBRE}," - ",$P{EMPRESA_DIRECCION})]]></textFieldExpression>
+				<graphicElement>
+					<pen lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<textField evaluationTime="Report">
+				<reportElement x="519" y="11" width="35" height="18" forecolor="#141414" uuid="48ad20e7-5a46-4f30-b377-f4cfe62a874c"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CONCATENATE(" de ", $V{PAGE_NUMBER}.toString())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="459" y="11" width="60" height="18" forecolor="#141414" uuid="79a16a15-65eb-45f2-8967-352f05caaaab"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CONCATENATE("Página ", $V{PAGE_NUMBER}.toString())]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
