@@ -166,4 +166,6 @@ Route::group(['middleware' => ['jwt.auth']], function () {
         ['only' => ['index']]);
 
     Route::get('composicionsaldo/imprimir', 'ComposicionSaldoController@imprimir');
+
+    Route::get('ordenespago/comprobantes', 'OrdenPagoController@showComprobantes');
 });
