@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ChequeTercero;
 use App\ComprobanteCompra;
 use App\CtaCteProveedor;
 use App\OrdenPago;
@@ -70,6 +71,15 @@ class OrdenPagoController extends Controller
                         if (array_key_exists('depositos', $ordenPagoValor)) {
                             foreach ($ordenPagoValor['depositos'] as $deposito) {
                                 $savedOrdenPagoValor->deposito()->create($deposito);
+                            }
+                        }  else {
+                            if (array_key_exists('cheques_terceros', $ordenPagoValor)) {
+                                foreach ($ordenPagoValor['cheques_terceros'] as $cheque) {
+                                    $dbCheque = ChequeTercero::where('id', $cheque['id'])->first();
+                                    $dbCheque->estado = 'T';
+                                    $dbCheque->save();
+//                                    $savedOrdenPagoValor->deposito()->create($deposito);
+                                }
                             }
                         }
                     }
