@@ -31,5 +31,6 @@ class CtaCteProveedor extends Model
         'descripcion',
         'debe',
         'haber',
+        'orden_pago_id'
     ];
 }

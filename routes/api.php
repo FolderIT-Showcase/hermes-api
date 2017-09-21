@@ -160,7 +160,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('cobros/comprobantes', 'CobroController@showComprobantes');
     Route::get('cobros/imprimir/{cobro_id}', 'CobroController@imprimir');
     Route::resource('cobros', 'CobroController',
-        ['only' => ['store', 'show', 'update', 'destroy']]);
+        ['only' => ['store', 'show']]);
 
     Route::resource('mediospago', 'MedioPagoController',
         ['only' => ['index']]);
@@ -168,4 +168,6 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('composicionsaldo/imprimir', 'ComposicionSaldoController@imprimir');
 
     Route::get('ordenespago/comprobantes', 'OrdenPagoController@showComprobantes');
+    Route::resource('ordenespago', 'OrdenPagoController',
+        ['only' => ['store']]);
 });
