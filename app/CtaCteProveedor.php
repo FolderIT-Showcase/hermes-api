@@ -23,6 +23,11 @@ class CtaCteProveedor extends Model
         return $this->belongsTo(ComprobanteCompra::class);
     }
 
+    public function orden_pago()
+    {
+        return $this->belongsTo(OrdenPago::class);
+    }
+
     protected $fillable  = [
         'proveedor_id',
         'tipo_comp_compras_id',

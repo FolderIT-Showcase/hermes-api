@@ -99,4 +99,20 @@ class OrdenPagoController extends Controller
 
         return response()->json($newOrdenPago);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param OrdenPago $ordenespago
+     * @return \Illuminate\Http\Response
+     */
+    public function show(OrdenPago $ordenespago)
+    {
+        return response()->json($ordenespago->load('orden_pago_items.comprobante_compra.tipo_comp_compras',
+            'orden_pago_valores.medio_pago',
+            'orden_pago_valores.cheques_propios.cuenta_bancaria.banco'
+//            'orden_pago_valores.depositos.cuenta.banco'
+        )
+        );
+    }
 }

@@ -169,5 +169,5 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 
     Route::get('ordenespago/comprobantes', 'OrdenPagoController@showComprobantes');
     Route::resource('ordenespago', 'OrdenPagoController',
-        ['only' => ['store']]);
+        ['only' => ['store', 'show']]);
 });
