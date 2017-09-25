@@ -23,9 +23,14 @@ class OrdenPagoValor extends Model
         return $this->hasMany(Tarjeta::class);
     }
 
-    public function cheques()
+    public function cheques_terceros()
     {
         return $this->hasMany(ChequeTercero::class);
+    }
+
+    public function cheques_propios()
+    {
+        return $this->hasMany(ChequePropio::class);
     }
 
     public function depositos()

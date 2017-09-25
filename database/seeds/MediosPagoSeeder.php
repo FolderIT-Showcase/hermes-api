@@ -14,9 +14,10 @@ class MediosPagoSeeder extends Seeder
         $medios_pago = [];
         $medios_pago[] = ['id' => '1', 'nombre' => 'Efectivo','orden' => '1'];
         $medios_pago[] = ['id' => '2', 'nombre' => 'Cheque','orden' => '2'];
-        $medios_pago[] = ['id' => '3', 'nombre' => 'Tarjeta','orden' => '3'];
-        $medios_pago[] = ['id' => '4', 'nombre' => 'Depósito','orden' => '4'];
-        $medios_pago[] = ['id' => '5', 'nombre' => 'Redondeo','orden' => '5'];
+        $medios_pago[] = ['id' => '6', 'nombre' => 'Cheque Propio','orden' => '3'];
+        $medios_pago[] = ['id' => '3', 'nombre' => 'Tarjeta','orden' => '4'];
+        $medios_pago[] = ['id' => '4', 'nombre' => 'Depósito','orden' => '5'];
+        $medios_pago[] = ['id' => '5', 'nombre' => 'Redondeo','orden' => '6'];
 
         foreach ($medios_pago as $medio_pago) {
             $medioPagoDB = \App\MedioPago::firstOrNew(['id' => $medio_pago['id']]);

@@ -58,28 +58,22 @@ class OrdenPagoController extends Controller
 
             foreach ($ordenPagoValores as $ordenPagoValor) {
                 $savedOrdenPagoValor = $newOrdenPago->orden_pago_valores()->create($ordenPagoValor);
-                if (array_key_exists('tarjetas', $ordenPagoValor)) {
-                    foreach ($ordenPagoValor['tarjetas'] as $tarjeta) {
-                        $savedOrdenPagoValor->tarjeta()->create($tarjeta);
+                if (array_key_exists('cheques_propios', $ordenPagoValor)) {
+                    foreach ($ordenPagoValor['cheques_propios'] as $cheque) {
+                        $savedOrdenPagoValor->cheques_propios()->create($cheque);
                     }
                 } else {
-                    if (array_key_exists('cheques', $ordenPagoValor)) {
-                        foreach ($ordenPagoValor['cheques'] as $cheque) {
-                            $savedOrdenPagoValor->cheque()->create($cheque);
+                    if (array_key_exists('depositos', $ordenPagoValor)) {
+                        foreach ($ordenPagoValor['depositos'] as $deposito) {
+                            $savedOrdenPagoValor->deposito()->create($deposito);
                         }
-                    } else {
-                        if (array_key_exists('depositos', $ordenPagoValor)) {
-                            foreach ($ordenPagoValor['depositos'] as $deposito) {
-                                $savedOrdenPagoValor->deposito()->create($deposito);
-                            }
-                        }  else {
-                            if (array_key_exists('cheques_terceros', $ordenPagoValor)) {
-                                foreach ($ordenPagoValor['cheques_terceros'] as $cheque) {
-                                    $dbCheque = ChequeTercero::where('id', $cheque['id'])->first();
-                                    $dbCheque->estado = 'T';
-                                    $dbCheque->save();
+                    }  else {
+                        if (array_key_exists('cheques_terceros', $ordenPagoValor)) {
+                            foreach ($ordenPagoValor['cheques_terceros'] as $cheque) {
+                                $dbCheque = ChequeTercero::where('id', $cheque['id'])->first();
+                                $dbCheque->estado = 'T';
+                                $dbCheque->save();
 //                                    $savedOrdenPagoValor->deposito()->create($deposito);
-                                }
                             }
                         }
                     }
