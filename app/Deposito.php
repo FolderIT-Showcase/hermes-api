@@ -11,6 +11,11 @@ class Deposito extends Model
         return $this->belongsTo(Cliente::class);
     }
 
+    public function proveedor()
+    {
+        return $this->belongsTo(Proveedor::class);
+    }
+
     public function cuenta()
     {
         return $this->belongsTo(CuentaBancaria::class);
@@ -19,6 +24,11 @@ class Deposito extends Model
     public function cobro_valor()
     {
         return $this->belongsTo(CobroValor::class);
+    }
+
+    public function orden_pago_valor()
+    {
+        return $this->belongsTo(OrdenPagoValor::class);
     }
 
     protected $fillable  = ['cliente_id',
@@ -30,5 +40,8 @@ class Deposito extends Model
         'fecha_deposito',
         'tipo',
         'descripcion',
-        'cobro_valor_id'];
+        'cobro_valor_id',
+        'orden_pago_valor_id',
+        'proveedor_id',
+    ];
 }

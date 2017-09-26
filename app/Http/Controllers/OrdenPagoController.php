@@ -65,7 +65,7 @@ class OrdenPagoController extends Controller
                 } else {
                     if (array_key_exists('depositos', $ordenPagoValor)) {
                         foreach ($ordenPagoValor['depositos'] as $deposito) {
-                            $savedOrdenPagoValor->deposito()->create($deposito);
+                            $savedOrdenPagoValor->depositos()->create($deposito);
                         }
                     }  else {
                         if (array_key_exists('cheques_terceros', $ordenPagoValor)) {
