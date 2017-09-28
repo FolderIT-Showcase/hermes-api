@@ -12,6 +12,14 @@ use Illuminate\Support\Facades\DB;
 
 class OrdenPagoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_orden_pago', ['only' => ['show', 'showComprobantes']]);
+        $this->middleware('permission:create_orden_pago', ['only' => ['store']]);
+//        $this->middleware('permission:edit_orden_pago', ['only' => ['update']]);
+//        $this->middleware('permission:delete_orden_pago', ['only' => ['destroy']]);
+    }
+    
     public function showComprobantes(Request $request)
     {
         $proveedor = $request->input('proveedor', '0');

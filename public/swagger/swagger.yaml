@@ -38,6 +38,7 @@ tags:
   - name: Localidades
   - name: Marcas
   - name: Medios de pago
+  - name: Ordenes de pago
   - name: Parametros
   - name: Periodos Fiscales
   - name: Proveedores
@@ -880,6 +881,52 @@ paths:
           description: Error inesperado
           schema:
             $ref: '#/definitions/Error'
+  /cobros/{id}:
+    get:
+      tags:
+        - Cobros
+      summary: cobros con el id proporcionado
+      description: >
+        Devuelve el cobro que se corresponde con el id pasado como
+        parámetro. Se requiere contar con permiso para ver cobros.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Cobro
+          schema:
+            $ref: '#/definitions/Cobro'
+        '500':
+          description: Error inesperado
+          schema:
+            $ref: '#/definitions/Error'
+  /cobros/comprobantes:
+    get:
+      tags:
+        - Cobros
+      summary: Comprobantes con saldo filtrados por cliente
+      description: >
+        Devuelve los comprobantes con saldo positivo filtrados por cliente. Se requiere contar con permiso para ver cobros.
+      parameters:
+        - name: cliente
+          in: query
+          required: true
+          type: number
+      responses:
+        '200':
+          description: Array de comprobantes
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Comprobante'
+        '500':
+          description: Error inesperado
+          schema:
+            $ref: '#/definitions/Error'
   /cobros/imprimir/{cobro_id}:
     get:
       tags:
@@ -1052,11 +1099,11 @@ paths:
           format: date
       responses:
         '200':
-          description: Array de artículos
+          description: Array de comprobantes
           schema:
             type: array
             items:
-              $ref: '#/definitions/Articulo'
+              $ref: '#/definitions/Comprobante'
         '500':
           description: Error inesperado
           schema:
@@ -1681,6 +1728,75 @@ paths:
             items:
               $ref: '#/definitions/MedioPago'
         default:
+          description: Error inesperado
+          schema:
+            $ref: '#/definitions/Error'
+  /ordenespago:
+    post:
+      tags:
+        - Ordenes de pago
+      summary: Crear nueva orden de pago
+      description: >
+        Crea una nueva orden de pago y la persiste en la base de datos. Se requiere
+        contar con permiso para crear ordenes de pago.
+      parameters:
+        - name: orden_pago
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/OrdenPago'
+      responses:
+        '200':
+          description: Nueva orden de pago creada
+          schema:
+            $ref: '#/definitions/OrdenPago'
+        '500':
+          description: Error inesperado
+          schema:
+            $ref: '#/definitions/Error'
+  /ordenespago/{id}:
+    get:
+      tags:
+        - Ordenes de pago
+      summary: orden de pago con el id proporcionado
+      description: >
+        Devuelve la orden de pago que se corresponde con el id pasado como
+        parámetro. Se requiere contar con permiso para ver ordenes de pago.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Orden de pago
+          schema:
+            $ref: '#/definitions/OrdenPago'
+        '500':
+          description: Error inesperado
+          schema:
+            $ref: '#/definitions/Error'
+  /ordenespago/comprobantes:
+    get:
+      tags:
+        - Ordenes de pago
+      summary: Comprobantes con saldo filtrados por proveedor
+      description: >
+        Devuelve los comprobantes con saldo positivo filtrados por proveedor. Se requiere contar con permiso para ver ordenes de pago.
+      parameters:
+        - name: proveedor
+          in: query
+          required: true
+          type: number
+      responses:
+        '200':
+          description: Array de comprobantes de compra
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ComprobanteCompra'
+        '500':
           description: Error inesperado
           schema:
             $ref: '#/definitions/Error'
@@ -3873,6 +3989,20 @@ definitions:
         type: string
       orden:
         type: integer
+  OrdenPago:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      proveedor_id:
+        type: integer
+        format: int32
+      fecha:
+        type: string
+        format: date
+      importe:
+        type: number
   Rubro:
     type: object
     properties:
