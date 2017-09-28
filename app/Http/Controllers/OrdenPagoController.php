@@ -19,7 +19,7 @@ class OrdenPagoController extends Controller
 //        $this->middleware('permission:edit_orden_pago', ['only' => ['update']]);
 //        $this->middleware('permission:delete_orden_pago', ['only' => ['destroy']]);
     }
-    
+
     public function showComprobantes(Request $request)
     {
         $proveedor = $request->input('proveedor', '0');
@@ -118,8 +118,8 @@ class OrdenPagoController extends Controller
     {
         return response()->json($ordenespago->load('orden_pago_items.comprobante_compra.tipo_comp_compras',
             'orden_pago_valores.medio_pago',
-            'orden_pago_valores.cheques_propios.cuenta_bancaria.banco'
-//            'orden_pago_valores.depositos.cuenta.banco'
+            'orden_pago_valores.cheques_propios.cuenta_bancaria.banco',
+            'orden_pago_valores.depositos.cuenta.banco'
         )
         );
     }
