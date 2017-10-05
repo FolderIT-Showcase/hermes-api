@@ -46,4 +46,19 @@ class PuntoVentaController extends Controller
     {
         return response()->json(PuntoVenta::where('habilitado', true)->get());
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param $cod
+     * @return \Illuminate\Http\Response
+     */
+    public function showByCode($cod)
+    {
+        $puntoVenta = PuntoVenta::where('id', $cod)->first();
+        if($puntoVenta === null){
+            return response()->json('', 204);
+        }
+        else return response()->json($puntoVenta);
+    }
 }

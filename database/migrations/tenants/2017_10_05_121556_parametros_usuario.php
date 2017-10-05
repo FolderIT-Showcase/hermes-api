@@ -16,7 +16,7 @@ class ParametrosUsuario extends Migration
         Schema::create('parametros_usuario', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->string('punto_venta')->nullable();
+            $table->decimal('punto_venta',4 ,0)->nullable();
             $table->timestamps();
 
             //relacion con usuario

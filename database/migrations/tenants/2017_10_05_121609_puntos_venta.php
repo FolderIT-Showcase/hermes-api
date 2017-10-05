@@ -16,7 +16,7 @@ class PuntosVenta extends Migration
         Schema::create('puntos_venta', function (Blueprint $table) {
             $table->decimal('id', 4, 0);
             $table->boolean('habilitado');
-            $table->string('descripcion');
+            $table->string('descripcion')->nullable();
             $table->string('tipo_impresion',3);	// IF, IMP, FE
             $table->timestamps();
 
