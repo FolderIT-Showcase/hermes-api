@@ -29,7 +29,12 @@ class CtaCteProveedorController extends Controller
         $fecha_inicio = $request->input('fecha_inicio', '0');
         $fecha_fin = $request->input('fecha_fin', '0');
 
-        $compr = CtaCteProveedor::where('proveedor_id', $proveedor_id)->orderBy('fecha', 'ASC')->orderBy('updated_at', 'ASC')->with('tipo_comp_compras')->with('comprobante_compras');
+        $compr = CtaCteProveedor::where('proveedor_id', $proveedor_id)
+            ->orderBy('fecha', 'ASC')
+            ->orderBy('updated_at', 'ASC')
+            ->with('tipo_comp_compras')
+            ->with('comprobante_compras')
+            ->with('orden_pago');
 
         if($fecha_inicio != '0' && $fecha_fin != '0'){
             $compr = $compr->whereBetween('fecha', [$fecha_inicio, $fecha_fin]);

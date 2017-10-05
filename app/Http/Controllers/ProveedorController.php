@@ -9,7 +9,7 @@ class ProveedorController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:view_proveedor', ['only' => ['index', 'show', 'showByCode']]);
+        $this->middleware('permission:view_proveedor', ['only' => ['index', 'show', 'showByCode', 'showByName']]);
         $this->middleware('permission:create_proveedor', ['only' => ['store']]);
         $this->middleware('permission:edit_proveedor', ['only' => ['update']]);
         $this->middleware('permission:delete_proveedor', ['only' => ['destroy']]);

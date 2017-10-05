@@ -668,5 +668,30 @@ class PermissionsTableSeeder extends Seeder
         $deleteCobro->display_name = 'Borrar Cobros';
         $deleteCobro->description  = 'Borrar cobros existentes';
         $deleteCobro->save();
+
+        //Permisos Orden de pago
+        $createOrdenPago = permission::firstOrNew(array('name' => 'create_orden_pago'));
+        $createOrdenPago->name         = 'create_orden_pago';
+        $createOrdenPago->display_name = 'Crear Ordenes de Pago';
+        $createOrdenPago->description  = 'Crear nuevas ordenes de pago';
+        $createOrdenPago->save();
+
+        $editOrdenPago = permission::firstOrNew(array('name' => 'edit_orden_pago'));
+        $editOrdenPago->name         = 'edit_orden_pago';
+        $editOrdenPago->display_name = 'Editar Ordenes de Pago';
+        $editOrdenPago->description  = 'Editar ordenes de pago existentes';
+        $editOrdenPago->save();
+
+        $viewOrdenPago = permission::firstOrNew(array('name' => 'view_orden_pago'));
+        $viewOrdenPago->name         = 'view_orden_pago';
+        $viewOrdenPago->display_name = 'Ver Ordenes de Pago';
+        $viewOrdenPago->description  = 'Ver ordenes de pago existentes';
+        $viewOrdenPago->save();
+
+        $deleteOrdenPago = permission::firstOrNew(array('name' => 'delete_orden_pago'));
+        $deleteOrdenPago->name         = 'delete_orden_pago';
+        $deleteOrdenPago->display_name = 'Borrar Ordenes de Pago';
+        $deleteOrdenPago->description  = 'Borrar ordenes de pago existentes';
+        $deleteOrdenPago->save();
     }
 }

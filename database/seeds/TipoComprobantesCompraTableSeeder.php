@@ -21,6 +21,7 @@ class TipoComprobantesCompraTableSeeder extends Seeder
         $tipoComprobantesCompra[] = ['codigo' => 'NDA', 'nombre' => 'Nota de Débito A'];
         $tipoComprobantesCompra[] = ['codigo' => 'NDB', 'nombre' => 'Nota de Débito B'];
         $tipoComprobantesCompra[] = ['codigo' => 'NDC', 'nombre' => 'Nota de Débito C'];
+        $tipoComprobantesCompra[] = ['codigo' => 'REC', 'nombre' => 'Recibo'];
 
         foreach ($tipoComprobantesCompra as $tipoComprobante) {
             $tipoComprobanteDB = \App\TipoComprobanteCompra::firstOrNew(['codigo' => $tipoComprobante['codigo']]);

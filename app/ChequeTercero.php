@@ -23,7 +23,7 @@ class ChequeTercero extends Model
         return $this->belongsTo(CobroValor::class);
     }
 
-    protected $fillable  = ['nombre',
+    protected $fillable  = [
         'cliente_id',
         'banco_id',
         'sucursal',
@@ -38,5 +38,6 @@ class ChequeTercero extends Model
         'destinatario',
         'estado',
         'descripcion',
-        'cobro_valor_id'];
+        'cobro_valor_id'
+    ];
 }
