@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ParametroUsuario;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
@@ -189,5 +190,30 @@ class UserController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    /**
+     * Display the specified resource in storage.
+     *
+     * @param User $usuario
+     * @return \Illuminate\Http\Response
+     */
+    protected function getParametros(User $usuario)
+    {
+        return response()->json($usuario->parametros);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param User $usuario
+     * @return \Illuminate\Http\Response
+     */
+    public function postParametros(Request $request, User $usuario)
+    {
+        $parametros = ParametroUsuario::firstOrNew(array('user_id' => $usuario->id));
+        $parametros->fill($request->json()->all())->save();
+        return response()->json($parametros);
     }
 }

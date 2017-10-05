@@ -102,6 +102,8 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('cuentacorriente/reporte', 'CtaCteClienteController@report');
 
     Route::get('roles', 'UserController@indexRoles');
+    Route::get('usuarios/{usuario}/parametros', 'UserController@getParametros');
+    Route::post('usuarios/{usuario}/parametros', 'UserController@postParametros');
     Route::resource('usuarios', 'UserController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
@@ -166,4 +168,9 @@ Route::group(['middleware' => ['jwt.auth']], function () {
         ['only' => ['index']]);
 
     Route::get('composicionsaldo/imprimir', 'ComposicionSaldoController@imprimir');
+
+    Route::get('puntosventa/habilitados', 'PuntoVentaController@listarHabilitados');
+    Route::resource('puntosventa', 'PuntoVentaController',
+        ['only' => ['store', 'index', 'update'],
+         'parameters' => ['puntosventa' => 'puntoVenta']]);
 });

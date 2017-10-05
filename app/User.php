@@ -16,6 +16,11 @@ class User extends Authenticatable implements JWTSubject, CanResetPasswordContra
     use EntrustUserTrait;
     use CanResetPassword;
 
+    public function parametros()
+    {
+        return $this->hasOne(ParametroUsuario::class, 'user_id', 'id');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
