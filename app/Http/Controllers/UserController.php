@@ -29,7 +29,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return response()->json(User::with('roles')->get());
+        return response()->json(User::with('roles')->with('parametros')->get());
     }
 
     /**
