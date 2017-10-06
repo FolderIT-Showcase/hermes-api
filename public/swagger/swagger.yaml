@@ -43,6 +43,7 @@ tags:
   - name: Periodos Fiscales
   - name: Proveedores
   - name: Provincias
+  - name: Puntos de venta
   - name: Regimen de informacion de ventas
   - name: Resumen de ventas
   - name: Rubros
@@ -62,7 +63,7 @@ paths:
       security: []
       summary: Inicio de sesión user+password
       description: >
-        El endpoint login es utilizado para el inicio de sesión de los usuarios 
+        El endpoint login es utilizado para el inicio de sesión de los usuarios
         con su username, contraseña y empresa. La respuesta devuelve un token
         válido por 60 mins, que es requerido en las llamadas a la API, además
         devuelve la información del usuario. El token puede ser refrescado
@@ -1842,6 +1843,85 @@ paths:
           description: Error inesperado
           schema:
             $ref: '#/definitions/Error'
+  /puntosventa:
+    get:
+      tags:
+        - Puntos de venta
+      summary: Lista los puntos de venta
+      description: >
+        El endpoint puntosventa devuelve información sobre todos los puntos de venta.
+        Se listan los puntos de venta sin un orden específico.
+      responses:
+        '200':
+          description: Un array de puntos de venta
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PuntoVenta'
+        default:
+          description: Error inesperado
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      tags:
+        - Puntos de venta
+      summary: Crea un nuevo punto de venta
+      description: >
+        Crea un nuevo punto de vanta y lo persiste en la base de datos. Se requiere contar con permiso para crear rubros.
+      responses:
+        '200':
+          description: Nuevo punto de venta creado
+          schema:
+            $ref: '#/definitions/PuntoVenta'
+        default:
+          description: Error inesperado
+          schema:
+            $ref: '#/definitions/Error'
+  '/puntosventa/{id}':
+    put:
+      tags:
+        - Puntos de venta
+      summary: Actualiza los datos del punto de venta
+      description: >
+        Edita el punto de venta que se corresponde con el id pasado como parámetro. Se requiere contar con permiso para editar puntos de venta.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: punto de venta
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PuntoVenta'
+      responses:
+        '200':
+          description: Punto de venta con los datos actualizados
+          schema:
+            $ref: '#/definitions/PuntoVenta'
+        '500':
+          description: Error inesperado
+          schema:
+            $ref: '#/definitions/Error'
+  '/puntosventa/habilitados':
+    get:
+      tags:
+        - Puntos de venta
+      summary: Puntos de venta habilitados
+      description: >
+        Devuelve los puntos de venta habilitados.
+      responses:
+        '200':
+          description: Un array de puntos de venta habilitados
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PuntoVenta'
+        default:
+          description: Error inesperado
+          schema:
+            $ref: '#/definitions/Error'
   '/localidades/{id}':
     get:
       tags:
@@ -2522,6 +2602,55 @@ paths:
       responses:
         '200':
           description: Operación realizada con éxito
+        '500':
+          description: Error inesperado
+          schema:
+            $ref: '#/definitions/Error'
+  '/usuarios/{id}/parametros':
+    get:
+      tags:
+        - Usuarios
+      summary: Parámetros del usuario con el id proporcionado
+      description: >
+        Devuelve los parámetros del usuario que se corresponde con el id pasado como parámetro.
+        Se requiere contar con permiso para ver los parámetros de los usuarios.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Parametros Usuario
+          schema:
+            $ref: '#/definitions/ParametrosUsuario'
+        '500':
+          description: Error inesperado
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      tags:
+        - Usuarios
+      summary: Crea o actualiza los parámetros del usuario
+      description: >
+        Crea o edita los parámetros del usuario que se corresponde con el id pasado como parámetro. Si no se pasa una password, se mantiene los actuales. Se requiere contar con permiso para editar los parámetros de los usuarios.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: parametros de usuario
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ParametrosUsuario'
+      responses:
+        '200':
+          description: Parametros de usuario con los datos actualizados
+          schema:
+            $ref: '#/definitions/ParametrosUsuario'
         '500':
           description: Error inesperado
           schema:
@@ -3969,6 +4098,18 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Localidad'
+  ParametrosUsuario:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      user_id:
+        type: integer
+        format: int32
+      punto_venta:
+        type: integer
+        format: int32
   Marca:
     type: object
     properties:
@@ -4086,6 +4227,22 @@ definitions:
         type: boolean
       motivo:
         type: string
+  PuntoVenta:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      habilitado:
+        type: boolean
+      descripcion:
+        type: string
+      tipo_impresion:
+        type: string
+        enum:
+          - IF
+          - IMP
+          - FE
   Role:
     type: object
     properties:
@@ -4176,6 +4333,8 @@ definitions:
         type: string
       email:
         type: string
+      parametros:
+          $ref: '#/definitions/ParametrosUsuario'
       password:
         type: string
       roles:

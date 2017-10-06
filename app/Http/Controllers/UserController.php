@@ -6,8 +6,8 @@ use App\ParametroUsuario;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
-use Validator;
 use JWTAuth;
+use Validator;
 
 class UserController extends Controller
 {
@@ -210,7 +210,7 @@ class UserController extends Controller
      * @param User $usuario
      * @return \Illuminate\Http\Response
      */
-    public function postParametros(Request $request, User $usuario)
+    public function putParametros(Request $request, User $usuario)
     {
         $parametros = ParametroUsuario::firstOrNew(array('user_id' => $usuario->id));
         $parametros->fill($request->json()->all())->save();

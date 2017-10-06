@@ -103,7 +103,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 
     Route::get('roles', 'UserController@indexRoles');
     Route::get('usuarios/{usuario}/parametros', 'UserController@getParametros');
-    Route::post('usuarios/{usuario}/parametros', 'UserController@postParametros');
+    Route::put('usuarios/{usuario}/parametros', 'UserController@putParametros');
     Route::resource('usuarios', 'UserController',
         ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
