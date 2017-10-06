@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\PuntoVentaCreated;
 use Illuminate\Database\Eloquent\Model;
 
 class PuntoVenta extends Model
@@ -14,4 +15,6 @@ class PuntoVenta extends Model
         'descripcion',
         'tipo_impresion'
     ];
+
+    protected $events = ['created' => PuntoVentaCreated::class];
 }

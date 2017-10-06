@@ -16,9 +16,9 @@ class UserController extends Controller
     public function __construct(JWTAuth $jwtauth)
     {
         $this->jwtauth = $jwtauth;
-        $this->middleware('permission:view_usuario', ['only' => ['index', 'indexRoles', 'show']]);
+        $this->middleware('permission:view_usuario', ['only' => ['index', 'indexRoles', 'show', 'getParametros']]);
         $this->middleware('permission:create_usuario', ['only' => ['store']]);
-        $this->middleware('permission:edit_usuario', ['only' => ['update']]);
+        $this->middleware('permission:edit_usuario', ['only' => ['update', 'putParametros']]);
         $this->middleware('permission:delete_usuario', ['only' => ['destroy']]);
     }
 

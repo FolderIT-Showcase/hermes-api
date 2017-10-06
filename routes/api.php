@@ -174,6 +174,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
         ['only' => ['store', 'show']]);
 
     Route::get('puntosventa/habilitados', 'PuntoVentaController@listarHabilitados');
+    Route::get('puntosventa/codigo/{cod}', 'PuntoVentaController@showByCode');
     Route::resource('puntosventa', 'PuntoVentaController',
         ['only' => ['store', 'index', 'update'],
          'parameters' => ['puntosventa' => 'puntoVenta']]);

@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\ComprobanteCompraCreated' => [
             'App\Listeners\RegistrarEnCtaCteProveedor',
+        ],
+        'App\Events\PuntoVentaCreated' => [
+            'App\Listeners\InicializarContador',
         ]
     ];
 

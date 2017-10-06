@@ -693,5 +693,30 @@ class PermissionsTableSeeder extends Seeder
         $deleteOrdenPago->display_name = 'Borrar Ordenes de Pago';
         $deleteOrdenPago->description  = 'Borrar ordenes de pago existentes';
         $deleteOrdenPago->save();
+
+        //Permisos Puntos de venta
+        $createPuntoVenta = permission::firstOrNew(array('name' => 'create_punto_venta'));
+        $createPuntoVenta->name         = 'create_punto_venta';
+        $createPuntoVenta->display_name = 'Crear Puntos de Venta';
+        $createPuntoVenta->description  = 'Crear nuevos puntos de venta';
+        $createPuntoVenta->save();
+
+        $editPuntoVenta = permission::firstOrNew(array('name' => 'edit_punto_venta'));
+        $editPuntoVenta->name         = 'edit_punto_venta';
+        $editPuntoVenta->display_name = 'Editar Puntos de Venta';
+        $editPuntoVenta->description  = 'Editar puntos de venta existentes';
+        $editPuntoVenta->save();
+
+        $viewPuntoVenta = permission::firstOrNew(array('name' => 'view_punto_venta'));
+        $viewPuntoVenta->name         = 'view_punto_venta';
+        $viewPuntoVenta->display_name = 'Ver Puntos de Venta';
+        $viewPuntoVenta->description  = 'Ver puntos de venta existentes';
+        $viewPuntoVenta->save();
+
+        $deletePuntoVenta = permission::firstOrNew(array('name' => 'delete_punto_venta'));
+        $deletePuntoVenta->name         = 'delete_punto_venta';
+        $deletePuntoVenta->display_name = 'Borrar Puntos de Venta';
+        $deletePuntoVenta->description  = 'Borrar puntos de venta existentes';
+        $deletePuntoVenta->save();
     }
 }

@@ -37,6 +37,11 @@ class Comprobante extends Model
         return $this->belongsTo(TipoFormaPago::class);
     }
 
+    public function punto_venta()
+    {
+        return $this->belongsTo(PuntoVenta::class, 'punto_venta');
+    }
+
     protected $fillable  = ['cliente_id',
         'tipo_comprobante_id',
         'fecha',
