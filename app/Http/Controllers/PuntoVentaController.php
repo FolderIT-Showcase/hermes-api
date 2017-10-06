@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class PuntoVentaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_punto_venta', ['only' => ['index', 'show', 'showByCode', 'listarHabilitados']]);
+        $this->middleware('permission:create_punto_venta', ['only' => ['store']]);
+        $this->middleware('permission:edit_punto_venta', ['only' => ['update']]);
+        $this->middleware('permission:delete_punto_venta', ['only' => ['destroy']]);
+    }
+    
     /**
      * Display a listing of the resource.
      *
