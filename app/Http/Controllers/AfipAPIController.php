@@ -79,8 +79,9 @@ class AfipAPIController extends Controller
             $comprobante->save();
             return $comprobante;
         } else {
-            throwException(new \Exception($res));
-            return $comprobante;
+            return $res;
+//            throwException(new \Exception($res));
+//            return $comprobante;
         }
     }
 

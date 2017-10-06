@@ -8,6 +8,7 @@ use App\Comprobante;
 use App\ComproItem;
 use App\Contador;
 use App\Parametro;
+use App\PuntoVenta;
 use App\TipoComprobante;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -71,7 +72,7 @@ class ComprobanteController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function store()
     {
@@ -100,6 +101,20 @@ class ComprobanteController extends Controller
             $contador->save();
         });
 
+        $punto_venta = PuntoVenta::find($newComprobante->punto_venta);
+        switch ($punto_venta->tipo_impresion) {
+            case 'IMP':
+                return $this->imprimir($newComprobante->id);
+                break;
+            case 'FE':
+                $afipAPI = new AfipAPIController();
+                return $afipAPI->generarCae($newComprobante);
+                break;
+            case 'IF':
+                break;
+            default:
+                return response()->json($newComprobante->load('items'));
+        }
         return response()->json($newComprobante->load('items'));
     }
 
